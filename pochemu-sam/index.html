@@ -186,6 +186,46 @@ footer{padding:38px 0 44px;color:var(--muted);font-size:13px;border-top:1px soli
 .cs-row a:hover{text-decoration:underline}
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:12px 22px;border-radius:9px;font-size:14px;font-weight:500;z-index:70;opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.show{opacity:1}
+
+/* КВИЗ. Живёт внутри .cta — фон там тёмный (var(--ink)).
+   Светлые переменные (--card / --ink) тут использовать НЕЛЬЗЯ: белое на белом. */
+.lf{max-width:560px;margin:0 auto;text-align:left}
+.lf-bar{height:3px;border-radius:2px;background:rgba(255,255,255,.12);margin-bottom:18px;overflow:hidden}
+.lf-bar i{display:block;height:100%;width:14%;background:var(--accent);border-radius:2px;transition:width .3s}
+.lf-cnt{font-size:12.5px;color:#8a8d8f;margin-bottom:10px}
+.lf-step{display:none}
+.lf-step.on{display:block;animation:lfIn .25s ease}
+@keyframes lfIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.lf-q{font-size:19px;font-weight:700;color:#fff;margin-bottom:4px;line-height:1.3}
+.lf-hint{font-size:13.5px;color:#8a8d8f;margin-bottom:14px}
+.lf-chips{display:flex;flex-wrap:wrap;gap:9px}
+.lf-chip{display:inline-flex;align-items:center;padding:11px 16px;border-radius:12px;cursor:pointer;
+  border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#dbe2ec;
+  font-size:14.5px;user-select:none;transition:all .15s}
+.lf-chip:hover{border-color:#9ec3f2;background:rgba(255,255,255,.1)}
+.lf-chip input{display:none}
+.lf-chip.on{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.lf-in{width:100%;padding:13px 15px;border-radius:12px;font:inherit;font-size:15px;
+  border:1px solid rgba(255,255,255,.18);background:rgba(255,255,255,.06);color:#fff;transition:border-color .15s}
+.lf-in:focus{outline:none;border-color:var(--accent);background:rgba(255,255,255,.09)}
+.lf-in::placeholder{color:#8a8d8f}
+textarea.lf-in{min-height:90px;resize:vertical}
+.lf-f{margin-bottom:13px}
+.lf-lbl{display:block;font-size:13.5px;font-weight:600;color:#dbe2ec;margin-bottom:6px}
+.lf-own{margin-top:9px;display:none}
+.lf-own.show{display:block}
+.lf-nav{display:flex;gap:10px;margin-top:20px;align-items:center}
+.lf-next{flex:1;justify-content:center}
+.lf-back{background:none;border:none;color:#8a8d8f;font:inherit;font-size:14px;cursor:pointer;padding:10px 4px}
+.lf-back:hover{color:#dbe2ec}
+.lf-next[disabled]{opacity:.4;pointer-events:none}
+.lf-cs{margin:16px 0 4px}
+.lf-cs .cs-row{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px;font-size:12px;color:#8a8d8f;line-height:1.45}
+.lf-cs .cs-row input{margin-top:2px;flex:none}
+.lf-cs a{color:#9ec3f2}
+.lf-err{color:#ff8787;font-size:13.5px;margin-top:10px;display:none}
+.lf-err.show{display:block}
+@media(max-width:640px){.lf-q{font-size:17px}.lf-chip{padding:10px 13px;font-size:13.5px}}
 </style>
 </head>
 <body>
@@ -254,140 +294,136 @@ footer{padding:38px 0 44px;color:var(--muted);font-size:13px;border-top:1px soli
       </div>
       <div id="ctaActions"></div>
       <div class="cta-note" id="ctaNote">Бесплатно, без обязательств.</div>
-<!-- ФОРМА: собирает те же поля, что и Тильда. Лид уходит в amoCRM сразу,
-     даже если человек не дойдёт до бота. -->
-<style>
-  .lf { margin-top: 22px; }
-  .lf-title { font-size: 19px; font-weight: 700; margin-bottom: 4px; }
-  .lf-sub { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
-  .lf-grp { margin-bottom: 18px; }
-  .lf-lbl { font-size: 14px; font-weight: 600; margin-bottom: 8px; display: block; }
-  .lf-req::after { content: " *"; color: var(--accent); }
-  .lf-in {
-    width: 100%; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px;
-    font: inherit; font-size: 15px; background: var(--card); color: var(--ink);
-    transition: border-color .15s;
-  }
-  .lf-in:focus { outline: none; border-color: var(--accent); }
-  .lf-in::placeholder { color: var(--faint); }
-  textarea.lf-in { min-height: 84px; resize: vertical; }
-  .lf-chips { display: flex; flex-wrap: wrap; gap: 8px; }
-  .lf-chip {
-    display: inline-flex; align-items: center; padding: 9px 14px; border-radius: 999px;
-    border: 1px solid var(--line); background: var(--card); cursor: pointer;
-    font-size: 14px; user-select: none; transition: all .15s;
-  }
-  .lf-chip:hover { border-color: var(--accent); }
-  .lf-chip input { display: none; }
-  .lf-chip.on { background: var(--accent); border-color: var(--accent); color: #fff; }
-  .lf-own { margin-top: 8px; display: none; }
-  .lf-own.show { display: block; }
-  .lf-err { color: #e03131; font-size: 13px; margin-top: 6px; display: none; }
-  .lf-err.show { display: block; }
-  .lf-send { width: 100%; justify-content: center; margin-top: 6px; }
-  .lf-send[disabled] { opacity: .55; pointer-events: none; }
-  @media (max-width: 640px) { .lf-chip { padding: 8px 12px; font-size: 13px; } }
-</style>
-
+<!-- КВИЗ. Вопросы и варианты — один в один с формой Тильды: в amoCRM поля
+     настроены под них. Лид уходит в amoCRM сразу, даже если человек не дойдёт до бота. -->
 <div class="lf" id="leadForm" style="display:none">
-  <div class="lf-title">Заберите разбор вашего стоп-фактора</div>
-  <div class="lf-sub">Материал придёт в боте. Пара вопросов — чтобы прислать то, что подходит именно вам.</div>
+  <div class="lf-bar"><i id="lfBar"></i></div>
+  <div class="lf-cnt" id="lfCnt">Вопрос 1 из 7</div>
 
-  <div class="lf-grp">
-    <label class="lf-lbl lf-req" for="lfName">Как вас зовут</label>
-    <input class="lf-in" id="lfName" placeholder="Ваше имя" autocomplete="name">
-  </div>
-
-  <div class="lf-grp">
-    <label class="lf-lbl lf-req" for="lfPhone">Телефон</label>
-    <input class="lf-in" id="lfPhone" type="tel" placeholder="+7 (___) ___-__-__" autocomplete="tel">
-  </div>
-
-  <div class="lf-grp">
-    <label class="lf-lbl" for="lfEmail">Email</label>
-    <input class="lf-in" id="lfEmail" type="email" placeholder="you@company.ru" autocomplete="email">
-  </div>
-
-  <div class="lf-grp">
-    <span class="lf-lbl">Ваша роль в компании</span>
+  <div class="lf-step" data-step="1">
+    <div class="lf-q">Ваша роль в компании</div>
     <div class="lf-chips" data-one="role">
       <label class="lf-chip"><input type="radio" name="role" value="Владелец/Совладелец">Владелец/Совладелец</label>
       <label class="lf-chip"><input type="radio" name="role" value="Генеральный директор">Генеральный директор</label>
-      <label class="lf-chip"><input type="radio" name="role" value="Топ-менеджер/Руководитель направления">Топ-менеджер</label>
+      <label class="lf-chip"><input type="radio" name="role" value="Топ-менеджер/Руководитель направления">Топ-менеджер/Руководитель направления</label>
       <label class="lf-chip"><input type="radio" name="role" value="Другой сотрудник">Другой сотрудник</label>
     </div>
   </div>
 
-  <div class="lf-grp">
-    <span class="lf-lbl">Размер команды</span>
+  <div class="lf-step" data-step="2">
+    <div class="lf-q">Размер команды</div>
     <div class="lf-chips" data-one="team">
       <label class="lf-chip"><input type="radio" name="team" value="Нет команды">Нет команды</label>
-      <label class="lf-chip"><input type="radio" name="team" value="до 5 человек">до 5</label>
-      <label class="lf-chip"><input type="radio" name="team" value="до 10 человек">до 10</label>
-      <label class="lf-chip"><input type="radio" name="team" value="более 20 человек">более 20</label>
+      <label class="lf-chip"><input type="radio" name="team" value="до 5 человек">до 5 человек</label>
+      <label class="lf-chip"><input type="radio" name="team" value="до 10 человек">до 10 человек</label>
+      <label class="lf-chip"><input type="radio" name="team" value="более 20 человек">более 20 человек</label>
     </div>
+    <div class="lf-nav"><button class="lf-back" data-back>Назад</button></div>
   </div>
 
-  <div class="lf-grp">
-    <span class="lf-lbl">Сфера деятельности</span>
+  <div class="lf-step" data-step="3">
+    <div class="lf-q">Сфера деятельности</div>
+    <div class="lf-hint">Можно выбрать несколько</div>
     <div class="lf-chips" data-many="sphere">
-      <label class="lf-chip"><input type="checkbox" value="Производство">Производство</label>
-      <label class="lf-chip"><input type="checkbox" value="Строительство/инжиниринг">Строительство</label>
-      <label class="lf-chip"><input type="checkbox" value="IT">IT</label>
-      <label class="lf-chip"><input type="checkbox" value="Консалтинг/инфобиз">Консалтинг/инфобиз</label>
-      <label class="lf-chip"><input type="checkbox" value="Маркетинг/реклама">Маркетинг/реклама</label>
-      <label class="lf-chip"><input type="checkbox" value="Розничная торговля/МП">Торговля</label>
-      <label class="lf-chip"><input type="checkbox" value="Другое">Другое</label>
-      <label class="lf-chip" data-own="sphere"><input type="checkbox" value="Свой вариант">Свой вариант</label>
+      <label class="lf-chip"><input type="checkbox" name="sphere" value="Строительство/инжиниринг">Строительство/инжиниринг</label>
+      <label class="lf-chip"><input type="checkbox" name="sphere" value="Консалтинг/инфобиз">Консалтинг/инфобиз</label>
+      <label class="lf-chip"><input type="checkbox" name="sphere" value="Производство">Производство</label>
+      <label class="lf-chip"><input type="checkbox" name="sphere" value="Розничная торговля/МП">Розничная торговля/МП</label>
+      <label class="lf-chip"><input type="checkbox" name="sphere" value="Маркетинг/реклама">Маркетинг/реклама</label>
+      <label class="lf-chip"><input type="checkbox" name="sphere" value="IT">IT</label>
+      <label class="lf-chip"><input type="checkbox" name="sphere" value="Свой вариант">Свой вариант</label>
     </div>
-    <input class="lf-in lf-own" id="lfSphereOwn" placeholder="Ваша сфера">
+    <div class="lf-own" data-own="sphere"><input class="lf-in" id="lfOwnSphere" placeholder="Ваша сфера"></div>
+    <div class="lf-nav">
+      <button class="lf-back" data-back>Назад</button>
+      <button class="btn btn-accent lf-next" data-next>Далее</button>
+    </div>
   </div>
 
-  <div class="lf-grp">
-    <span class="lf-lbl">Какая помощь нужна</span>
+  <div class="lf-step" data-step="4">
+    <div class="lf-q">В каких направлениях вам нужна помощь?</div>
+    <div class="lf-hint">Можно выбрать несколько</div>
     <div class="lf-chips" data-many="directions">
-      <label class="lf-chip"><input type="checkbox" value="Ассистентская поддержка">Ассистентская поддержка</label>
-      <label class="lf-chip"><input type="checkbox" value="Работа с клиентами">Работа с клиентами</label>
-      <label class="lf-chip"><input type="checkbox" value="Маркетинг и дизайн">Маркетинг и дизайн</label>
-      <label class="lf-chip"><input type="checkbox" value="HR поддержка">HR поддержка</label>
-      <label class="lf-chip"><input type="checkbox" value="Юридическая поддержка">Юридическая</label>
-      <label class="lf-chip"><input type="checkbox" value="Бухгалтерская поддержка">Бухгалтерская</label>
-      <label class="lf-chip" data-own="directions"><input type="checkbox" value="Свой вариант">Свой вариант</label>
+      <label class="lf-chip"><input type="checkbox" name="directions" value="Ассистентская поддержка">Ассистентская поддержка</label>
+      <label class="lf-chip"><input type="checkbox" name="directions" value="Бухгалтерская поддержка">Бухгалтерская поддержка</label>
+      <label class="lf-chip"><input type="checkbox" name="directions" value="HR поддержка">HR поддержка</label>
+      <label class="lf-chip"><input type="checkbox" name="directions" value="Работа с клиентами">Работа с клиентами</label>
+      <label class="lf-chip"><input type="checkbox" name="directions" value="Маркетинг и дизайн">Маркетинг и дизайн</label>
+      <label class="lf-chip"><input type="checkbox" name="directions" value="Юридическая поддержка">Юридическая поддержка</label>
+      <label class="lf-chip"><input type="checkbox" name="directions" value="Свой вариант">Свой вариант</label>
     </div>
-    <input class="lf-in lf-own" id="lfDirectionsOwn" placeholder="Что именно нужно">
+    <div class="lf-own" data-own="directions"><input class="lf-in" id="lfOwnDir" placeholder="Опишите направление"></div>
+    <div class="lf-nav">
+      <button class="lf-back" data-back>Назад</button>
+      <button class="btn btn-accent lf-next" data-next>Далее</button>
+    </div>
   </div>
 
-  <div class="lf-grp">
-    <label class="lf-lbl" for="lfTasks">Какие задачи хотите снять с себя</label>
-    <textarea class="lf-in" id="lfTasks"
-      placeholder="Например: проверить договор на риски, подобрать резюме релевантных кандидатов"></textarea>
+  <div class="lf-step" data-step="5">
+    <div class="lf-q">Опишите задачи, которые хотите снять с себя</div>
+    <div class="lf-hint">Пара строк — подготовим разбор точнее. Можно пропустить.</div>
+    <textarea class="lf-in" id="lfTasks" placeholder="Например: обработка заявок, отчёты, переписка с клиентами"></textarea>
+    <div class="lf-nav">
+      <button class="lf-back" data-back>Назад</button>
+      <button class="btn btn-accent lf-next" data-next>Далее</button>
+    </div>
   </div>
 
-  <div class="lf-grp">
-    <span class="lf-lbl">Как узнали о нас</span>
+  <div class="lf-step" data-step="6">
+    <div class="lf-q">Как узнали о нас</div>
     <div class="lf-chips" data-one="source">
-      <label class="lf-chip"><input type="radio" name="src" value="По рекомендации">По рекомендации</label>
-      <label class="lf-chip"><input type="radio" name="src" value="Из бизнес-сообщества">Бизнес-сообщество</label>
-      <label class="lf-chip"><input type="radio" name="src" value="Видел рекламу">Видел рекламу</label>
-      <label class="lf-chip"><input type="radio" name="src" value="Из соцсетей">Из соцсетей</label>
-      <label class="lf-chip"><input type="radio" name="src" value="Поиск в Яндексе / Google">Поиск</label>
+      <label class="lf-chip"><input type="radio" name="source" value="По рекомендации">По рекомендации</label>
+      <label class="lf-chip"><input type="radio" name="source" value="Из бизнес-сообщества">Из бизнес-сообщества</label>
+      <label class="lf-chip"><input type="radio" name="source" value="Видел рекламу">Видел рекламу</label>
+      <label class="lf-chip"><input type="radio" name="source" value="Из соцсетей">Из соцсетей</label>
+      <label class="lf-chip"><input type="radio" name="source" value="Поиск в Яндексе / Google">Поиск в Яндексе / Google</label>
     </div>
+    <div class="lf-nav"><button class="lf-back" data-back>Назад</button></div>
   </div>
 
-  <div class="lf-grp">
-    <span class="lf-lbl">Куда прислать материал</span>
-    <div class="lf-chips" data-one="way">
-      <label class="lf-chip on"><input type="radio" name="way" value="telegram" checked>Telegram</label>
-      <label class="lf-chip"><input type="radio" name="way" value="max_messenger">МАКС</label>
-      <label class="lf-chip"><input type="radio" name="way" value="whatsapp">WhatsApp</label>
-      <label class="lf-chip"><input type="radio" name="way" value="phone">Позвонить</label>
+  <div class="lf-step" data-step="7">
+    <div class="lf-q">Куда прислать разбор</div>
+    <div class="lf-hint">Материал придёт в бота, а с вами свяжется живой человек.</div>
+
+    <div class="lf-f">
+      <label class="lf-lbl" for="lfName">Как вас зовут</label>
+      <input class="lf-in" id="lfName" placeholder="Ваше имя" autocomplete="name">
     </div>
-    <input class="lf-in" id="lfContact" style="margin-top:10px" placeholder="@username или номер">
+    <div class="lf-f">
+      <label class="lf-lbl" for="lfPhone">Телефон</label>
+      <input class="lf-in" id="lfPhone" type="tel" autocomplete="tel">
+    </div>
+    <div class="lf-f">
+      <label class="lf-lbl" for="lfEmail">Email</label>
+      <input class="lf-in" id="lfEmail" type="email" placeholder="you@company.ru" autocomplete="email">
+    </div>
+    <div class="lf-f">
+      <span class="lf-lbl">Предпочтительный способ связи</span>
+      <div class="lf-chips" data-one="way">
+        <label class="lf-chip"><input type="radio" name="way" value="Телефон">Телефон</label>
+        <label class="lf-chip"><input type="radio" name="way" value="Telegram">Telegram</label>
+        <label class="lf-chip"><input type="radio" name="way" value="WhatsApp">WhatsApp</label>
+        <label class="lf-chip"><input type="radio" name="way" value="Max">Max</label>
+      </div>
+    </div>
+    <div class="lf-f" id="lfContactWrap" style="display:none">
+      <label class="lf-lbl" for="lfContact" id="lfContactLbl">Контакт</label>
+      <input class="lf-in" id="lfContact">
+    </div>
+
+    <div class="lf-cs">
+      <label class="cs-row"><input type="checkbox" id="lfCs1" checked><span>Я предоставляю Сервису <a href="https://delegator24.ru/consent-to-the-processing-of-personaldata" target="_blank" rel="noopener">согласие</a> на обработку моих персональных данных, <a href="https://delegator24.ru/consent-to-the-transfer-of-personal-data" target="_blank" rel="noopener">согласие</a> на передачу моих персональных данных третьим лицам, я ознакомлен с <a href="https://delegator24.ru/privacy-policy" target="_blank" rel="noopener">Политикой обработки персональных данных</a>.</span></label>
+      <label class="cs-row"><input type="checkbox" id="lfCs2" checked><span>Я предоставляю Сервису <a href="https://delegator24.ru/consent-to-receive-marketing-information" target="_blank" rel="noopener">согласие</a> на получение рассылок.</span></label>
+    </div>
+
+    <div class="lf-nav">
+      <button class="lf-back" data-back>Назад</button>
+      <button class="btn btn-accent lf-next" id="lfSend">Получить разбор</button>
+    </div>
+    <div class="lf-err" id="lfErr"></div>
   </div>
 
-  <div class="lf-err" id="lfErr"></div>
-  <button class="btn btn-accent lf-send" id="lfSend">Забрать разбор</button>
-  <div class="cta-note">Бесплатно, без обязательств.</div>
+  <div id="lfDone" style="display:none"></div>
 </div>
     </div>
   </section>
@@ -616,154 +652,190 @@ if(Object.keys(ans).length>=Q.length)compute(true);
 <!-- UIS виджет связи (звонок/мессенджеры) -->
 <script type="text/javascript" async src="https://app.uiscom.ru/static/cs.min.js?k=BkIwF_xi28YQGfhpr1ZcIecg_wn6lgxP"></script>
 <script>
-// ── Форма-first: лид уходит в amoCRM сразу, даже если человек не дойдёт до бота ──
-// Раньше лендинг вёл прямо в бота: не дошёл — потеряли и контакт, и данные.
+// ── КВИЗ: шаги, телефонная маска по стране, отправка лида ────────────────────
+// Лид уходит в amoCRM сразу после отправки — не дожидаясь, дойдёт ли человек до бота.
+(function(){
+ var f=document.getElementById('leadForm'); if(!f) return;
 
-var FORM_API = 'https://chat.delegator24.ru/form';
-var MAGNET = 'pochemu-sam';
+ // Страну берём из часового пояса браузера: без сети (внешние запросы режет CSP)
+ // и без разрешений. Точность достаточная — человек всегда может стереть код.
+ var ЗОНЫ={
+  'Europe/Moscow':7,'Europe/Kaliningrad':7,'Europe/Samara':7,'Europe/Volgograd':7,'Europe/Saratov':7,
+  'Asia/Yekaterinburg':7,'Asia/Omsk':7,'Asia/Novosibirsk':7,'Asia/Krasnoyarsk':7,'Asia/Irkutsk':7,
+  'Asia/Yakutsk':7,'Asia/Vladivostok':7,'Asia/Magadan':7,'Asia/Kamchatka':7,
+  'Asia/Almaty':7,'Asia/Aqtobe':7,'Asia/Atyrau':7,           // Казахстан — тоже +7
+  'Europe/Minsk':375,'Europe/Kyiv':380,'Europe/Kiev':380,'Europe/Chisinau':373,
+  'Asia/Tashkent':998,'Asia/Bishkek':996,'Asia/Dushanbe':992,'Asia/Ashgabat':993,
+  'Asia/Yerevan':374,'Asia/Tbilisi':995,'Asia/Baku':994,
+  'Asia/Dubai':971,'Asia/Jerusalem':972,'Asia/Bangkok':66,'Asia/Nicosia':357,'Europe/Nicosia':357,
+  'Europe/Istanbul':90,'Europe/Belgrade':381,'Europe/Riga':371,'Europe/Vilnius':370,'Europe/Tallinn':372,
+  'Europe/Berlin':49,'Europe/London':44,'Europe/Lisbon':351,'Europe/Madrid':34,'Europe/Warsaw':48
+ };
+ var зона=''; try{зона=Intl.DateTimeFormat().resolvedOptions().timeZone||'';}catch(e){}
+ var КОД=ЗОНЫ[зона]||(зона.indexOf('America/')===0?1:7);
+ var СЕМЬ=(КОД===7);   // у +7 знакомая маска (999) 999-99-99, у остальных — просто цифры
 
-// токен рождается на странице и связывает заявку с диалогом в боте
-var LF_TOKEN = 'd' + Array.from(crypto.getRandomValues(new Uint8Array(6)))
-  .map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
-
-// чипсы: один выбор или несколько
-document.querySelectorAll('.lf-chip').forEach(function (chip) {
-  chip.addEventListener('click', function () {
-    var input = chip.querySelector('input');
-    var group = chip.closest('.lf-chips');
-    if (input.type === 'radio') {
-      group.querySelectorAll('.lf-chip').forEach(function (c) { c.classList.remove('on'); });
-      chip.classList.add('on');
-      input.checked = true;
-    } else {
-      input.checked = !input.checked;
-      chip.classList.toggle('on', input.checked);
-    }
-    // «Свой вариант» открывает поле для текста
-    var own = chip.dataset.own;
-    if (own) {
-      var box = document.getElementById(own === 'sphere' ? 'lfSphereOwn' : 'lfDirectionsOwn');
-      box.classList.toggle('show', input.checked);
-      if (input.checked) box.focus();
-    }
-  });
-});
-
-// телефон: маска, чтобы менеджер не разбирал каракули
-var phone = document.getElementById('lfPhone');
-phone.addEventListener('input', function () {
-  var d = phone.value.replace(/\D/g, '').replace(/^8/, '7').replace(/^([^7])/, '7$1');
-  var out = '+7';
-  if (d.length > 1) out += ' (' + d.slice(1, 4);
-  if (d.length >= 5) out += ') ' + d.slice(4, 7);
-  if (d.length >= 8) out += '-' + d.slice(7, 9);
-  if (d.length >= 10) out += '-' + d.slice(9, 11);
-  phone.value = out;
-});
-
-function chosen(group, many) {
-  var sel = '.lf-chips[data-' + (many ? 'many' : 'one') + '="' + group + '"] input:checked';
-  return Array.from(document.querySelectorAll(sel)).map(function (i) { return i.value; });
-}
-
-function ownText(id, list) {
-  var box = document.getElementById(id);
-  var i = list.indexOf('Свой вариант');
-  if (i > -1 && box && box.value.trim()) list[i] = 'Свой вариант: ' + box.value.trim();
-  return list;
-}
-
-function lfError(msg) {
-  var e = document.getElementById('lfErr');
-  e.textContent = msg;
-  e.classList.add('show');
-  setTimeout(function () { e.classList.remove('show'); }, 5000);
-}
-
-document.getElementById('lfSend').addEventListener('click', function () {
-  var btn = this;
-  var name = document.getElementById('lfName').value.trim();
-  var tel = document.getElementById('lfPhone').value.trim();
-  var mail = document.getElementById('lfEmail').value.trim();
-  var contact = document.getElementById('lfContact').value.trim();
-  var way = (chosen('way') || [])[0] || 'telegram';
-
-  if (!name) { lfError('Напишите, как к вам обращаться'); return; }
-  if (tel.replace(/\D/g, '').length < 11 && !mail && !contact) {
-    lfError('Оставьте телефон, почту или username — чтобы прислать материал');
-    return;
+ function маска(v){
+  var ц=v.replace(/\D/g,'');
+  if(!ц) return '';
+  var к=String(КОД);
+  if(ц.indexOf(к)===0) ц=ц.slice(к.length);                    // свой код уже введён
+  else if(СЕМЬ&&ц[0]==='8') ц=ц.slice(1);                      // 8 (999)… — привычный ввод
+  if(СЕМЬ){
+   ц=ц.slice(0,10);
+   var r='+7';
+   if(ц.length) r+=' ('+ц.slice(0,3);
+   if(ц.length>=4) r+=') '+ц.slice(3,6);
+   if(ц.length>=7) r+='-'+ц.slice(6,8);
+   if(ц.length>=9) r+='-'+ц.slice(8,10);
+   else if(ц.length>3&&ц.length<4) r+=')';
+   return r;
   }
-  if (!consentOK()) { flashConsent(); lfError('Отметьте согласие на обработку данных'); return; }
+  ц=ц.slice(0,13);
+  return ('+'+к+' '+ц.replace(/(\d{3})(?=\d)/g,'$1 ')).trim();
+ }
+ function цифры(v){return (v||'').replace(/\D/g,'');}
+ function норм(v){var ц=цифры(v); if(СЕМЬ&&ц.length===11&&ц[0]==='8') ц='7'+ц.slice(1); return '+'+ц;}
+ function телОк(v){var ц=цифры(v); return СЕМЬ?ц.length===11:(ц.length>=8&&ц.length<=15);}
 
-  var q = new URLSearchParams(location.search);
-  var body = {
-    magnet: MAGNET,
-    token: LF_TOKEN,
-    name: name,
-    phone: tel.replace(/\D/g, '').length >= 11 ? tel : '',
-    email: mail,
-    role: (chosen('role') || [])[0] || '',
-    team: (chosen('team') || [])[0] || '',
-    sphere: ownText('lfSphereOwn', chosen('sphere', true)).join('; '),
-    directions: ownText('lfDirectionsOwn', chosen('directions', true)).join('; '),
-    source: (chosen('source') || [])[0] || '',
-    tasks: document.getElementById('lfTasks').value.trim(),
-    contact_way: way,
-    contact: contact,
-    pd: true,
-    ads: !!(document.getElementById('cs2') || {}).checked,
-    channel: way === 'max_messenger' ? 'max' : 'tg',
-    referer: location.href,
-    utm_source: q.get('utm_source') || '',
-    utm_medium: q.get('utm_medium') || '',
-    utm_campaign: q.get('utm_campaign') || '',
-    utm_content: q.get('utm_content') || '',
-    yclid: q.get('yclid') || '',
-  };
+ var тел=document.getElementById('lfPhone');
+ тел.placeholder=СЕМЬ?'+7 (___) ___-__-__':'+'+КОД+' ___ ___ ___';
+ тел.addEventListener('input',function(){this.value=маска(this.value);});
+ тел.addEventListener('focus',function(){if(!this.value)this.value='+'+КОД+' ';});
 
-  // результат теста — чтобы менеджер видел, с каким стоп-фактором пришёл человек
-  if (window.__barrier) {
-    body.tasks = (body.tasks ? body.tasks + '\n\n' : '') +
-      'Стоп-фактор по тесту: ' + window.__barrier;
+ // ── шаги ───────────────────────────────────────────────────────────────────
+ var шаги=[].slice.call(f.querySelectorAll('.lf-step')), ВСЕГО=шаги.length, тек=0;
+ var бар=document.getElementById('lfBar'), счёт=document.getElementById('lfCnt');
+ function показать(i){
+  тек=Math.max(0,Math.min(i,ВСЕГО-1));
+  шаги.forEach(function(s,n){s.classList.toggle('on',n===тек);});
+  бар.style.width=Math.round((тек+1)/ВСЕГО*100)+'%';
+  счёт.textContent='Вопрос '+(тек+1)+' из '+ВСЕГО;
+  f.scrollIntoView({behavior:'smooth',block:'nearest'});
+ }
+ f.addEventListener('click',function(e){
+  if(e.target.closest('[data-back]')){e.preventDefault();показать(тек-1);}
+  if(e.target.closest('[data-next]')){e.preventDefault();показать(тек+1);}
+ });
+
+ // выбор варианта: подсветить, открыть «свой вариант», шагнуть дальше
+ var ОТВЕТЫ={};   // один выбор → строка, множественный → массив
+
+ function мульти(имя){
+  return [].map.call(f.querySelectorAll('input[name="'+имя+'"]:checked'),function(i){return i.value;});
+ }
+
+ f.addEventListener('change',function(e){
+  var i=e.target;
+  if(i.type!=='radio'&&i.type!=='checkbox') return;
+  var гр=i.closest('.lf-chips'); if(!гр) return;
+
+  if(i.type==='radio'){
+   гр.querySelectorAll('.lf-chip').forEach(function(c){c.classList.remove('on');});
+   i.closest('.lf-chip').classList.add('on');
+   ОТВЕТЫ[i.name]=i.value;
+  }else{
+   i.closest('.lf-chip').classList.toggle('on',i.checked);
+   ОТВЕТЫ[i.name]=мульти(i.name);
   }
 
-  btn.disabled = true;
-  btn.textContent = 'Отправляем…';
+  // «Свой вариант» → показать поле; для множественного смотрим, отмечен ли он сейчас
+  var своё=f.querySelector('.lf-own[data-own="'+i.name+'"]');
+  if(своё){
+   var надо=(i.type==='radio')?(i.value==='Свой вариант')
+                              :(мульти(i.name).indexOf('Свой вариант')>=0);
+   своё.classList.toggle('show',надо);
+   if(надо&&i.checked!==false) своё.querySelector('input').focus();
+  }
 
-  fetch(FORM_API, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body),
-  })
-    .then(function (r) { return r.json(); })
-    .then(function (d) {
-      if (!d.ok) throw new Error(d.error || 'ошибка');
-      try { if (window.ym) ym(39533920, 'reachGoal', 'lm_form_sent'); } catch (e) {}
-      recordConsent();
-      lfDone(d.go);
-    })
-    .catch(function () {
-      btn.disabled = false;
-      btn.textContent = 'Забрать разбор';
-      lfError('Не удалось отправить. Попробуйте ещё раз или напишите нам в бот');
-    });
-});
+  if(i.name==='way'){       // способ связи — не отдельный шаг, а поле внутри последнего
+   var w=document.getElementById('lfContactWrap'), l=document.getElementById('lfContactLbl'),
+       c=document.getElementById('lfContact');
+   w.style.display='';
+   if(i.value==='Telegram'){l.textContent='Ник в Telegram'; c.placeholder='@username'; c.oninput=null;}
+   else if(i.value==='Телефон'){w.style.display='none'; c.value='';}   // номер уже введён выше
+   else{l.textContent='Номер в '+i.value; c.placeholder=тел.placeholder;
+        c.oninput=function(){this.value=маска(this.value);};
+        if(!c.value&&тел.value) c.value=тел.value;}
+   return;
+  }
 
-// после отправки: материал ждёт в боте
-function lfDone(go) {
-  var f = document.getElementById('leadForm');
-  f.innerHTML =
-    '<div class="lf-title">Готово, ' + '✓' + '</div>' +
-    '<div class="lf-sub">Разбор вашего стоп-фактора ждёт в боте — заберите его там.</div>' +
-    '<a class="btn btn-accent lf-send" id="lfGo" href="' + (go || '#') + '">Забрать разбор в боте</a>' +
-    '<div class="cta-note">Если бот не открылся — напишите нам, пришлём вручную.</div>';
-  var b = document.getElementById('lfGo');
-  if (b) b.addEventListener('click', function () {
-    try { if (window.ym) ym(39533920, 'reachGoal', 'to_bot'); } catch (e) {}
+  // одиночный выбор шагает сам; множественный ждёт кнопки «Далее»
+  var шаг=i.closest('.lf-step');
+  if(i.type==='radio'&&шаг&&!шаг.querySelector('[data-next]'))
+   setTimeout(function(){показать(тек+1);},220);
+ });
+
+ // дописал свой вариант → Enter шагает дальше
+ f.querySelectorAll('.lf-own input').forEach(function(в){
+  в.addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();показать(тек+1);}});
+ });
+
+ // ── отправка ───────────────────────────────────────────────────────────────
+ var ош=document.getElementById('lfErr');
+ function беда(т){ош.textContent=т;ош.classList.add('show');}
+
+ document.getElementById('lfSend').addEventListener('click',function(e){
+  e.preventDefault();
+  ош.classList.remove('show');
+  var кн=this;
+  var имя=document.getElementById('lfName').value.trim();
+  var тлф=тел.value.trim();
+  var способ=ОТВЕТЫ.way||'';
+  var конт=document.getElementById('lfContact').value.trim();
+
+  if(!имя) return беда('Напишите, как вас зовут.');
+  if(!телОк(тлф)) return беда('Проверьте номер телефона.');
+  if(!способ) return беда('Выберите, как удобнее связаться.');
+  if(способ!=='Телефон'&&!конт) return беда('Оставьте контакт для связи в '+способ+'.');
+  if(!document.getElementById('lfCs1').checked) return беда('Без согласия на обработку данных мы не сможем прислать разбор.');
+
+  // множественный выбор → «А; Б; В». «Свой вариант» подменяем на то, что человек написал.
+  function собрать(имя,поле){
+   var сп=(ОТВЕТЫ[имя]||[]).slice();
+   var i=сп.indexOf('Свой вариант');
+   if(i>=0){var своё=(document.getElementById(поле).value||'').trim(); сп[i]=своё||'Свой вариант';}
+   return сп.join('; ');
+  }
+  var сфера=собрать('sphere','lfOwnSphere');
+  var напр =собрать('directions','lfOwnDir');
+  var задачи=document.getElementById('lfTasks').value.trim();
+  if(window.__barrier) задачи+=(задачи?'\n\n':'')+'Стоп-фактор по тесту: '+window.__barrier;
+
+  var токен=(function(){var a=new Uint8Array(7);crypto.getRandomValues(a);
+   return [].map.call(a,function(x){return ('0'+x.toString(16)).slice(-2);}).join('');})();
+
+  кн.disabled=true; кн.textContent='Отправляем…';
+  fetch('https://chat.delegator24.ru/form',{
+   method:'POST',headers:{'Content-Type':'application/json'},
+   body:JSON.stringify({
+    magnet:'pochemu-sam',token:токен,
+    name:имя,phone:норм(тлф),email:document.getElementById('lfEmail').value.trim(),
+    role:ОТВЕТЫ.role||'',team:ОТВЕТЫ.team||'',sphere:сфера,directions:напр,
+    source:ОТВЕТЫ.source||'',tasks:задачи,
+    contact_way:способ,contact:способ==='Телефон'?норм(тлф):конт,
+    pd:document.getElementById('lfCs1').checked?'yes':'no',
+    ads:document.getElementById('lfCs2').checked?'yes':'no',
+    doc:f.dataset.doc||'',referer:location.href
+   })
+  }).then(function(r){return r.json();}).then(function(o){
+   if(!o||!o.ok) throw new Error(o&&o.error||'сервер не принял заявку');
+   готово(o.go);
+  }).catch(function(err){
+   кн.disabled=false; кн.textContent='Получить разбор';
+   беда('Не удалось отправить: '+err.message+'. Напишите нам в бота — пришлём вручную.');
   });
-  f.scrollIntoView({ behavior: 'smooth', block: 'center' });
-}
+ });
 
+ function готово(ссылка){
+  f.querySelectorAll('.lf-step,.lf-bar,.lf-cnt').forEach(function(э){э.style.display='none';});
+  var d=document.getElementById('lfDone');
+  d.style.display='';
+  d.innerHTML='<div class="lf-q" style="margin-bottom:8px">Готово — разбор ждёт вас в боте</div>'+
+   '<div class="lf-hint" style="margin-bottom:18px">Нажмите кнопку: бот откроется и сразу пришлёт материал.</div>'+
+   '<a class="btn btn-accent" style="width:100%;justify-content:center" href="'+ссылка+'">Забрать разбор в боте</a>';
+ }
+})();
 </script>
 </body>
 </html>
