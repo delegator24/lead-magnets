@@ -678,8 +678,10 @@ if(Object.keys(ans).length>=Q.length)compute(true);
 })();
 </script>
 
-<!-- UIS виджет связи (звонок/мессенджеры) -->
-<script type="text/javascript" async src="https://app.uiscom.ru/static/cs.min.js?k=BkIwF_xi28YQGfhpr1ZcIecg_wn6lgxP"></script>
+<!-- UIS виджет связи (звонок/мессенджеры).
+     Ключ sk= — персональный для сайта start.delegator24.ru. Общий код аккаунта (k=)
+     тут не работает: поддомен заведён отдельным сайтом, и UIS отвечает «сайт не совпадает». -->
+<script type="text/javascript" async src="https://app.uiscom.ru/static/cs.min.js?sk=Gn710qh2xB6xbepS2kLbwHgbqI_xkaBw"></script>
 <script>
 // ── КВИЗ: шаги, телефонная маска по стране, отправка лида ────────────────────
 // Лид уходит в amoCRM сразу после отправки — не дожидаясь, дойдёт ли человек до бота.
