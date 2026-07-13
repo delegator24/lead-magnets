@@ -848,7 +848,9 @@ if(Object.keys(ans).length>=Q.length)compute(true);
   var задачи=document.getElementById('lfTasks').value.trim();
   if(window.__barrier) задачи+=(задачи?'\n\n':'')+'Стоп-фактор по тесту: '+window.__barrier;
 
-  var токен=(function(){var a=new Uint8Array(7);crypto.getRandomValues(a);
+  // Формат токена задан сервером: буква «d» + шестнадцатеричные знаки.
+  // Без ведущей «d» заявка отлетает с «bad token».
+  var токен='d'+(function(){var a=new Uint8Array(6);crypto.getRandomValues(a);
    return [].map.call(a,function(x){return ('0'+x.toString(16)).slice(-2);}).join('');})();
 
   кн.disabled=true; кн.textContent='Отправляем…';
