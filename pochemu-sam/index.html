@@ -210,6 +210,9 @@ footer{padding:38px 0 44px;color:var(--muted);font-size:13px;border-top:1px soli
 .lf-in:focus{outline:none;border-color:var(--accent);background:rgba(255,255,255,.09)}
 .lf-in::placeholder{color:#8a8d8f}
 textarea.lf-in{min-height:90px;resize:vertical}
+.lf-tel{display:flex;gap:8px}
+.lf-code{width:118px;flex:none;padding:13px 8px;cursor:pointer}
+.lf-code option{background:#101820;color:#fff}
 .lf-f{margin-bottom:13px}
 .lf-lbl{display:block;font-size:13.5px;font-weight:600;color:#dbe2ec;margin-bottom:6px}
 .lf-own{margin-top:9px;display:none}
@@ -382,16 +385,18 @@ textarea.lf-in{min-height:90px;resize:vertical}
   </div>
 
   <div class="lf-step" data-step="7">
-    <div class="lf-q">Куда прислать разбор</div>
-    <div class="lf-hint">Материал придёт в бота, а с вами свяжется живой человек.</div>
+    <div class="lf-q">Предпочтительный способ связи</div>
 
     <div class="lf-f">
-      <label class="lf-lbl" for="lfName">Как вас зовут</label>
+      <label class="lf-lbl" for="lfName">Имя</label>
       <input class="lf-in" id="lfName" placeholder="Ваше имя" autocomplete="name">
     </div>
     <div class="lf-f">
       <label class="lf-lbl" for="lfPhone">Телефон</label>
-      <input class="lf-in" id="lfPhone" type="tel" autocomplete="tel">
+      <div class="lf-tel">
+        <select class="lf-in lf-code" id="lfCode" aria-label="Код страны"></select>
+        <input class="lf-in" id="lfPhone" type="tel" autocomplete="tel">
+      </div>
     </div>
     <div class="lf-f">
       <label class="lf-lbl" for="lfEmail">Email</label>
@@ -657,51 +662,86 @@ if(Object.keys(ans).length>=Q.length)compute(true);
 (function(){
  var f=document.getElementById('leadForm'); if(!f) return;
 
- // Страну берём из часового пояса браузера: без сети (внешние запросы режет CSP)
- // и без разрешений. Точность достаточная — человек всегда может стереть код.
+ // ── телефон: страна определяется сама, но её можно сменить ─────────────────
+ // Страну берём из часового пояса браузера: он отражает, где человек сейчас,
+ // и не требует ни сети (внешние запросы режет CSP), ни разрешений.
+ var СТРАНЫ=[
+  {к:'RU',код:'7',  имя:'Россия',      цифр:10, м:'(###) ###-##-##'},
+  {к:'KZ',код:'7',  имя:'Казахстан',   цифр:10, м:'(###) ###-##-##'},
+  {к:'BY',код:'375',имя:'Беларусь',    цифр:9,  м:'(##) ###-##-##'},
+  {к:'UA',код:'380',имя:'Украина',     цифр:9,  м:'(##) ###-##-##'},
+  {к:'UZ',код:'998',имя:'Узбекистан',  цифр:9,  м:'(##) ###-##-##'},
+  {к:'KG',код:'996',имя:'Киргизия',    цифр:9,  м:'(###) ###-###'},
+  {к:'AM',код:'374',имя:'Армения',     цифр:8,  м:'(##) ###-###'},
+  {к:'GE',код:'995',имя:'Грузия',      цифр:9,  м:'(###) ###-###'},
+  {к:'AZ',код:'994',имя:'Азербайджан', цифр:9,  м:'(##) ###-##-##'},
+  {к:'MD',код:'373',имя:'Молдова',     цифр:8,  м:'(##) ###-###'},
+  {к:'TJ',код:'992',имя:'Таджикистан', цифр:9,  м:'(##) ###-####'},
+  {к:'TR',код:'90', имя:'Турция',      цифр:10, м:'(###) ###-##-##'},
+  {к:'AE',код:'971',имя:'ОАЭ',         цифр:9,  м:'(##) ###-####'},
+  {к:'IL',код:'972',имя:'Израиль',     цифр:9,  м:'(##) ###-####'},
+  {к:'CY',код:'357',имя:'Кипр',        цифр:8,  м:'#### ####'},
+  {к:'TH',код:'66', имя:'Таиланд',     цифр:9,  м:'## ###-####'},
+  {к:'DE',код:'49', имя:'Германия',    цифр:11, м:'### #######'},
+  {к:'GB',код:'44', имя:'Великобритания',цифр:10,м:'#### ######'},
+  {к:'US',код:'1',  имя:'США / Канада',цифр:10, м:'(###) ###-####'},
+  {к:'XX',код:'',   имя:'Другая страна',цифр:0, м:''}
+ ];
  var ЗОНЫ={
-  'Europe/Moscow':7,'Europe/Kaliningrad':7,'Europe/Samara':7,'Europe/Volgograd':7,'Europe/Saratov':7,
-  'Asia/Yekaterinburg':7,'Asia/Omsk':7,'Asia/Novosibirsk':7,'Asia/Krasnoyarsk':7,'Asia/Irkutsk':7,
-  'Asia/Yakutsk':7,'Asia/Vladivostok':7,'Asia/Magadan':7,'Asia/Kamchatka':7,
-  'Asia/Almaty':7,'Asia/Aqtobe':7,'Asia/Atyrau':7,           // Казахстан — тоже +7
-  'Europe/Minsk':375,'Europe/Kyiv':380,'Europe/Kiev':380,'Europe/Chisinau':373,
-  'Asia/Tashkent':998,'Asia/Bishkek':996,'Asia/Dushanbe':992,'Asia/Ashgabat':993,
-  'Asia/Yerevan':374,'Asia/Tbilisi':995,'Asia/Baku':994,
-  'Asia/Dubai':971,'Asia/Jerusalem':972,'Asia/Bangkok':66,'Asia/Nicosia':357,'Europe/Nicosia':357,
-  'Europe/Istanbul':90,'Europe/Belgrade':381,'Europe/Riga':371,'Europe/Vilnius':370,'Europe/Tallinn':372,
-  'Europe/Berlin':49,'Europe/London':44,'Europe/Lisbon':351,'Europe/Madrid':34,'Europe/Warsaw':48
+  'Europe/Moscow':'RU','Europe/Kaliningrad':'RU','Europe/Samara':'RU','Europe/Volgograd':'RU',
+  'Europe/Saratov':'RU','Europe/Astrakhan':'RU','Europe/Ulyanovsk':'RU','Europe/Kirov':'RU',
+  'Asia/Yekaterinburg':'RU','Asia/Omsk':'RU','Asia/Novosibirsk':'RU','Asia/Krasnoyarsk':'RU',
+  'Asia/Irkutsk':'RU','Asia/Yakutsk':'RU','Asia/Vladivostok':'RU','Asia/Magadan':'RU',
+  'Asia/Kamchatka':'RU','Asia/Sakhalin':'RU','Asia/Novokuznetsk':'RU','Asia/Barnaul':'RU',
+  'Asia/Almaty':'KZ','Asia/Aqtobe':'KZ','Asia/Atyrau':'KZ','Asia/Oral':'KZ','Asia/Qostanay':'KZ',
+  'Europe/Minsk':'BY','Europe/Kyiv':'UA','Europe/Kiev':'UA','Europe/Chisinau':'MD',
+  'Asia/Tashkent':'UZ','Asia/Bishkek':'KG','Asia/Dushanbe':'TJ',
+  'Asia/Yerevan':'AM','Asia/Tbilisi':'GE','Asia/Baku':'AZ',
+  'Europe/Istanbul':'TR','Asia/Istanbul':'TR','Asia/Dubai':'AE','Asia/Jerusalem':'IL',
+  'Asia/Nicosia':'CY','Europe/Nicosia':'CY','Asia/Bangkok':'TH',
+  'Europe/Berlin':'DE','Europe/London':'GB','America/New_York':'US','America/Chicago':'US',
+  'America/Denver':'US','America/Los_Angeles':'US','America/Toronto':'US'
  };
  var зона=''; try{зона=Intl.DateTimeFormat().resolvedOptions().timeZone||'';}catch(e){}
- var КОД=ЗОНЫ[зона]||(зона.indexOf('America/')===0?1:7);
- var СЕМЬ=(КОД===7);   // у +7 знакомая маска (999) 999-99-99, у остальных — просто цифры
+ var начК=ЗОНЫ[зона]||(зона.indexOf('America/')===0?'US':'RU');
 
+ var селект=document.getElementById('lfCode'), тел=document.getElementById('lfPhone');
+ СТРАНЫ.forEach(function(с){
+  var o=document.createElement('option');
+  o.value=с.к; o.textContent=(с.код?'+'+с.код:'+…')+'  '+с.к;
+  o.title=с.имя;
+  селект.appendChild(o);
+ });
+ селект.value=начК;
+ var СТР=СТРАНЫ.filter(function(с){return с.к===начК;})[0];
+
+ // Маска строится из шаблона страны: # — место под цифру.
  function маска(v){
-  var ц=v.replace(/\D/g,'');
-  if(!ц) return '';
-  var к=String(КОД);
-  if(ц.indexOf(к)===0) ц=ц.slice(к.length);                    // свой код уже введён
-  else if(СЕМЬ&&ц[0]==='8') ц=ц.slice(1);                      // 8 (999)… — привычный ввод
-  if(СЕМЬ){
-   ц=ц.slice(0,10);
-   var r='+7';
-   if(ц.length) r+=' ('+ц.slice(0,3);
-   if(ц.length>=4) r+=') '+ц.slice(3,6);
-   if(ц.length>=7) r+='-'+ц.slice(6,8);
-   if(ц.length>=9) r+='-'+ц.slice(8,10);
-   else if(ц.length>3&&ц.length<4) r+=')';
-   return r;
+  var ц=(v||'').replace(/\D/g,'');
+  if(!СТР.м) return ц?'+'+СТР.код+ц.slice(0,15):'';     // «другая страна» — просто цифры
+  if(СТР.код==='7'&&ц[0]==='8') ц=ц.slice(1);           // привычное «8 (999)…»
+  ц=ц.slice(0,СТР.цифр);
+  var r='', i=0;
+  for(var j=0;j<СТР.м.length&&i<ц.length;j++){
+   var s=СТР.м[j];
+   if(s==='#'){r+=ц[i++];}else{r+=s;}
   }
-  ц=ц.slice(0,13);
-  return ('+'+к+' '+ц.replace(/(\d{3})(?=\d)/g,'$1 ')).trim();
+  return r;
  }
  function цифры(v){return (v||'').replace(/\D/g,'');}
- function норм(v){var ц=цифры(v); if(СЕМЬ&&ц.length===11&&ц[0]==='8') ц='7'+ц.slice(1); return '+'+ц;}
- function телОк(v){var ц=цифры(v); return СЕМЬ?ц.length===11:(ц.length>=8&&ц.length<=15);}
+ function норм(v){return '+'+СТР.код+цифры(v).slice(0,СТР.цифр||15);}
+ function телОк(v){var n=цифры(v).length; return СТР.цифр?n===СТР.цифр:(n>=6&&n<=15);}
 
- var тел=document.getElementById('lfPhone');
- тел.placeholder=СЕМЬ?'+7 (___) ___-__-__':'+'+КОД+' ___ ___ ___';
+ function одеть(){
+  тел.placeholder=СТР.м?СТР.м.replace(/#/g,'_'):'номер телефона';
+  тел.value=маска(тел.value);
+ }
+ селект.addEventListener('change',function(){
+  СТР=СТРАНЫ.filter(function(с){return с.к===селект.value;})[0];
+  одеть();
+ });
  тел.addEventListener('input',function(){this.value=маска(this.value);});
- тел.addEventListener('focus',function(){if(!this.value)this.value='+'+КОД+' ';});
+ одеть();
 
  // ── шаги ───────────────────────────────────────────────────────────────────
  var шаги=[].slice.call(f.querySelectorAll('.lf-step')), ВСЕГО=шаги.length, тек=0;
@@ -753,11 +793,16 @@ if(Object.keys(ans).length>=Q.length)compute(true);
    var w=document.getElementById('lfContactWrap'), l=document.getElementById('lfContactLbl'),
        c=document.getElementById('lfContact');
    w.style.display='';
-   if(i.value==='Telegram'){l.textContent='Ник в Telegram'; c.placeholder='@username'; c.oninput=null;}
-   else if(i.value==='Телефон'){w.style.display='none'; c.value='';}   // номер уже введён выше
-   else{l.textContent='Номер в '+i.value; c.placeholder=тел.placeholder;
-        c.oninput=function(){this.value=маска(this.value);};
-        if(!c.value&&тел.value) c.value=тел.value;}
+   c.value='';               // чистим: иначе в поле ника остаётся номер от прошлого выбора
+   if(i.value==='Telegram'){
+    l.textContent='Ник в Telegram'; c.placeholder='@username'; c.oninput=null;
+   }else if(i.value==='Телефон'){
+    w.style.display='none';  // номер уже введён выше, второй раз не спрашиваем
+   }else{                    // WhatsApp / Max — там номер телефона
+    l.textContent='Номер в '+i.value; c.placeholder=тел.placeholder;
+    c.oninput=function(){this.value=маска(this.value);};
+    c.value=тел.value;       // тот же номер по умолчанию, можно исправить
+   }
    return;
   }
 
