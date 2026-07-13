@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://mc.yandex.ru https://yastatic.net https://app.uiscom.ru https://*.uiscom.ru https://*.comagic.ru; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; img-src 'self' data: https:; connect-src 'self' https://chat.delegator24.ru https://mc.yandex.ru https://mc.yandex.com https://app.uiscom.ru https://*.uiscom.ru https://*.comagic.ru; frame-src 'self' https://*.uiscom.ru https://mc.yandex.ru; base-uri 'self'; form-action 'self' https://*.uiscom.ru">
+<script>if(window.top!==window.self){try{window.top.location=window.self.location;}catch(e){document.documentElement.style.display='none';}}</script>
+<title>Почему вы все еще делаете это сами — тест-диагностика | Delegator24</title>
+<meta name="description" content="За минуту найдите ваш главный стоп-фактор в делегировании и узнайте, как передать задачи безопасно.">
+<meta property="og:title" content="Почему вы все еще делаете это сами">
+<meta property="og:description" content="Тест-диагностика: ваш стоп-фактор в делегировании и первый шаг.">
+<meta property="og:type" content="website">
+<link rel="icon" type="image/png" href="favicon-d24.png">
+<link rel="apple-touch-icon" href="favicon-d24.png">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};m[i].l=1*new Date();
+for(var j=0;j<document.scripts.length;j++){if(document.scripts[j].src===r){return;}}
+k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+(window,document,"script","https://mc.yandex.ru/metrika/tag.js","ym");
+ym(39533920,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true});
+</script>
+<noscript><div><img src="https://mc.yandex.ru/watch/39533920" style="position:absolute;left:-9999px;" alt=""></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<style>
+:root{
+ --paper:#f7faff;--card:#ffffff;--card2:#f1f6fd;
+ --ink:#101820;--ink2:#3a4250;--muted:#8a8d8f;--faint:#b4bcc7;
+ --line:#e6ecf4;--line2:#d6deea;
+ --accent:#307fe2;--accent-d:#2568c2;--accent-soft:#e3eefb;
+ --green:#a4d65e;--green-d:#8cc23f;
+ --mono:'JetBrains Mono',ui-monospace,monospace;--disp:'Golos Text',system-ui,sans-serif;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{position:relative;font-family:var(--disp);background:var(--paper);color:var(--ink2);line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.bg{position:fixed;inset:0;z-index:-2;overflow:hidden;background:linear-gradient(180deg,#ffffff,#eaf2fd)}
+.bg::before,.bg::after,.bg span{content:"";position:absolute;border-radius:50%;filter:blur(58px);will-change:transform}
+.bg::before{width:46vw;height:46vw;left:-6vw;top:-6vw;background:radial-gradient(circle,rgba(48,127,226,.46),transparent 62%);animation:drift1 19s ease-in-out infinite}
+.bg::after{width:40vw;height:40vw;right:-6vw;top:6vh;background:radial-gradient(circle,rgba(164,214,94,.44),transparent 62%);animation:drift2 23s ease-in-out infinite}
+.bg span{position:absolute;content:"";width:40vw;height:40vw;left:28vw;bottom:-12vw;border-radius:50%;filter:blur(58px);background:radial-gradient(circle,rgba(48,127,226,.36),transparent 62%);animation:drift3 21s ease-in-out infinite}
+@keyframes drift1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(24vw,16vh) scale(1.18)}}
+@keyframes drift2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-22vw,20vh) scale(1.14)}}
+@keyframes drift3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(18vw,-18vh) scale(1.22)}}
+@media (prefers-reduced-motion:reduce){.bg::before,.bg::after,.bg span{animation:none}}
+.bg-ico{position:fixed;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.bg-ico .fi{position:absolute;display:block;color:var(--accent);opacity:.065;animation-name: float;animation-timing-function:ease-in-out;animation-iteration-count:infinite;will-change:transform}
+.bg-ico .fi svg{width:100%;height:100%;display:block;stroke:currentColor;fill:none;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+@keyframes float{0%,100%{transform:translateY(0) rotate(calc(var(--rot,8deg)*-.4))}50%{transform:translateY(-17px) rotate(var(--rot,8deg))}}
+@media (prefers-reduced-motion:reduce){.bg-ico .fi{animation:none}}
+.rv{opacity:0;transform:translateY(20px);transition:opacity .55s cubic-bezier(.2,.8,.2,1),transform .55s cubic-bezier(.2,.8,.2,1)}
+.rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+.wrap{max-width:920px;margin:0 auto;padding:0 22px}
+a{color:var(--accent);text-decoration:none}
+
+.top{background:rgba(255,255,255,.82);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:40}
+.top .wrap{display:flex;align-items:center;justify-content:space-between;height:66px}
+.brand{display:inline-flex;align-items:center;text-decoration:none}
+.brand img{height:27px;width:auto;display:block}
+.brand:hover{opacity:.82}
+.top-link{font-size:14px;font-weight:600;color:var(--ink2)}.top-link:hover{color:var(--ink)}
+.online{display:inline-flex;align-items:center;gap:9px;font-size:13.5px;font-weight:600;color:var(--ink2)}
+.online .dot{width:9px;height:9px;border-radius:50%;background:var(--green);box-shadow:0 0 0 0 rgba(164,214,94,.55);animation:pulse 1.9s ease-out infinite}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(164,214,94,.55)}70%{box-shadow:0 0 0 9px rgba(164,214,94,0)}100%{box-shadow:0 0 0 0 rgba(164,214,94,0)}}
+
+.btn{display:inline-flex;align-items:center;gap:9px;font-family:var(--disp);font-weight:600;font-size:15.5px;border:none;border-radius:10px;cursor:pointer;padding:14px 28px;transition:transform .12s,background .15s;text-align:center}
+.btn-ink{background:var(--ink);color:var(--paper)}.btn-ink:hover{background:#000;transform:translateY(-1px)}
+.btn-accent{background:var(--accent);color:#fff}.btn-accent:hover{background:var(--accent-d);transform:translateY(-1px)}
+.btn-ghost{background:var(--card);color:var(--ink);border:1px solid var(--line2)}.btn-ghost:hover{background:var(--card2)}
+
+.hero{padding:52px 0 26px}
+.kick{display:inline-block;font-family:var(--mono);font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);padding-bottom:14px;border-bottom:1px solid var(--line2);margin-bottom:22px}
+.hero h1{font-size:clamp(34px,5.4vw,58px);font-weight:800;line-height:1.02;letter-spacing:-.035em;color:var(--ink);margin-bottom:18px;max-width:15ch}
+.hero .sub{font-size:clamp(16px,1.8vw,19px);color:var(--ink2);max-width:600px;margin-bottom:26px}
+.hero .sub b{color:var(--ink);font-weight:700}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:46px;align-items:center}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr;gap:28px}.hero-left h1{font-size:clamp(32px,7vw,52px)}}
+.hero-left h1{max-width:none;text-wrap:balance;font-size:clamp(30px,3.6vw,46px)}
+.hero-left .sub{text-wrap:pretty}
+
+/* дилемма запятой: «Оставить нельзя делегировать» — запятая мечется */
+.tetr{background:var(--card);border:1px solid var(--line2);border-radius:18px;padding:36px 30px;text-align:center;
+ box-shadow:0 1px 0 var(--line),0 30px 55px -30px rgba(16,24,32,.45);animation:tetrFloat 7s ease-in-out infinite}
+@keyframes tetrFloat{0%,100%{transform:translateY(0) rotate(-.5deg)}50%{transform:translateY(-11px) rotate(.6deg)}}
+.tetr-kick{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:24px}
+.tetr-phrase{font-size:clamp(26px,3.4vw,38px);font-weight:800;letter-spacing:-.02em;color:var(--ink);line-height:1.28}
+.tetr-phrase .cm{color:var(--accent);font-weight:800}
+.cm1{animation:cmA 4.4s ease-in-out infinite}
+.cm2{opacity:0;animation:cmB 4.4s ease-in-out infinite}
+@keyframes cmA{0%,40%{opacity:1}48%,92%{opacity:0}100%{opacity:1}}
+@keyframes cmB{0%,40%{opacity:0}48%,92%{opacity:1}100%{opacity:0}}
+.tetr-caps{position:relative;height:22px;margin-top:18px}
+.tetr-caps .cap{position:absolute;left:0;right:0;font-family:var(--mono);font-size:13px;font-weight:700;text-transform:uppercase;letter-spacing:.05em}
+.cap1{color:var(--keep);animation:cmA 4.4s ease-in-out infinite}
+.cap2{color:var(--go);opacity:0;animation:cmB 4.4s ease-in-out infinite}
+.tetr-foot{margin-top:20px;padding-top:18px;border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+.tetr-foot b{color:var(--ink);font-weight:700}
+@media (prefers-reduced-motion:reduce){.cm1,.cm2,.cap1,.cap2,.tetr{animation:none}}
+
+.test{margin-top:14px}
+.test-h{display:flex;align-items:baseline;justify-content:space-between;gap:12px;border-bottom:2px solid var(--ink);padding-bottom:14px;margin-bottom:10px;flex-wrap:wrap}
+.test-h h2{font-size:clamp(20px,2.4vw,26px);font-weight:800;letter-spacing:-.03em;color:var(--ink)}
+.test-h .prog{font-family:var(--mono);font-size:13px;color:var(--muted)}
+.test-h .prog b{color:var(--accent)}
+.q{padding:15px 12px;border-bottom:1px solid var(--line);border-radius:10px;display:flex;align-items:center;gap:16px;flex-wrap:wrap;transition:background .16s}
+.q:hover{background:var(--accent-soft)}
+.q-t{flex:1 1 300px;display:flex;align-items:flex-start;gap:9px;font-size:15.5px;color:var(--ink);font-weight:500}
+.q-t i{flex:0 0 auto;font-family:var(--mono);font-style:normal;color:var(--faint);font-size:13px;line-height:1.5;transition:color .16s}
+.q:hover .q-t i{color:var(--accent)}
+.scale{display:inline-flex;background:var(--card);border:1px solid var(--line2);border-radius:9px;overflow:hidden;flex:0 0 auto}
+.scale button{font-family:var(--disp);font-size:13px;font-weight:600;padding:9px 15px;border:none;background:none;color:var(--muted);cursor:pointer;transition:.14s;border-right:1px solid var(--line2)}
+.scale button:last-child{border-right:none}
+.scale button:hover:not(.on){background:var(--accent-soft);color:var(--accent)}
+.scale button.on{background:var(--ink);color:#fff}
+.test-foot{margin-top:24px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.test-foot .hint{font-family:var(--mono);font-size:12px;color:var(--muted)}
+
+.result{display:none;margin-top:46px}
+.result.show{display:block;animation:rise .5s ease}
+@keyframes rise{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.r-lead{font-family:var(--mono);font-size:11.5px;text-transform:uppercase;letter-spacing:.12em;color:var(--muted);margin-bottom:10px}
+.r-title{font-size:clamp(26px,3.6vw,42px);font-weight:800;letter-spacing:-.035em;color:var(--ink);line-height:1.04;margin-bottom:8px}
+.r-recog{font-size:16px;color:var(--ink2);max-width:640px;margin-bottom:28px}
+.r-blocks{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
+@media(max-width:680px){.r-blocks{grid-template-columns:1fr}}
+@media(max-width:600px){
+ .hero{padding:34px 0 20px}
+ .cta{padding:32px 22px;border-radius:20px}
+ .cta::after{left:32px}
+ .online{font-size:12.5px;gap:7px}
+ .q{gap:10px}
+ .scale button{padding:9px 13px}
+ .consent{padding:14px 15px}
+ .r-title{font-size:clamp(24px,8vw,34px)}
+}
+@media(max-width:380px){
+ .scale button{padding:8px 11px;font-size:12.5px}
+ .brand img{height:24px}
+}
+.r-b{background:var(--card);border:1px solid var(--line2);border-radius:12px;padding:20px;transition:transform .16s,box-shadow .16s,border-color .16s}
+.r-b:hover{transform:translateY(-2px);border-color:#c3d6f0;box-shadow:0 12px 26px -16px rgba(16,24,32,.32)}
+.r-b .h{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:9px}
+.r-b p{font-size:14.5px;color:var(--ink2);line-height:1.5}
+.r-step{background:var(--card);border:1px solid var(--line2);border-left:3px solid var(--accent);border-radius:12px;padding:20px;margin-bottom:20px;transition:transform .16s,box-shadow .16s}
+.r-step:hover{transform:translateY(-2px);box-shadow:0 12px 26px -16px rgba(48,127,226,.34)}
+.r-step .h{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--accent);margin-bottom:9px}
+.r-step p{font-size:16px;color:var(--ink);font-weight:500;line-height:1.5}
+.r-sec{font-size:13.5px;color:var(--muted);margin-bottom:28px}
+.r-retake{font-size:13.5px;color:var(--muted);cursor:pointer;margin-left:auto}
+.r-retake:hover{color:var(--ink)}
+
+.cta{position:relative;background:var(--ink);color:#fff;border-radius:24px;padding:40px 30px;text-align:center}
+.cta::after{content:"";position:absolute;left:48px;bottom:-14px;width:0;height:0;border-left:15px solid transparent;border-right:15px solid transparent;border-top:16px solid var(--ink)}
+.cta h2{font-size:clamp(23px,3.2vw,32px);font-weight:800;letter-spacing:-.03em;color:#fff;margin-bottom:12px;line-height:1.05}
+.cta p{color:#aab2be;max-width:520px;margin:0 auto 24px;font-size:15.5px}
+.cta .btn-accent{font-size:16px;padding:16px 32px}
+.cta-note{margin-top:15px;font-size:12.5px;color:#8a8d8f}
+
+footer{padding:38px 0 44px;color:var(--muted);font-size:13px;border-top:1px solid var(--line);margin-top:44px;text-align:center}
+.foot-logo{display:inline-block;margin-bottom:14px}
+.foot-logo img{height:24px;width:auto;display:block;margin:0 auto;transition:opacity .15s}
+.foot-logo:hover img{opacity:.82}
+.foot-legal{margin-bottom:12px}
+.foot-legal a{color:var(--ink2);font-size:13px;font-weight:600;text-decoration:none;transition:color .15s}
+.foot-legal a:hover{color:var(--accent)}
+.foot-copy{font-size:12px;color:var(--faint)}
+.msgbox{background:var(--card);border:1px dashed var(--line2);border-radius:12px;padding:14px 16px;margin-bottom:20px;cursor:pointer;transition:.14s}
+.msgbox:hover{border-color:var(--accent);background:#fff}
+.mb-h{font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:8px}
+.mb-t{font-size:14.5px;color:var(--ink);line-height:1.5;white-space:pre-line}
+.cta .msgbox{background:rgba(255,255,255,.06);border:1px dashed rgba(255,255,255,.22);max-width:520px;margin:0 auto 18px;text-align:left}
+.cta .msgbox:hover{border-color:#9ec3f2;background:rgba(255,255,255,.09)}
+.cta .mb-h{color:#8a8d8f}
+.cta .mb-t{color:#dbe2ec}
+.cta #ctaActions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+.consent{max-width:540px;margin:0 auto 18px;text-align:left;display:flex;flex-direction:column;gap:11px;padding:15px 17px;background:var(--card);border:1px solid var(--line2);border-radius:12px}
+.consent.shake{animation:csShake .4s;border-color:var(--accent)}
+@keyframes csShake{0%,100%{transform:translateX(0)}20%,60%{transform:translateX(-5px)}40%,80%{transform:translateX(5px)}}
+.cs-row{display:flex;gap:10px;align-items:flex-start;font-size:12.5px;line-height:1.45;color:var(--ink2);cursor:pointer}
+.cs-row input{margin-top:1px;width:17px;height:17px;flex:0 0 auto;accent-color:var(--accent);cursor:pointer}
+.cs-row a{color:var(--accent);text-decoration:none}
+.cs-row a:hover{text-decoration:underline}
+.toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:12px 22px;border-radius:9px;font-size:14px;font-weight:500;z-index:70;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.show{opacity:1}
+</style>
+</head>
+<body>
+<div class="bg" aria-hidden="true"><span></span></div>
+<div class="bg-ico" aria-hidden="true"></div>
+
+<div class="top"><div class="wrap">
+  <a class="brand" href="https://delegator24.ru" target="_blank" rel="noopener" aria-label="На сайт Delegator24"><img src="logo-d24.png" alt="Delegator24" height="27"></a>
+  <div class="online"><span class="dot"></span>Онлайн, на связи</div>
+</div></div>
+
+<div class="wrap">
+  <section class="hero"><div class="hero-grid">
+    <div class="hero-left">
+      <span class="kick">Тест-диагностика · 1 минута</span>
+      <h1>Почему вы все еще делаете это сами?</h1>
+      <p class="sub">Что делегировать, вы и так знаете. Настоящий вопрос — <b>почему до сих пор не передали</b>. За минуту найдем ваш главный стоп-фактор и что с ним делать.</p>
+      <a class="btn btn-ink" href="#test">Пройти тест</a>
+    </div>
+    <div class="hero-right">
+      <div class="tetr" aria-hidden="true">
+        <div class="tetr-kick">Вы двигаете ее каждый день</div>
+        <div class="tetr-phrase">Оставить<span class="cm cm1">,</span> нельзя<span class="cm cm2">,</span> делегировать</div>
+        <div class="tetr-caps">
+          <span class="cap cap1">= делаю сам</span>
+          <span class="cap cap2">= передаю команде</span>
+        </div>
+        <div class="tetr-foot">Тест поможет <b>поставить запятую</b> — за 1 минуту</div>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="test" id="test">
+    <div class="test-h rv">
+      <h2>Насколько это про вас?</h2>
+      <div class="prog"><b id="pn">0</b> / <span id="pt">10</span></div>
+    </div>
+    <div id="qlist"></div>
+    <div class="test-foot">
+      <button class="btn btn-accent" id="resBtn" onclick="compute()" disabled style="opacity:.5">Показать результат</button>
+      <span class="hint" id="hint">Ответьте на все утверждения</span>
+    </div>
+  </section>
+
+  <section class="result" id="result">
+    <div class="r-lead">Ваш главный стоп-фактор</div>
+    <div style="display:flex;align-items:baseline;flex-wrap:wrap;gap:12px"><div class="r-title" id="rTitle"></div><span class="r-retake" onclick="retake()">пройти заново</span></div>
+    <div class="r-recog" id="rRecog"></div>
+    <div class="r-blocks">
+      <div class="r-b"><div class="h">В чем ловушка</div><p id="rReframe"></p></div>
+      <div class="r-b"><div class="h">Как D24 это снимает</div><p id="rD24"></p></div>
+    </div>
+    <div class="r-step"><div class="h">Ваш первый шаг</div><p id="rStep"></p></div>
+    <div class="r-sec" id="rSec"></div>
+
+    <div class="cta">
+      <h2 id="ctaH">Сделаем этот шаг вместе</h2>
+      <p id="ctaP">На разборе поможем сделать первый шаг под ваш случай.</p>
+      <div class="msgbox" id="msgBox" style="display:none" onclick="copyMsg()">
+        <div class="mb-h">Готовое сообщение · нажмите, чтобы скопировать</div>
+        <div class="mb-t" id="mbText"></div>
+      </div>
+      <div class="consent" id="consentBox" style="display:none">
+        <label class="cs-row"><input type="checkbox" id="cs1" checked><span>Я предоставляю Сервису <a href="https://delegator24.ru/consent-to-the-processing-of-personaldata" target="_blank" rel="noopener">согласие</a> на обработку моих персональных данных, <a href="https://delegator24.ru/consent-to-the-transfer-of-personal-data" target="_blank" rel="noopener">согласие</a> на передачу моих персональных данных третьим лицам, я ознакомлен с <a href="https://delegator24.ru/privacy-policy" target="_blank" rel="noopener">Политикой обработки персональных данных</a>.</span></label>
+        <label class="cs-row"><input type="checkbox" id="cs2" checked><span>Я предоставляю Сервису <a href="https://delegator24.ru/consent-to-receive-marketing-information" target="_blank" rel="noopener">согласие</a> на получение рассылок.</span></label>
+      </div>
+      <div id="ctaActions"></div>
+      <div class="cta-note" id="ctaNote">Бесплатно, без обязательств.</div>
+<!-- ФОРМА: собирает те же поля, что и Тильда. Лид уходит в amoCRM сразу,
+     даже если человек не дойдёт до бота. -->
+<style>
+  .lf { margin-top: 22px; }
+  .lf-title { font-size: 19px; font-weight: 700; margin-bottom: 4px; }
+  .lf-sub { color: var(--muted); font-size: 14px; margin-bottom: 18px; }
+  .lf-grp { margin-bottom: 18px; }
+  .lf-lbl { font-size: 14px; font-weight: 600; margin-bottom: 8px; display: block; }
+  .lf-req::after { content: " *"; color: var(--accent); }
+  .lf-in {
+    width: 100%; padding: 12px 14px; border: 1px solid var(--line); border-radius: 10px;
+    font: inherit; font-size: 15px; background: var(--card); color: var(--ink);
+    transition: border-color .15s;
+  }
+  .lf-in:focus { outline: none; border-color: var(--accent); }
+  .lf-in::placeholder { color: var(--faint); }
+  textarea.lf-in { min-height: 84px; resize: vertical; }
+  .lf-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+  .lf-chip {
+    display: inline-flex; align-items: center; padding: 9px 14px; border-radius: 999px;
+    border: 1px solid var(--line); background: var(--card); cursor: pointer;
+    font-size: 14px; user-select: none; transition: all .15s;
+  }
+  .lf-chip:hover { border-color: var(--accent); }
+  .lf-chip input { display: none; }
+  .lf-chip.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .lf-own { margin-top: 8px; display: none; }
+  .lf-own.show { display: block; }
+  .lf-err { color: #e03131; font-size: 13px; margin-top: 6px; display: none; }
+  .lf-err.show { display: block; }
+  .lf-send { width: 100%; justify-content: center; margin-top: 6px; }
+  .lf-send[disabled] { opacity: .55; pointer-events: none; }
+  @media (max-width: 640px) { .lf-chip { padding: 8px 12px; font-size: 13px; } }
+</style>
+
+<div class="lf" id="leadForm" style="display:none">
+  <div class="lf-title">Заберите разбор вашего стоп-фактора</div>
+  <div class="lf-sub">Материал придёт в боте. Пара вопросов — чтобы прислать то, что подходит именно вам.</div>
+
+  <div class="lf-grp">
+    <label class="lf-lbl lf-req" for="lfName">Как вас зовут</label>
+    <input class="lf-in" id="lfName" placeholder="Ваше имя" autocomplete="name">
+  </div>
+
+  <div class="lf-grp">
+    <label class="lf-lbl lf-req" for="lfPhone">Телефон</label>
+    <input class="lf-in" id="lfPhone" type="tel" placeholder="+7 (___) ___-__-__" autocomplete="tel">
+  </div>
+
+  <div class="lf-grp">
+    <label class="lf-lbl" for="lfEmail">Email</label>
+    <input class="lf-in" id="lfEmail" type="email" placeholder="you@company.ru" autocomplete="email">
+  </div>
+
+  <div class="lf-grp">
+    <span class="lf-lbl">Ваша роль в компании</span>
+    <div class="lf-chips" data-one="role">
+      <label class="lf-chip"><input type="radio" name="role" value="Владелец/Совладелец">Владелец/Совладелец</label>
+      <label class="lf-chip"><input type="radio" name="role" value="Генеральный директор">Генеральный директор</label>
+      <label class="lf-chip"><input type="radio" name="role" value="Топ-менеджер/Руководитель направления">Топ-менеджер</label>
+      <label class="lf-chip"><input type="radio" name="role" value="Другой сотрудник">Другой сотрудник</label>
+    </div>
+  </div>
+
+  <div class="lf-grp">
+    <span class="lf-lbl">Размер команды</span>
+    <div class="lf-chips" data-one="team">
+      <label class="lf-chip"><input type="radio" name="team" value="Нет команды">Нет команды</label>
+      <label class="lf-chip"><input type="radio" name="team" value="до 5 человек">до 5</label>
+      <label class="lf-chip"><input type="radio" name="team" value="до 10 человек">до 10</label>
+      <label class="lf-chip"><input type="radio" name="team" value="более 20 человек">более 20</label>
+    </div>
+  </div>
+
+  <div class="lf-grp">
+    <span class="lf-lbl">Сфера деятельности</span>
+    <div class="lf-chips" data-many="sphere">
+      <label class="lf-chip"><input type="checkbox" value="Производство">Производство</label>
+      <label class="lf-chip"><input type="checkbox" value="Строительство/инжиниринг">Строительство</label>
+      <label class="lf-chip"><input type="checkbox" value="IT">IT</label>
+      <label class="lf-chip"><input type="checkbox" value="Консалтинг/инфобиз">Консалтинг/инфобиз</label>
+      <label class="lf-chip"><input type="checkbox" value="Маркетинг/реклама">Маркетинг/реклама</label>
+      <label class="lf-chip"><input type="checkbox" value="Розничная торговля/МП">Торговля</label>
+      <label class="lf-chip"><input type="checkbox" value="Другое">Другое</label>
+      <label class="lf-chip" data-own="sphere"><input type="checkbox" value="Свой вариант">Свой вариант</label>
+    </div>
+    <input class="lf-in lf-own" id="lfSphereOwn" placeholder="Ваша сфера">
+  </div>
+
+  <div class="lf-grp">
+    <span class="lf-lbl">Какая помощь нужна</span>
+    <div class="lf-chips" data-many="directions">
+      <label class="lf-chip"><input type="checkbox" value="Ассистентская поддержка">Ассистентская поддержка</label>
+      <label class="lf-chip"><input type="checkbox" value="Работа с клиентами">Работа с клиентами</label>
+      <label class="lf-chip"><input type="checkbox" value="Маркетинг и дизайн">Маркетинг и дизайн</label>
+      <label class="lf-chip"><input type="checkbox" value="HR поддержка">HR поддержка</label>
+      <label class="lf-chip"><input type="checkbox" value="Юридическая поддержка">Юридическая</label>
+      <label class="lf-chip"><input type="checkbox" value="Бухгалтерская поддержка">Бухгалтерская</label>
+      <label class="lf-chip" data-own="directions"><input type="checkbox" value="Свой вариант">Свой вариант</label>
+    </div>
+    <input class="lf-in lf-own" id="lfDirectionsOwn" placeholder="Что именно нужно">
+  </div>
+
+  <div class="lf-grp">
+    <label class="lf-lbl" for="lfTasks">Какие задачи хотите снять с себя</label>
+    <textarea class="lf-in" id="lfTasks"
+      placeholder="Например: проверить договор на риски, подобрать резюме релевантных кандидатов"></textarea>
+  </div>
+
+  <div class="lf-grp">
+    <span class="lf-lbl">Как узнали о нас</span>
+    <div class="lf-chips" data-one="source">
+      <label class="lf-chip"><input type="radio" name="src" value="По рекомендации">По рекомендации</label>
+      <label class="lf-chip"><input type="radio" name="src" value="Из бизнес-сообщества">Бизнес-сообщество</label>
+      <label class="lf-chip"><input type="radio" name="src" value="Видел рекламу">Видел рекламу</label>
+      <label class="lf-chip"><input type="radio" name="src" value="Из соцсетей">Из соцсетей</label>
+      <label class="lf-chip"><input type="radio" name="src" value="Поиск в Яндексе / Google">Поиск</label>
+    </div>
+  </div>
+
+  <div class="lf-grp">
+    <span class="lf-lbl">Куда прислать материал</span>
+    <div class="lf-chips" data-one="way">
+      <label class="lf-chip on"><input type="radio" name="way" value="telegram" checked>Telegram</label>
+      <label class="lf-chip"><input type="radio" name="way" value="max_messenger">МАКС</label>
+      <label class="lf-chip"><input type="radio" name="way" value="whatsapp">WhatsApp</label>
+      <label class="lf-chip"><input type="radio" name="way" value="phone">Позвонить</label>
+    </div>
+    <input class="lf-in" id="lfContact" style="margin-top:10px" placeholder="@username или номер">
+  </div>
+
+  <div class="lf-err" id="lfErr"></div>
+  <button class="btn btn-accent lf-send" id="lfSend">Забрать разбор</button>
+  <div class="cta-note">Бесплатно, без обязательств.</div>
+</div>
+    </div>
+  </section>
+</div>
+
+<footer><div class="wrap">
+  <a class="foot-logo" href="https://delegator24.ru" target="_blank" rel="noopener" aria-label="На сайт Delegator24"><img src="logo-d24.png" alt="Delegator24" height="24"></a>
+  <div class="foot-legal"><a href="https://delegator24.ru/page71975481.html" target="_blank" rel="noopener">Юридическая информация</a></div>
+  <div class="foot-copy">© Delegator24 — аутсорс операционных задач для собственников бизнеса · delegator24.ru</div>
+</div></footer>
+<div class="toast" id="toast"></div>
+
+<script>
+// куда вести на разбор — по источнику (?src=tg|max), который дописывает бот при отправке ссылки
+// боты по каналам — заменить на реальные при деплое
+var LINKS={tg:"https://t.me/Delegator24_bot?start=landpage",max:"https://max.ru/id2634102694_bot?start=landpagemax"};
+function withSrc(u){var s=(new URLSearchParams(location.search)).get('src');return s?(u+(u.indexOf('?')>-1?'&':'?')+'src='+encodeURIComponent(s)):u;}
+function mkBtn(label,href,copy){var a=document.createElement('a');a.className='btn btn-accent';a.textContent=label;a.href=href;if(copy){a.target='_blank';a.rel='noopener';a.onclick=function(e){if(!consentOK()){e.preventDefault();flashConsent();toast('Отметьте согласие на обработку данных');return false;}recordConsent();try{if(window.ym)ym(39533920,'reachGoal','to_bot');}catch(e){}copyMsg();};}return a;}
+function consentOK(){var c=document.getElementById('cs1');return!c||c.checked;}
+function flashConsent(){var b=document.getElementById('consentBox');if(!b)return;b.classList.remove('shake');void b.offsetWidth;b.classList.add('shake');}
+function recordConsent(){try{var m=document.getElementById('cs2');localStorage.setItem('d24consent',JSON.stringify({pd:true,marketing:!!(m&&m.checked),ts:Date.now()}));}catch(e){}}
+function botUrl(base,code){return base+(base.indexOf('?')>-1?'&':'?')+'start='+code;}
+
+var Q=[
+ {t:"Никто не сделает эту работу так же хорошо, как я.",b:"quality"},
+ {t:"Если передам задачу, перестану понимать, что реально происходит.",b:"control"},
+ {t:"Пока объяснишь задачу — уже сам бы сделал.",b:"faster"},
+ {t:"Слишком много процессов завязано только на меня.",b:"irreplace"},
+ {t:"Не знаю, как передать так, чтобы не пришлось переделывать.",b:"how"},
+ {t:"Был опыт: делегировал — получил плохо, разочаровался.",b:"quality"},
+ {t:"Мне спокойнее, когда все под личным контролем, даже ценой времени.",b:"control"},
+ {t:"Проще сделать самому, чем описывать, что нужно.",b:"faster"},
+ {t:"Если уйду в отпуск, работа встанет.",b:"irreplace"},
+ {t:"Не понимаю, с какой задачи вообще начать делегировать.",b:"how"}
+];
+var B={
+ quality:{title:"Страх, что сделают хуже",
+  recog:"Вам кажется, что никто не справится так же хорошо, как вы. Часто за этим стоит прошлый неудачный опыт.",
+  reframe:"Качество падает не от делегирования, а от передачи без стандарта. Когда есть регламент и контроль, исполнитель делает предсказуемо, а вы освобождаете голову.",
+  d24:"Регламент под вашу задачу, двойной контроль (исполнитель + куратор), правки до результата и замена специалиста, если не подошел. Вы не остаетесь один на один с плохой работой.",
+  step:"Не отдавайте сразу важное. Возьмите одну повторяющуюся задачу и составьте короткий эталон «как надо» — именно стандарт, а не человек, защищает качество при передаче.",
+  cta:{h:"Заберите гайд: как ставить задачи и проверять качество",p:"Пришлем документ: как формулировать задачу (в том числе голосом), критерии готовности и как проверять результат. Напишите свою задачу — вышлем и подскажем под нее.",label:"Забрать гайд",doc:"гайд по постановке задач и контролю качества",url:"consult",code:"mat_quality"}},
+ control:{title:"Страх потерять контроль",
+  recog:"Вам спокойнее, когда все под личным контролем, даже если это съедает время. Передать = перестать понимать, что происходит.",
+  reframe:"Контроль — это видеть статус и точки, а не держать руки на всем. Делая сам, вы контролируете ценой своего времени и упираетесь в потолок.",
+  d24:"Контрольные точки, отчетность и куратор, который держит процесс. Вы видите прогресс в любой момент — контроль остается в системе, а не в ваших руках.",
+  step:"Задайте одну контрольную точку, по которой поймете, что задача идет верно: ежедневный статус или фото результата. Контроль — это точка, а не участие в процессе.",
+  cta:{h:"Заберите шаблон контроля без микроменеджмента",p:"Пришлем шаблон: какие контрольные точки ставить, частота и формат отчетности, чтобы видеть прогресс не участвуя. Напишите свою задачу — вышлем.",label:"Забрать шаблон",doc:"шаблон контроля без микроменеджмента",url:"consult",code:"mat_control"}},
+ faster:{title:"«Пока объяснишь — сам сделаешь»",
+  recog:"Передача кажется дороже самой задачи: объяснять дольше, чем сделать.",
+  reframe:"Первый раз — да, дольше. Но задача повторяется. «Объяснить» вы платите один раз, а экономите каждый раз потом. Считаете стоимость передачи, но не стоимость того, что делаете это десятки раз в месяц.",
+  d24:"Мы снимаем само «объяснить»: куратор превращает ваш голосовой или сумбур в ТЗ, подбирает исполнителя и ставит контроль. Регламенты писать не нужно.",
+  step:"Один раз запишите голосом или видео, как вы делаете самую частую задачу. Это разовое «объяснить», которое окупается каждый следующий раз.",
+  cta:{h:"Передайте, не тратя время на объяснения",p:"«Объяснить» берем на себя: опишете задачу как умеете — оформим и запустим. Выберите, что снять с себя.",label:"Выбрать задачи и передать",url:"tasks"}},
+ irreplace:{title:"«Без меня все встанет»",
+  recog:"Слишком много процессов завязано на вас. Кажется, что это надежно — на деле это потолок роста и риск.",
+  reframe:"Если бизнес держится только на вас — вы не можете масштабироваться, заболеть или уйти в отпуск. Это не сила, а ограничение.",
+  d24:"Начинаем не с ядра, а с периферии: снимаем рутину, которая не требует лично вас, и освобождаем вас для того, где вы действительно незаменимы — стратегия, ключевые решения, отношения.",
+  step:"Разделите день на «только я» (стратегия, решения, отношения) и «справится другой» (почта, согласования, отчеты). Разгружать начинайте со второй половины — ядро не трогаем.",
+  cta:{h:"Разложите свой день",p:"Отделите то, что требует лично вас, от того, что справится команда, и начните разгружать периферию.",label:"Разложить свой день",url:"snimok"}},
+ how:{title:"Непонятно, как и с чего начать",
+  recog:"Дело не в задачах — вы не знаете механику: как передать, чтобы не переделывать, и за что взяться первым.",
+  reframe:"Делегирование — это навык и процесс, а не «повезет с человеком». Проблема не в вас, а в отсутствии готовой механики передачи.",
+  d24:"Механика у нас готова: вы описываете задачу как умеете, куратор оформляет ТЗ, подбирает специалиста и ставит контроль. Вам не нужно становиться экспертом по делегированию.",
+  step:"Выберите одну задачу и пройдите передачу по шагам: опишите как умеете, превращаем в ТЗ, ставим контроль. Один прогон научит механике на будущее.",
+  cta:{h:"Заберите инструкцию передачи задачи",p:"Пришлем пошаговый передаточный лист: как описать, что приложить, контрольные точки и критерии «сделано». Напишите свою задачу — адаптируем под нее.",label:"Забрать инструкцию",doc:"инструкцию передачи задачи",url:"consult",code:"mat_how"}}
+};
+var ORDER=["quality","control","faster","irreplace","how"];
+var ans={},_msg='';
+try{var _a=JSON.parse(localStorage.getItem('d24ans')||'{}');if(_a&&typeof _a==='object')ans=_a;}catch(e){}
+function copyMsg(){if(!_msg)return;
+ if(navigator.clipboard){navigator.clipboard.writeText(_msg).then(function(){toast('Сообщение скопировано');});}
+ else{var ta=document.createElement('textarea');ta.value=_msg;document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);toast('Сообщение скопировано');}}
+function toast(m){var t=document.getElementById('toast');t.textContent=m;t.classList.add('show');clearTimeout(t._t);t._t=setTimeout(function(){t.classList.remove('show');},2200);}
+// плавное появление блоков при скролле
+var _io;
+function revealScan(){
+ var els=[].slice.call(document.querySelectorAll('.rv:not(.in)'));
+ if(!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in');});return;}
+ if(!_io)_io=new IntersectionObserver(function(en){en.forEach(function(x){if(x.isIntersecting){x.target.classList.add('in');_io.unobserve(x.target);}});},{threshold:0,rootMargin:'0px 0px -8% 0px'});
+ els.forEach(function(e){_io.observe(e);});
+}
+
+function renderQ(){
+ var w=document.getElementById('qlist');w.innerHTML='';
+ Q.forEach(function(q,i){
+  var row=document.createElement('div');row.className='q rv';
+  row.innerHTML='<div class="q-t"><i>'+(i+1<10?'0':'')+(i+1)+'</i>'+q.t+'</div>'+
+   '<div class="scale">'+
+    '<button data-v="2" onclick="setA('+i+',2,this)">Да</button>'+
+    '<button data-v="1" onclick="setA('+i+',1,this)">Иногда</button>'+
+    '<button data-v="0" onclick="setA('+i+',0,this)">Нет</button>'+
+   '</div>';
+  w.appendChild(row);
+ });
+ document.getElementById('pt').textContent=Q.length;
+ // восстановить ранее отмеченные ответы
+ var n=0;
+ Q.forEach(function(q,i){
+  if(ans[i]!==undefined){ n++;
+   var row=w.children[i]; if(!row)return;
+   [].forEach.call(row.querySelectorAll('.scale button'),function(bt){
+    if(parseInt(bt.getAttribute('data-v'),10)===ans[i])bt.classList.add('on');
+   });
+  }
+ });
+ document.getElementById('pn').textContent=n;
+ var done=n>=Q.length, rb=document.getElementById('resBtn');
+ if(rb){rb.disabled=!done;rb.style.opacity=done?'1':'.5';}
+ document.getElementById('hint').textContent=done?'Готово — можно смотреть результат':'Ответьте на все утверждения';
+}
+function setA(i,v,btn){
+ ans[i]=v;
+ try{localStorage.setItem('d24ans',JSON.stringify(ans));}catch(e){}
+ var sc=btn.parentNode;[].forEach.call(sc.children,function(b){b.classList.remove('on');});
+ btn.classList.add('on');
+ var n=Object.keys(ans).length;
+ document.getElementById('pn').textContent=n;
+ var done=n>=Q.length;
+ var rb=document.getElementById('resBtn');
+ rb.disabled=!done;rb.style.opacity=done?'1':'.5';
+ document.getElementById('hint').textContent=done?'Готово — можно смотреть результат':'Ответьте на все утверждения';
+}
+function compute(restore){
+ var sc={};ORDER.forEach(function(k){sc[k]=0;});
+ Q.forEach(function(q,i){sc[q.b]+=(ans[i]||0);});
+ var win=ORDER[0];ORDER.forEach(function(k){if(sc[k]>sc[win])win=k;});
+ var b=B[win];
+ document.getElementById('rTitle').textContent=b.title;
+ window.__barrier=b.title;
+ document.getElementById('rRecog').textContent=b.recog;
+ document.getElementById('rReframe').textContent=b.reframe;
+ document.getElementById('rD24').textContent=b.d24;
+ document.getElementById('rStep').textContent=b.step;
+ // второй по силе
+ var rest=ORDER.filter(function(k){return k!==win;});
+ rest.sort(function(a,c){return sc[c]-sc[a];});
+ var sec=(sc[rest[0]]>0)?('Второй по силе барьер — «'+B[rest[0]].title.toLowerCase()+'». На разборе учтем и его.'):'';
+ document.getElementById('rSec').textContent=sec;
+ // персональный следующий шаг под барьер
+ var c=b.cta;
+ document.getElementById('ctaH').textContent=c.h;
+ document.getElementById('ctaP').textContent=c.p;
+ var note=document.getElementById('ctaNote'),mb=document.getElementById('msgBox'),acts=document.getElementById('ctaActions');
+ var cb=document.getElementById('consentBox');
+ acts.innerHTML='';
+ if(c.url==='consult'){
+   cb.style.display='';
+   _msg='Здравствуйте! Прошел тест «Почему делаю сам». Моя сложность — '+b.title.toLowerCase()+'. Хочу забрать '+c.doc+'.\nЗадача, которую хочу передать первой: ';
+   // Форма-first: лид уходит в amoCRM сразу, даже если человек не дойдёт до бота.
+   // Раньше здесь были кнопки в бота — не дошёл, потеряли и контакт, и данные.
+   mb.style.display='none';
+   cb.style.display='none';
+   note.style.display='none';
+   var lf=document.getElementById('leadForm');
+   if(lf){lf.style.display='';lf.dataset.doc=c.doc||'';}
+ }else{
+   cb.style.display='none';
+   _msg='';mb.style.display='none';
+   acts.appendChild(mkBtn(c.label,withSrc(c.url==='tasks'?'400-zadach.html':'snimok-dnya.html'),false));
+   note.textContent='Займет пару минут.';
+ }
+ try{localStorage.setItem('d24barrier',JSON.stringify({barrier:win,scores:sc,ts:Date.now()}));}catch(e){}
+ if(!restore){try{if(window.ym){ym(39533920,'reachGoal','test_done');ym(39533920,'reachGoal','barrier_'+win);}}catch(e){}}
+ var r=document.getElementById('result');r.classList.add('show');
+ if(!restore)r.scrollIntoView({behavior:'smooth',block:'start'});
+}
+function retake(){ans={};
+ try{localStorage.removeItem('d24ans');localStorage.removeItem('d24barrier');}catch(e){}
+ document.getElementById('result').classList.remove('show');
+ document.getElementById('pn').textContent='0';var rb=document.getElementById('resBtn');rb.disabled=true;rb.style.opacity='.5';
+ document.getElementById('hint').textContent='Ответьте на все утверждения';renderQ();revealScan();
+ document.getElementById('test').scrollIntoView({behavior:'smooth',block:'start'});}
+
+renderQ();
+revealScan();
+// если тест уже был пройден ранее — тихо восстановить результат (без прокрутки и без цели Метрики)
+if(Object.keys(ans).length>=Q.length)compute(true);
+
+// фоновые фирменные иконки: статичны при скролле, но сами по себе плавно качаются и поворачиваются
+(function(){var layer=document.querySelector('.bg-ico');if(!layer)return;
+ var ICONS={
+  chat:'<svg viewBox="0 0 24 24"><path d="M4 4h16a1.5 1.5 0 0 1 1.5 1.5V15A1.5 1.5 0 0 1 20 16.5H9l-4.5 4V16.5H4A1.5 1.5 0 0 1 2.5 15V5.5A1.5 1.5 0 0 1 4 4Z"/></svg>',
+  brief:'<svg viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="13" rx="2.5"/><path d="M8 7V5.5A2 2 0 0 1 10 3.5h4a2 2 0 0 1 2 2V7"/><path d="M2.5 12h19"/></svg>',
+  clock:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
+  mail:'<svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg>',
+  board:'<svg viewBox="0 0 24 24"><path d="M4 4h16"/><rect x="4.5" y="4" width="15" height="10" rx="1.5"/><path d="M12 14v4M9 20l3-2 3 2"/></svg>',
+  doc:'<svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>',
+  people:'<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M16 6.2a3 3 0 0 1 0 5.6M17 14c2.4.3 4 2.3 4 5"/></svg>'
+ };
+ var vw=window.innerWidth||820, cols=(vw<560?5:(vw<900?8:13)), rows=10;
+ var keys=Object.keys(ICONS),html='',N=cols*rows;
+ var gx=95/cols, gy=96/rows;
+ for(var i=0;i<N;i++){
+  var k=keys[(i*3)%keys.length];
+  var col=i%cols, row=Math.floor(i/cols);
+  var jx=((i*29)%5)-2, jy=((i*53)%5)-2;          // джиттер -2..2 (плотнее, без слипаний)
+  var left=col*gx+1+jx, top=row*gy+1+jy;         // равномерная сетка
+  var size=32+((i*13)%20);
+  var dur=8+((i*7)%7), del=-((i*5)%13), rot=((i%2)?1:-1)*(10+((i*3)%9));
+  html+='<i class="fi" style="top:'+top+'%;left:'+left+'%;width:'+size+'px;height:'+size+'px;'
+   +'animation-duration:'+dur+'s;animation-delay:'+del+'s;--rot:'+rot+'deg">'+ICONS[k]+'</i>';
+ }
+ layer.innerHTML=html;
+})();
+
+// плавный инерционный скролл
+(function(){
+ if(matchMedia('(pointer:coarse)').matches)return;
+ var target=window.scrollY,current=window.scrollY,running=false;
+ function maxY(){return Math.max(0,document.documentElement.scrollHeight-window.innerHeight);}
+ function loop(){current+=(target-current)*0.12;
+  if(Math.abs(target-current)<0.4){current=target;window.scrollTo({top:current,behavior:'instant'});running=false;return;}
+  window.scrollTo({top:current,behavior:'instant'});requestAnimationFrame(loop);}
+ addEventListener('wheel',function(e){
+  if(e.ctrlKey)return;
+  e.preventDefault();
+  var d=e.deltaY;if(e.deltaMode===1)d*=16;else if(e.deltaMode===2)d*=window.innerHeight;
+  target=Math.max(0,Math.min(maxY(),target+d));
+  if(!running){running=true;current=window.scrollY;requestAnimationFrame(loop);}
+ },{passive:false});
+ addEventListener('scroll',function(){if(!running){target=window.scrollY;current=window.scrollY;}});
+})();
+</script>
+
+<!-- UIS виджет связи (звонок/мессенджеры) -->
+<script type="text/javascript" async src="https://app.uiscom.ru/static/cs.min.js?k=BkIwF_xi28YQGfhpr1ZcIecg_wn6lgxP"></script>
+<script>
+// ── Форма-first: лид уходит в amoCRM сразу, даже если человек не дойдёт до бота ──
+// Раньше лендинг вёл прямо в бота: не дошёл — потеряли и контакт, и данные.
+
+var FORM_API = 'https://chat.delegator24.ru/form';
+var MAGNET = 'pochemu-sam';
+
+// токен рождается на странице и связывает заявку с диалогом в боте
+var LF_TOKEN = 'd' + Array.from(crypto.getRandomValues(new Uint8Array(6)))
+  .map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
+
+// чипсы: один выбор или несколько
+document.querySelectorAll('.lf-chip').forEach(function (chip) {
+  chip.addEventListener('click', function () {
+    var input = chip.querySelector('input');
+    var group = chip.closest('.lf-chips');
+    if (input.type === 'radio') {
+      group.querySelectorAll('.lf-chip').forEach(function (c) { c.classList.remove('on'); });
+      chip.classList.add('on');
+      input.checked = true;
+    } else {
+      input.checked = !input.checked;
+      chip.classList.toggle('on', input.checked);
+    }
+    // «Свой вариант» открывает поле для текста
+    var own = chip.dataset.own;
+    if (own) {
+      var box = document.getElementById(own === 'sphere' ? 'lfSphereOwn' : 'lfDirectionsOwn');
+      box.classList.toggle('show', input.checked);
+      if (input.checked) box.focus();
+    }
+  });
+});
+
+// телефон: маска, чтобы менеджер не разбирал каракули
+var phone = document.getElementById('lfPhone');
+phone.addEventListener('input', function () {
+  var d = phone.value.replace(/\D/g, '').replace(/^8/, '7').replace(/^([^7])/, '7$1');
+  var out = '+7';
+  if (d.length > 1) out += ' (' + d.slice(1, 4);
+  if (d.length >= 5) out += ') ' + d.slice(4, 7);
+  if (d.length >= 8) out += '-' + d.slice(7, 9);
+  if (d.length >= 10) out += '-' + d.slice(9, 11);
+  phone.value = out;
+});
+
+function chosen(group, many) {
+  var sel = '.lf-chips[data-' + (many ? 'many' : 'one') + '="' + group + '"] input:checked';
+  return Array.from(document.querySelectorAll(sel)).map(function (i) { return i.value; });
+}
+
+function ownText(id, list) {
+  var box = document.getElementById(id);
+  var i = list.indexOf('Свой вариант');
+  if (i > -1 && box && box.value.trim()) list[i] = 'Свой вариант: ' + box.value.trim();
+  return list;
+}
+
+function lfError(msg) {
+  var e = document.getElementById('lfErr');
+  e.textContent = msg;
+  e.classList.add('show');
+  setTimeout(function () { e.classList.remove('show'); }, 5000);
+}
+
+document.getElementById('lfSend').addEventListener('click', function () {
+  var btn = this;
+  var name = document.getElementById('lfName').value.trim();
+  var tel = document.getElementById('lfPhone').value.trim();
+  var mail = document.getElementById('lfEmail').value.trim();
+  var contact = document.getElementById('lfContact').value.trim();
+  var way = (chosen('way') || [])[0] || 'telegram';
+
+  if (!name) { lfError('Напишите, как к вам обращаться'); return; }
+  if (tel.replace(/\D/g, '').length < 11 && !mail && !contact) {
+    lfError('Оставьте телефон, почту или username — чтобы прислать материал');
+    return;
+  }
+  if (!consentOK()) { flashConsent(); lfError('Отметьте согласие на обработку данных'); return; }
+
+  var q = new URLSearchParams(location.search);
+  var body = {
+    magnet: MAGNET,
+    token: LF_TOKEN,
+    name: name,
+    phone: tel.replace(/\D/g, '').length >= 11 ? tel : '',
+    email: mail,
+    role: (chosen('role') || [])[0] || '',
+    team: (chosen('team') || [])[0] || '',
+    sphere: ownText('lfSphereOwn', chosen('sphere', true)).join('; '),
+    directions: ownText('lfDirectionsOwn', chosen('directions', true)).join('; '),
+    source: (chosen('source') || [])[0] || '',
+    tasks: document.getElementById('lfTasks').value.trim(),
+    contact_way: way,
+    contact: contact,
+    pd: true,
+    ads: !!(document.getElementById('cs2') || {}).checked,
+    channel: way === 'max_messenger' ? 'max' : 'tg',
+    referer: location.href,
+    utm_source: q.get('utm_source') || '',
+    utm_medium: q.get('utm_medium') || '',
+    utm_campaign: q.get('utm_campaign') || '',
+    utm_content: q.get('utm_content') || '',
+    yclid: q.get('yclid') || '',
+  };
+
+  // результат теста — чтобы менеджер видел, с каким стоп-фактором пришёл человек
+  if (window.__barrier) {
+    body.tasks = (body.tasks ? body.tasks + '\n\n' : '') +
+      'Стоп-фактор по тесту: ' + window.__barrier;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Отправляем…';
+
+  fetch(FORM_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body),
+  })
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (!d.ok) throw new Error(d.error || 'ошибка');
+      try { if (window.ym) ym(39533920, 'reachGoal', 'lm_form_sent'); } catch (e) {}
+      recordConsent();
+      lfDone(d.go);
+    })
+    .catch(function () {
+      btn.disabled = false;
+      btn.textContent = 'Забрать разбор';
+      lfError('Не удалось отправить. Попробуйте ещё раз или напишите нам в бот');
+    });
+});
+
+// после отправки: материал ждёт в боте
+function lfDone(go) {
+  var f = document.getElementById('leadForm');
+  f.innerHTML =
+    '<div class="lf-title">Готово, ' + '✓' + '</div>' +
+    '<div class="lf-sub">Разбор вашего стоп-фактора ждёт в боте — заберите его там.</div>' +
+    '<a class="btn btn-accent lf-send" id="lfGo" href="' + (go || '#') + '">Забрать разбор в боте</a>' +
+    '<div class="cta-note">Если бот не открылся — напишите нам, пришлём вручную.</div>';
+  var b = document.getElementById('lfGo');
+  if (b) b.addEventListener('click', function () {
+    try { if (window.ym) ym(39533920, 'reachGoal', 'to_bot'); } catch (e) {}
+  });
+  f.scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+
+</script>
+</body>
+</html>
