@@ -706,13 +706,14 @@ if(Object.keys(ans).length>=Q.length)compute(true);
  // ── шаги ───────────────────────────────────────────────────────────────────
  var шаги=[].slice.call(f.querySelectorAll('.lf-step')), ВСЕГО=шаги.length, тек=0;
  var бар=document.getElementById('lfBar'), счёт=document.getElementById('lfCnt');
- function показать(i){
+ function показать(i,скролл){
   тек=Math.max(0,Math.min(i,ВСЕГО-1));
   шаги.forEach(function(s,n){s.classList.toggle('on',n===тек);});
   бар.style.width=Math.round((тек+1)/ВСЕГО*100)+'%';
   счёт.textContent='Вопрос '+(тек+1)+' из '+ВСЕГО;
-  f.scrollIntoView({behavior:'smooth',block:'nearest'});
+  if(скролл!==false) f.scrollIntoView({behavior:'smooth',block:'nearest'});
  }
+ показать(0,false);   // без первого шага виден только прогресс, а вопроса нет
  f.addEventListener('click',function(e){
   if(e.target.closest('[data-back]')){e.preventDefault();показать(тек-1);}
   if(e.target.closest('[data-next]')){e.preventDefault();показать(тек+1);}
