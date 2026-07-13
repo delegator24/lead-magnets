@@ -210,9 +210,26 @@ footer{padding:38px 0 44px;color:var(--muted);font-size:13px;border-top:1px soli
 .lf-in:focus{outline:none;border-color:var(--accent);background:rgba(255,255,255,.09)}
 .lf-in::placeholder{color:#8a8d8f}
 textarea.lf-in{min-height:90px;resize:vertical}
-.lf-tel{display:flex;gap:8px}
-.lf-code{width:118px;flex:none;padding:13px 8px;cursor:pointer}
-.lf-code option{background:#101820;color:#fff}
+/* Телефон: код страны живёт ВНУТРИ поля — иначе автоподстановка браузера
+   пишет номер в одно поле, а код остаётся от другой страны, и выходит каша. */
+.lf-tel{position:relative}
+.lf-tel .lf-in{padding-left:64px}
+.lf-flag{position:absolute;left:1px;top:1px;bottom:1px;width:58px;display:flex;align-items:center;
+  justify-content:center;gap:3px;cursor:pointer;border:none;border-right:1px solid rgba(255,255,255,.14);
+  background:none;color:#dbe2ec;font-size:17px;border-radius:12px 0 0 12px}
+.lf-flag:hover{background:rgba(255,255,255,.07)}
+.lf-flag i{font-style:normal;font-size:9px;opacity:.6}
+.lf-list{position:absolute;z-index:20;top:calc(100% + 4px);left:0;right:0;max-height:230px;overflow:auto;
+  display:none;background:#171f2b;border:1px solid rgba(255,255,255,.16);border-radius:12px;padding:5px}
+.lf-list.on{display:block}
+.lf-list button{display:flex;width:100%;gap:9px;align-items:center;padding:9px 11px;border:none;
+  background:none;color:#dbe2ec;font:inherit;font-size:14px;cursor:pointer;border-radius:8px;text-align:left}
+.lf-list button:hover{background:rgba(255,255,255,.09)}
+.lf-list b{margin-left:auto;color:#8a8d8f;font-weight:500}
+.lf-plain .lf-flag,.lf-plain .lf-list{display:none}
+.lf-plain .lf-in{padding-left:15px}
+.lf-go-row{display:flex;gap:10px;flex-wrap:wrap}
+.lf-go-row .lf-go{flex:1;min-width:180px;justify-content:center}
 .lf-f{margin-bottom:13px}
 .lf-lbl{display:block;font-size:13.5px;font-weight:600;color:#dbe2ec;margin-bottom:6px}
 .lf-own{margin-top:9px;display:none}
@@ -393,9 +410,10 @@ textarea.lf-in{min-height:90px;resize:vertical}
     </div>
     <div class="lf-f">
       <label class="lf-lbl" for="lfPhone">Телефон</label>
-      <div class="lf-tel">
-        <select class="lf-in lf-code" id="lfCode" aria-label="Код страны"></select>
+      <div class="lf-tel" data-tel>
+        <button type="button" class="lf-flag" aria-label="Страна"><span>🇷🇺</span><i>▾</i></button>
         <input class="lf-in" id="lfPhone" type="tel" autocomplete="tel">
+        <div class="lf-list"></div>
       </div>
     </div>
     <div class="lf-f">
@@ -413,7 +431,11 @@ textarea.lf-in{min-height:90px;resize:vertical}
     </div>
     <div class="lf-f" id="lfContactWrap" style="display:none">
       <label class="lf-lbl" for="lfContact" id="lfContactLbl">Контакт</label>
-      <input class="lf-in" id="lfContact">
+      <div class="lf-tel" id="lfContactTel" data-tel>
+        <button type="button" class="lf-flag" aria-label="Страна"><span>🇷🇺</span><i>▾</i></button>
+        <input class="lf-in" id="lfContact" type="tel">
+        <div class="lf-list"></div>
+      </div>
     </div>
 
     <div class="lf-cs">
@@ -705,43 +727,82 @@ if(Object.keys(ans).length>=Q.length)compute(true);
  var зона=''; try{зона=Intl.DateTimeFormat().resolvedOptions().timeZone||'';}catch(e){}
  var начК=ЗОНЫ[зона]||(зона.indexOf('America/')===0?'US':'RU');
 
- var селект=document.getElementById('lfCode'), тел=document.getElementById('lfPhone');
- СТРАНЫ.forEach(function(с){
-  var o=document.createElement('option');
-  o.value=с.к; o.textContent=(с.код?'+'+с.код:'+…')+'  '+с.к;
-  o.title=с.имя;
-  селект.appendChild(o);
- });
- селект.value=начК;
- var СТР=СТРАНЫ.filter(function(с){return с.к===начК;})[0];
+ var ФЛАГИ={RU:'🇷🇺',KZ:'🇰🇿',BY:'🇧🇾',UA:'🇺🇦',UZ:'🇺🇿',KG:'🇰🇬',AM:'🇦🇲',GE:'🇬🇪',AZ:'🇦🇿',
+            MD:'🇲🇩',TJ:'🇹🇯',TR:'🇹🇷',AE:'🇦🇪',IL:'🇮🇱',CY:'🇨🇾',TH:'🇹🇭',DE:'🇩🇪',GB:'🇬🇧',
+            US:'🇺🇸',XX:'🌍'};
+ var найтиСтрану=function(к){return СТРАНЫ.filter(function(с){return с.к===к;})[0];};
 
- // Маска строится из шаблона страны: # — место под цифру.
- function маска(v){
-  var ц=(v||'').replace(/\D/g,'');
-  if(!СТР.м) return ц?'+'+СТР.код+ц.slice(0,15):'';     // «другая страна» — просто цифры
-  if(СТР.код==='7'&&ц[0]==='8') ц=ц.slice(1);           // привычное «8 (999)…»
-  ц=ц.slice(0,СТР.цифр);
-  var r='', i=0;
-  for(var j=0;j<СТР.м.length&&i<ц.length;j++){
-   var s=СТР.м[j];
-   if(s==='#'){r+=ц[i++];}else{r+=s;}
+ // Номер живёт в ОДНОМ поле вместе с кодом. Так автоподстановка браузера
+ // («+7 999 …») попадает целиком в него — а не в поле без кода, где превращалась в кашу.
+ // Страну узнаём из самого номера: по самому длинному совпадению кода.
+ function поКоду(номер){
+  var ц=(номер||'').replace(/\D/g,'');
+  if(!ц) return null;
+  var лучш=null;
+  СТРАНЫ.forEach(function(с){
+   if(с.код&&ц.indexOf(с.код)===0&&(!лучш||с.код.length>лучш.код.length)) лучш=с;
+  });
+  return лучш;
+ }
+
+ function Телефон(корень,начальная){
+  var поле=корень.querySelector('input'),
+      кнопка=корень.querySelector('.lf-flag'),
+      список=корень.querySelector('.lf-list'),
+      СТР=найтиСтрану(начальная)||найтиСтрану('RU');
+
+  СТРАНЫ.forEach(function(с){
+   var b=document.createElement('button');
+   b.type='button';
+   b.innerHTML='<span>'+(ФЛАГИ[с.к]||'🌍')+'</span> '+с.имя+'<b>'+(с.код?'+'+с.код:'')+'</b>';
+   b.onclick=function(){ выбрать(с); список.classList.remove('on'); поле.focus(); };
+   список.appendChild(b);
+  });
+
+  function маска(v){
+   var ц=(v||'').replace(/\D/g,'');
+   if(!ц) return '';
+   if(ц.indexOf(СТР.код)===0) ц=ц.slice(СТР.код.length);      // код уже внутри — отделяем
+   else if(СТР.код==='7'&&ц[0]==='8') ц=ц.slice(1);           // привычное «8 (999)…»
+   if(!СТР.м) return '+'+(СТР.код||'')+ц.slice(0,15);
+   ц=ц.slice(0,СТР.цифр);
+   var r='+'+СТР.код+' ', i=0;
+   for(var j=0;j<СТР.м.length&&i<ц.length;j++) r+=(СТР.м[j]==='#')?ц[i++]:СТР.м[j];
+   return r;
   }
-  return r;
- }
- function цифры(v){return (v||'').replace(/\D/g,'');}
- function норм(v){return '+'+СТР.код+цифры(v).slice(0,СТР.цифр||15);}
- function телОк(v){var n=цифры(v).length; return СТР.цифр?n===СТР.цифр:(n>=6&&n<=15);}
+  function выбрать(с){
+   СТР=с;
+   кнопка.querySelector('span').textContent=ФЛАГИ[с.к]||'🌍';
+   поле.placeholder='+'+(с.код||'')+(с.м?' '+с.м.replace(/#/g,'0'):'');
+   поле.value=маска(поле.value);
+  }
+  поле.addEventListener('input',function(){
+   var найдена=поКоду(this.value);            // браузер вставил номер с чужим кодом — подхватим
+   if(найдена&&найдена.код!==СТР.код) выбрать(найдена);
+   this.value=маска(this.value);
+  });
+  поле.addEventListener('focus',function(){ if(!this.value) this.value='+'+СТР.код+' '; });
+  кнопка.addEventListener('click',function(e){ e.preventDefault(); список.classList.toggle('on'); });
+  document.addEventListener('click',function(e){
+   if(!корень.contains(e.target)) список.classList.remove('on');
+  });
+  выбрать(СТР);
 
- function одеть(){
-  тел.placeholder=СТР.м?СТР.м.replace(/#/g,'_'):'номер телефона';
-  тел.value=маска(тел.value);
+  return {
+   поле:поле,
+   пусто:function(){return !поле.value.replace(/\D/g,'');},
+   цифры:function(){var ц=поле.value.replace(/\D/g,'');
+                    return ц.indexOf(СТР.код)===0?ц.slice(СТР.код.length):ц;},
+   норм:function(){return '+'+СТР.код+this.цифры().slice(0,СТР.цифр||15);},
+   ок:function(){var n=this.цифры().length; return СТР.цифр?n===СТР.цифр:(n>=6&&n<=15);},
+   маска:маска,
+   плейс:function(){return поле.placeholder;}
+  };
  }
- селект.addEventListener('change',function(){
-  СТР=СТРАНЫ.filter(function(с){return с.к===селект.value;})[0];
-  одеть();
- });
- тел.addEventListener('input',function(){this.value=маска(this.value);});
- одеть();
+
+ var ТЕЛ=Телефон(f.querySelector('.lf-f .lf-tel'), начК);
+ var тел=ТЕЛ.поле;
+ var КОНТ=null;   // второе поле-телефон (WhatsApp / MAX) — создадим при выборе способа
 
  // ── шаги ───────────────────────────────────────────────────────────────────
  var шаги=[].slice.call(f.querySelectorAll('.lf-step')), ВСЕГО=шаги.length, тек=0;
@@ -790,18 +851,26 @@ if(Object.keys(ans).length>=Q.length)compute(true);
   }
 
   if(i.name==='way'){       // способ связи — не отдельный шаг, а поле внутри последнего
-   var w=document.getElementById('lfContactWrap'), l=document.getElementById('lfContactLbl'),
+   var w=document.getElementById('lfContactWrap'),
+       l=document.getElementById('lfContactLbl'),
+       обёртка=document.getElementById('lfContactTel'),
        c=document.getElementById('lfContact');
+
+   if(!КОНТ) КОНТ=Телефон(обёртка,начК);   // то же поле с флагом и маской, что и для телефона
    w.style.display='';
-   c.value='';               // чистим: иначе в поле ника остаётся номер от прошлого выбора
+   c.value='';              // чистим: иначе в поле ника оставался номер от прошлого выбора
+
    if(i.value==='Telegram'){
-    l.textContent='Ник в Telegram'; c.placeholder='@username'; c.oninput=null;
+    l.textContent='Ник в Telegram';
+    обёртка.classList.add('lf-plain');     // без флага: тут не номер, а ник
+    c.type='text'; c.placeholder='@username';
    }else if(i.value==='Телефон'){
-    w.style.display='none';  // номер уже введён выше, второй раз не спрашиваем
-   }else{                    // WhatsApp / Max — там номер телефона
-    l.textContent='Номер в '+i.value; c.placeholder=тел.placeholder;
-    c.oninput=function(){this.value=маска(this.value);};
-    c.value=тел.value;       // тот же номер по умолчанию, можно исправить
+    w.style.display='none';                // номер уже введён выше, второй раз не спрашиваем
+   }else{                                  // WhatsApp / MAX — там тот же номер телефона
+    l.textContent='Номер в '+i.value;
+    обёртка.classList.remove('lf-plain');
+    c.type='tel';
+    c.value=КОНТ.маска(тел.value);         // подставляем уже введённый, можно исправить
    }
    return;
   }
@@ -826,14 +895,15 @@ if(Object.keys(ans).length>=Q.length)compute(true);
   ош.classList.remove('show');
   var кн=this;
   var имя=document.getElementById('lfName').value.trim();
-  var тлф=тел.value.trim();
   var способ=ОТВЕТЫ.way||'';
   var конт=document.getElementById('lfContact').value.trim();
 
   if(!имя) return беда('Напишите, как вас зовут.');
-  if(!телОк(тлф)) return беда('Проверьте номер телефона.');
+  if(!ТЕЛ.ок()) return беда('Проверьте номер телефона.');
   if(!способ) return беда('Выберите, как удобнее связаться.');
   if(способ!=='Телефон'&&!конт) return беда('Оставьте контакт для связи в '+способ+'.');
+  if((способ==='WhatsApp'||способ==='Max')&&КОНТ&&!КОНТ.ок())
+   return беда('Проверьте номер в '+способ+'.');
   if(!document.getElementById('lfCs1').checked) return беда('Без согласия на обработку данных мы не сможем прислать разбор.');
 
   // множественный выбор → «А; Б; В». «Свой вариант» подменяем на то, что человек написал.
@@ -858,10 +928,12 @@ if(Object.keys(ans).length>=Q.length)compute(true);
    method:'POST',headers:{'Content-Type':'application/json'},
    body:JSON.stringify({
     magnet:'pochemu-sam',token:токен,
-    name:имя,phone:норм(тлф),email:document.getElementById('lfEmail').value.trim(),
+    name:имя,phone:ТЕЛ.норм(),email:document.getElementById('lfEmail').value.trim(),
     role:ОТВЕТЫ.role||'',team:ОТВЕТЫ.team||'',sphere:сфера,directions:напр,
     source:ОТВЕТЫ.source||'',tasks:задачи,
-    contact_way:способ,contact:способ==='Телефон'?норм(тлф):конт,
+    contact_way:способ,
+    contact:способ==='Телефон'?ТЕЛ.норм()
+           :((способ==='WhatsApp'||способ==='Max')&&КОНТ?КОНТ.норм():конт),
     pd:document.getElementById('lfCs1').checked?'yes':'no',
     ads:document.getElementById('lfCs2').checked?'yes':'no',
     doc:f.dataset.doc||'',referer:location.href
@@ -879,9 +951,20 @@ if(Object.keys(ans).length>=Q.length)compute(true);
   f.querySelectorAll('.lf-step,.lf-bar,.lf-cnt').forEach(function(э){э.style.display='none';});
   var d=document.getElementById('lfDone');
   d.style.display='';
-  d.innerHTML='<div class="lf-q" style="margin-bottom:8px">Готово — разбор ждёт вас в боте</div>'+
-   '<div class="lf-hint" style="margin-bottom:18px">Нажмите кнопку: бот откроется и сразу пришлёт материал.</div>'+
-   '<a class="btn btn-accent" style="width:100%;justify-content:center" href="'+ссылка+'">Забрать разбор в боте</a>';
+
+  // Материал забирают там, где человеку удобно: и Telegram, и MAX.
+  // Ссылка одна, канал дописываем — сервер по нему решает, куда вести.
+  var база=ссылка.split('?')[0];
+  var что=(f.dataset.doc||'материал').trim();
+  var кнопка=function(канал,подпись){
+   return '<a class="btn btn-accent lf-go" href="'+база+'?ch='+канал+'"'+
+          ' target="_blank" rel="noopener">'+подпись+'</a>';   // новое окно: лендинг остаётся открытым
+  };
+  d.innerHTML=
+   '<div class="lf-q" style="margin-bottom:6px">Готово — заявка у нас</div>'+
+   '<div class="lf-hint" style="margin-bottom:16px">Выберите, где забрать «'+что+'»: бот пришлёт его сразу.</div>'+
+   '<div class="lf-go-row">'+кнопка('tg','Забрать в Telegram')+кнопка('max','Забрать в MAX')+'</div>'+
+   '<div class="lf-hint" style="margin-top:14px">Если бот не открылся — напишите нам, пришлём вручную.</div>';
  }
 })();
 </script>
