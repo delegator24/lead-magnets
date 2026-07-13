@@ -606,7 +606,9 @@ function compute(restore){
    cb.style.display='none';
    note.style.display='none';
    var lf=document.getElementById('leadForm');
-   if(lf){lf.style.display='';lf.dataset.doc=c.doc||'';}
+   // code — метка барьера (mat_quality и т.п.). По ней бот поймёт, с чем пришёл
+   // человек, и выдаст нужный материал. Без неё он видит всех одинаково.
+   if(lf){lf.style.display='';lf.dataset.doc=c.doc||'';lf.dataset.code=c.code||'';}
  }else{
    cb.style.display='none';
    _msg='';mb.style.display='none';
@@ -986,9 +988,11 @@ if(Object.keys(ans).length>=Q.length)compute(true);
   // Материал забирают там, где человеку удобно: и Telegram, и MAX.
   // Ссылка одна, канал дописываем — сервер по нему решает, куда вести.
   var база=ссылка.split('?')[0];
-  var что=(f.dataset.doc||'материал').trim();
+  var код=(f.dataset.code||'').trim();
   var кнопка=function(канал,подпись){
-   return '<a class="btn btn-accent lf-go" href="'+база+'?ch='+канал+'"'+
+   // код барьера едет в бота: по нему он выберет ветку и нужный материал
+   return '<a class="btn btn-accent lf-go" href="'+база+'?ch='+канал+
+          (код?'&c='+encodeURIComponent(код):'')+'"'+
           ' target="_blank" rel="noopener">'+подпись+'</a>';   // новое окно: лендинг остаётся открытым
   };
   d.innerHTML=
