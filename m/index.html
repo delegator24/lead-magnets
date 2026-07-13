@@ -1,0 +1,637 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<title>Механика делегирования — рабочая тетрадь Delegator24</title>
+<link rel="icon" href="favicon-d24.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+
+<header>
+  <div class="wrap">
+    <div class="hbar">
+      <!-- логотип текстом: цветной PNG на темном фоне превращался в белое пятно -->
+      <a class="mark" href="https://delegator24.ru" target="_blank" rel="noopener">Delegator<span>24</span></a>
+      <span class="step" id="hStep"></span>
+    </div>
+    <nav class="tabs" id="tabs">
+      <a class="tab" href="#quality" style="--c:#4a94f0" data-code="quality"><i></i>Сделают хуже</a>
+      <a class="tab" href="#control" style="--c:#3ec9b8" data-code="control"><i></i>Контроль</a>
+      <a class="tab" href="#faster" style="--c:#ffa94d" data-code="faster"><i></i>Быстрее самому</a>
+      <a class="tab" href="#irreplace" style="--c:#a78bfa" data-code="irreplace"><i></i>Без меня встанет</a>
+      <a class="tab" href="#how" style="--c:#a4d65e" data-code="how"><i></i>С чего начать</a>
+      <a class="tab tab-plan" href="#plan" style="--c:#4a94f0" data-code="plan"><i></i>План</a>
+    </nav>
+  </div>
+  <div class="progress"><i id="prog"></i></div>
+</header>
+
+<div class="wrap">
+
+  <section class="hero">
+    <span class="kicker">Рабочая тетрадь</span>
+    <h1>Механика делегирования</h1>
+    <p class="lead">Не текст для чтения. <b>Пять инструментов, которые заполняются прямо здесь</b> — и вы уходите с готовым заданием, посчитанной ценой своего времени и планом на неделю.</p>
+
+    <div class="mine-note" id="mine">
+      <span class="ic">→</span>
+      <div>
+        <b>ВАШ СТОП-ФАКТОР ПО ТЕСТУ</b>
+        <span id="mineText"></span>
+      </div>
+    </div>
+  </section>
+
+  <section class="core">
+    <h2>Сначала — общее. Механика одна для всех пяти страхов</h2>
+    <p class="sub">Что бы вас ни останавливало, передача задачи всегда состоит из этих четырех шагов. Дальше в каждом разделе — только то, что специфично для вашего случая.</p>
+    <div class="steps">
+      <div class="step-c">
+        <div class="n">ШАГ 1</div>
+        <h3>Описать</h3>
+        <p>Результат, критерии готовности, ограничения, что приложено</p>
+      </div>
+      <div class="step-c">
+        <div class="n">ШАГ 2</div>
+        <h3>Сверить</h3>
+        <p>Человек пересказывает задачу своими словами. 5 минут в начале</p>
+      </div>
+      <div class="step-c">
+        <div class="n">ШАГ 3</div>
+        <h3>Черновик</h3>
+        <p>Смотрите на середине, а не в конце. Разворот стоит дешево</p>
+      </div>
+      <div class="step-c">
+        <div class="n">ШАГ 4</div>
+        <h3>Принять</h3>
+        <p>По своим критериям, галочками. Не «нравится», а «соответствует»</p>
+      </div>
+    </div>
+    <div class="tail">Самый важный — <b>второй</b>. Большинство провалов не «плохо сделал», а «сделал не то»: ошибка рождается в первые полчаса, а вскрывается в последние. Пять минут сверки в начале снимают почти все такие истории.</div>
+  </section>
+
+  <section class="part" id="quality" data-num="1" style="--c:#4a94f0">
+    <div class="part-head">
+      <div class="part-num">1</div>
+      <h2>Страх, что сделают хуже</h2>
+    </div>
+    <p class="recog">Кажется, что никто не сделает так, как вы. Отдаете — получаете не то, переделываете, убеждаетесь в своей правоте.</p>
+
+    <div class="flip">
+      <h3>Переворот</h3>
+      <p><strong>«Сделают хуже» — почти никогда не про исполнителя.</strong> Это про то, что «хорошо» существует только у вас в голове. Нигде не записано — значит проверить невозможно, и любой результат кажется не таким.</p>
+      <p>Проверьте прямо сейчас: возьмите задачу, которую боитесь передать, и ответьте одним предложением — <strong>по какому признаку вы поймете, что она сделана хорошо?</strong> Если ответ дается с трудом, дело не в людях. Критерия просто нет.</p>
+    </div>
+
+    <h3>Как получить критерий, если он не формулируется</h3>
+    <p>Работает обратный ход: <strong>опишите провал</strong>. Что должно быть в работе, чтобы вы точно сказали «нет»? Недовольство формулируется легко. А теперь переверните его.</p>
+
+    <table>
+      <tr><th>Что раздражает</th><th>Критерий, который из этого следует</th></tr>
+      <tr><td>«Слишком много воды»</td><td>В каждом абзаце цифра или факт</td></tr>
+      <tr><td>«Не наш тон»</td><td>Без превосходных степеней, обращение на «вы»</td></tr>
+      <tr><td>«Не то, что я просил»</td><td>Первый экран отвечает на вопрос клиента из письма</td></tr>
+    </table>
+
+    <div class="tool">
+      <div class="tool-h"><span class="badge">Инструмент</span><h3>Конструктор задания</h3></div>
+      <p class="hint">Заполняйте — задание собирается справа само. Проверю критерии: если по ним нельзя принять работу, скажу.</p>
+
+      <div class="tool-grid">
+        <div class="tool-in">
+          <!-- выбранная в разделе 5 задача предлагается основой: не переписывать же ее руками -->
+          <div class="q-from" id="qFrom"></div>
+          <div class="f">
+            <label for="q_res">Что должно получиться <span class="tip">существительным, не глаголом</span></label>
+            <input id="q_res" placeholder="Презентация на 8 слайдов в PDF">
+          </div>
+          <div class="f">
+            <label for="q_who">Для кого и зачем <span class="tip">иначе исполнитель угадывает тон</span></label>
+            <input id="q_who" placeholder="Собственнику из стройки, сомневается в цене">
+          </div>
+          <div class="f">
+            <label for="q_crit">Сделано — это когда… <span class="tip">по одному критерию на строку</span></label>
+            <textarea id="q_crit" placeholder="Есть расчет экономии против штатного&#10;Есть отзыв из той же отрасли&#10;В каждом блоке цифра, а не общие слова"></textarea>
+          </div>
+          <div class="warn-inline" id="q_warn"></div>
+          <div class="f">
+            <label for="q_no">Чего делать нельзя</label>
+            <input id="q_no" placeholder="Не обещать сроки, не называть скидку">
+          </div>
+          <div class="row2">
+            <div class="f">
+              <label for="q_att">Что приложено</label>
+              <input id="q_att" placeholder="Доступ к диску, прошлая презентация">
+            </div>
+            <div class="f">
+              <label for="q_date">Срок <span class="tip">дата</span></label>
+              <input id="q_date" placeholder="четверг, 18:00">
+            </div>
+          </div>
+        </div>
+
+        <div class="tool-res">
+          <div class="res-cap">Готовое задание</div>
+          <div class="out" id="q_out"></div>
+          <div class="miss" id="q_miss"></div>
+          <div class="btn-row">
+            <button class="btn" onclick="копировать('q_out',this)">Скопировать</button>
+            <button class="btn ghost" onclick="сброситьЗадание()">Очистить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="lib">
+      <div class="lib-h">Готовые критерии — нажмите, чтобы добавить в задание</div>
+      <p class="lib-p">Самое сложное — сформулировать первый. Возьмите похожий и подправьте под себя.</p>
+
+      <div class="lib-g">
+        <div class="lib-c">
+          <div class="lib-t">Работа с клиентом</div>
+          <button class="chip" data-crit="Ответ ушел в течение 2 часов в рабочее время">Ответ в течение 2 часов</button>
+          <button class="chip" data-crit="В ответе есть отсылка к тому, что человек написал сам, а не только шаблон">Не шаблон вслепую</button>
+          <button class="chip" data-crit="В CRM заполнены все поля: имя, телефон, источник, суть задачи">Все поля в CRM заполнены</button>
+        </div>
+
+        <div class="lib-c">
+          <div class="lib-t">Документ или текст</div>
+          <button class="chip" data-crit="В каждом абзаце есть цифра или факт, общих слов нет">Цифра в каждом абзаце</button>
+          <button class="chip" data-crit="Первый экран отвечает на вопрос, который задал клиент">Отвечает на вопрос клиента</button>
+          <button class="chip" data-crit="Проверено по чек-листу: имена, суммы, даты, реквизиты">Имена, суммы, даты проверены</button>
+        </div>
+
+        <div class="lib-c">
+          <div class="lib-t">Отчет и цифры</div>
+          <button class="chip" data-crit="Цифры сходятся с источником: выгрузка приложена">Цифры сходятся с источником</button>
+          <button class="chip" data-crit="Отклонения больше 10% отмечены и объяснены">Отклонения объяснены</button>
+          <button class="chip" data-crit="Есть вывод одной строкой: что это значит">Есть вывод одной строкой</button>
+        </div>
+
+        <div class="lib-c">
+          <div class="lib-t">Поиск и подбор</div>
+          <button class="chip" data-crit="Собрано не меньше 3 вариантов с ценой и сроком">Минимум 3 варианта с ценой</button>
+          <button class="chip" data-crit="По каждому варианту есть ссылка и контакт">Ссылка и контакт по каждому</button>
+          <button class="chip" data-crit="Явно неподходящие отсеяны, причина отсева указана">Отсев с объяснением</button>
+        </div>
+      </div>
+    </div>
+    <h3>Перед тем как отдать</h3>
+    <ul class="check">
+      <li><label><input type="checkbox" id="ch_q1"><span class="bx"></span><span>Критерии готовности записаны — их можно проверить галочкой</span></label></li>
+      <li><label><input type="checkbox" id="ch_q2"><span class="bx"></span><span>Указано, чего делать нельзя</span></label></li>
+      <li><label><input type="checkbox" id="ch_q3"><span class="bx"></span><span>Приложен пример «как надо»</span></label></li>
+      <li><label><input type="checkbox" id="ch_q4"><span class="bx"></span><span>Назначена сверка понимания — в начале, а не в конце</span></label></li>
+    </ul>
+    <div class="step-now">
+      <div class="sn-h">Что сделать сегодня</div>
+      <p>Не отдавайте сразу важное. Возьмите одну повторяющуюся задачу и составьте короткий эталон «как надо» — именно стандарт, а не человек, защищает качество при передаче.</p>
+    </div>
+
+    <div class="d24">
+      <div class="d24-h">А это можно не делать самому</div>
+      <p>Регламент под вашу задачу, двойной контроль (исполнитель и куратор), правки до результата и замена специалиста, если не подошел. Вы не остаетесь один на один с плохой работой.</p>
+      <a class="d24-go" href="https://t.me/Delegator24_bot?start=material" target="_blank" rel="noopener">Обсудить свою задачу</a>
+    </div>
+    <a class="next" href="#control">
+      <span class="next-cap">Следующий шаг</span>
+      <span class="next-t">Настройте контроль</span>
+      <span class="next-w">Задание готово. Теперь решите, в каких точках будете смотреть работу, — иначе снова придется проверять каждый шаг.</span>
+    </a>
+  </section>
+
+  <section class="part" id="control" data-num="2" style="--c:#3ec9b8">
+    <div class="part-head">
+      <div class="part-num">2</div>
+      <h2>Страх потерять контроль</h2>
+    </div>
+    <p class="recog">Пока смотрите — спокойно. Перестали смотреть — кажется, что все посыплется. Поэтому смотрите постоянно.</p>
+
+    <div class="flip">
+      <h3>Переворот</h3>
+      <p><strong>Контроль и наблюдение — не одно и то же.</strong> Наблюдение требует вашего времени постоянно. Контроль — в нескольких точках, и дает ту же уверенность.</p>
+      <p>Страх честный: если перестать смотреть, а система не отдает сигналы, вы действительно ослепнете. Значит вопрос не «смотреть или довериться», а <strong>какие сигналы должны приходить сами</strong>.</p>
+    </div>
+
+    <div class="tool">
+      <div class="tool-h"><span class="badge">Инструмент</span><h3>Соберите систему контроля</h3></div>
+      <p class="hint">Три ответа — и я соберу набор точек, формат отчета и список тревожных сигналов под вашу задачу.</p>
+
+      <div class="row3">
+        <div class="f">
+          <label for="k_kind">Задача</label>
+          <select id="k_kind">
+            <option value="">выберите…</option>
+            <option value="разовая">Разовая</option>
+            <option value="регулярная">Регулярная</option>
+          </select>
+        </div>
+        <div class="f">
+          <label for="k_risk">Цена ошибки</label>
+          <select id="k_risk">
+            <option value="">выберите…</option>
+            <option value="низкая">Низкая — переделаем</option>
+            <option value="высокая">Высокая — увидит клиент, потеряем деньги</option>
+          </select>
+        </div>
+        <div class="f">
+          <label for="k_exp">Исполнитель</label>
+          <select id="k_exp">
+            <option value="">выберите…</option>
+            <option value="впервые">Делает это впервые</option>
+            <option value="делал">Уже делал похожее</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="res" id="k_out"></div>
+    </div>
+
+    <div class="tool">
+      <div class="tool-h"><span class="badge">Инструмент</span><h3>Границы решений</h3></div>
+      <p class="hint">Половина вопросов к вам исчезает, когда заранее сказано, что можно решать без вас. Заполните — получите документ для команды.</p>
+
+      <div class="tool-grid">
+        <div class="tool-in">
+          <div class="f">
+            <label for="c_self">Решай сам, не спрашивая</label>
+            <textarea id="c_self" placeholder="Формулировки и порядок работы&#10;Траты до 3000 рублей&#10;Перенос внутренних сроков в пределах дня"></textarea>
+          </div>
+          <div class="f">
+            <label for="c_ask">Согласуй со мной</label>
+            <textarea id="c_ask" placeholder="Все, что уходит клиенту от нашего имени&#10;Траты выше 3000 рублей"></textarea>
+          </div>
+          <div class="f">
+            <label for="c_me">Только я</label>
+            <textarea id="c_me" placeholder="Цена, скидки, обещания клиенту&#10;Наем и увольнение"></textarea>
+          </div>
+        </div>
+        <div class="tool-res">
+          <div class="res-cap">Документ для команды</div>
+          <div class="out" id="c_out"></div>
+          <div class="btn-row">
+            <button class="btn" onclick="копировать('c_out',this)">Скопировать</button>
+            <button class="btn ghost" onclick="сброситьГраницы()">Очистить</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <h3>Контроль настроен, если</h3>
+    <ul class="check">
+      <li><label><input type="checkbox" id="ch_c1"><span class="bx"></span><span>Список задач и сроки видны в одном месте без запроса</span></label></li>
+      <li><label><input type="checkbox" id="ch_c2"><span class="bx"></span><span>Отчет отвечает на «что закрыто / что в работе / где застрял»</span></label></li>
+      <li><label><input type="checkbox" id="ch_c3"><span class="bx"></span><span>Названы границы решений</span></label></li>
+      <li><label><input type="checkbox" id="ch_c4"><span class="bx"></span><span>Между точками я не пишу «как дела?» — и мне спокойно</span></label></li>
+    </ul>
+    <div class="step-now">
+      <div class="sn-h">Что сделать сегодня</div>
+      <p>Задайте одну контрольную точку, по которой поймете, что задача идет верно: ежедневный статус или фото результата. Контроль — это точка, а не участие в процессе.</p>
+    </div>
+
+    <div class="d24">
+      <div class="d24-h">А это можно не делать самому</div>
+      <p>Контрольные точки, отчетность и куратор, который держит процесс. Вы видите прогресс в любой момент: контроль остается в системе, а не в ваших руках.</p>
+      <a class="d24-go" href="https://t.me/Delegator24_bot?start=material" target="_blank" rel="noopener">Обсудить свою задачу</a>
+    </div>
+    <a class="next" href="#irreplace">
+      <span class="next-cap">Следующий шаг</span>
+      <span class="next-t">Проверьте, что еще завязано на вас</span>
+      <span class="next-w">Контроль настроен. Теперь посмотрите, что кроме этой задачи держится только на вас, — карта покажет, что снимать следующим.</span>
+    </a>
+  </section>
+
+  <section class="part" id="faster" data-num="3" style="--c:#ffa94d">
+    <div class="part-head">
+      <div class="part-num">3</div>
+      <h2>«Пока объяснишь — сам сделаешь»</h2>
+    </div>
+    <p class="recog">Передача кажется дороже самой задачи. Проще сделать, чем объяснять. И так каждый раз.</p>
+
+    <div class="flip">
+      <h3>Переворот</h3>
+      <p><strong>Это правда ровно один раз — в первый.</strong> Дальше фраза работает против вас.</p>
+      <p>Ловушка в подмене: вы сравниваете время на объяснение с временем на <em>одну</em> задачу. А сравнивать надо со <strong>всеми ее повторами за год</strong>.</p>
+    </div>
+
+    <div class="tool">
+      <div class="tool-h"><span class="badge">Инструмент</span><h3>Сколько стоит делать это самому</h3></div>
+      <p class="hint">Возьмите задачу, которую делаете сами именно по этой причине.</p>
+
+      <div class="row3">
+        <div class="f">
+          <label for="f_times">Раз в месяц</label>
+          <input id="f_times" type="number" min="1" placeholder="8">
+        </div>
+        <div class="f">
+          <label for="f_mins">Минут за раз</label>
+          <input id="f_mins" type="number" min="1" placeholder="40">
+        </div>
+        <div class="f">
+          <label for="f_rate">Ваш час, ₽ <span class="tip">по вашей оценке</span></label>
+          <input id="f_rate" type="number" min="0" placeholder="3000">
+        </div>
+      </div>
+      <div class="calc-out" id="f_out"></div>
+    </div>
+
+    <h3>Объяснять долго — потому что вы объясняете не так</h3>
+    <p>Час уходит не на передачу знаний, а на попытку <strong>предусмотреть все случаи заранее</strong> — написать регламент на любой вопрос. Это долго и обычно бесполезно: половина не пригодится, а нужное все равно спросят.</p>
+    <p>Работает обратный порядок: <strong>объясните минимум, остальное достройте на первых прогонах.</strong> Тогда объяснение занимает не час, а три минуты — голосом.</p>
+
+    <div class="flip">
+      <h3>Три минуты голосом: структура</h3>
+      <p><strong>0:00–0:30 — что должно получиться.</strong> «Счет клиенту в PDF, отправлен на почту, запись в таблице оплат».</p>
+      <p><strong>0:30–1:30 — как это делаю я.</strong> Проговорите свои шаги вслух, как есть. Не причесывайте.</p>
+      <p><strong>1:30–2:15 — где обычно ошибаются.</strong> Здесь ваш опыт, которого нет ни в одном регламенте. Экономит больше всего.</p>
+      <p><strong>2:15–3:00 — что прикладываю.</strong> Доступы, шаблон, пример готовой работы.</p>
+    </div>
+
+    <div class="warn">
+      <h3>Расшифровываете не вы</h3>
+      <p>Исполнитель сам превращает запись в пошаговую инструкцию и присылает на сверку. Вы читаете и правите — это пять минут: править чужое быстрее, чем писать свое. <strong>Расхождение в расшифровке — ровно то место, где потом была бы переделка.</strong></p>
+      <p>Дальше инструкция живет без вас. Следующему человеку вы уже не объясняете ничего — просто даете ссылку.</p>
+    </div>
+    <div class="step-now">
+      <div class="sn-h">Что сделать сегодня</div>
+      <p>Один раз запишите голосом или видео, как вы делаете самую частую задачу. Это разовое «объяснить», которое окупается каждый следующий раз.</p>
+    </div>
+
+    <div class="d24">
+      <div class="d24-h">А это можно не делать самому</div>
+      <p>Мы снимаем само «объяснить»: куратор превращает ваш голосовой или сумбур в ТЗ, подбирает исполнителя и ставит контроль. Регламенты писать не нужно.</p>
+      <a class="d24-go" href="https://t.me/Delegator24_bot?start=material" target="_blank" rel="noopener">Обсудить свою задачу</a>
+    </div>
+    <a class="next" href="#quality">
+      <span class="next-cap">Следующий шаг</span>
+      <span class="next-t">Опишите задачу за три минуты</span>
+      <span class="next-w">Вы посчитали, во сколько обходится делать самому. Теперь соберите задание — конструктор сделает это за вас.</span>
+    </a>
+  </section>
+
+  <section class="part" id="irreplace" data-num="4" style="--c:#a78bfa">
+    <div class="part-head">
+      <div class="part-num">4</div>
+      <h2>«Без меня все встанет»</h2>
+    </div>
+    <p class="recog">Слишком много завязано на вас. Кажется, что это надежно.</p>
+
+    <div class="flip">
+      <h3>Переворот</h3>
+      <p><strong>Звучит как надежность, а на деле это потолок и риск.</strong> Бизнес не может вырасти больше, чем вы успеваете. И вы не можете заболеть, уехать или просто устать.</p>
+      <p>Причем чаще всего незаменимость не настоящая, а <strong>накопленная</strong>: когда-то было быстрее сделать самому — и так тридцать раз подряд.</p>
+    </div>
+
+    <div class="tool">
+      <div class="tool-h"><span class="badge">Инструмент</span><h3>Карта незаменимости</h3></div>
+      <p class="hint">Что развалится, если вы уедете на две недели без связи? Не «будет тяжело», а именно развалится. Выпишите и определите тип — соберу план разгрузки.</p>
+
+      <div class="map-head">
+        <span>Что встанет</span><span>Почему завязано на вас</span><span>Тип</span><span></span>
+      </div>
+      <div id="map"></div>
+      <div class="btn-row">
+        <button class="btn ghost" onclick="добавитьСтроку()">+ Еще строка</button>
+      </div>
+
+      <table class="types">
+        <tr><td><b>Доступ</b></td><td>права есть только у вас</td></tr>
+        <tr><td><b>Канал</b></td><td>пишут лично вам</td></tr>
+        <tr><td><b>Знание</b></td><td>есть только у вас в голове</td></tr>
+        <tr><td><b>Полномочия</b></td><td>цена, обязательства, люди, стратегия</td></tr>
+      </table>
+
+      <div class="res" id="m_sum"></div>
+    </div>
+
+    <div class="warn">
+      <h3>Ловушка «сначала наведу порядок, потом передам»</h3>
+      <p>Порядок не наступит: пока наводите в одном месте, накапливается в другом. Передавать нужно <strong>в текущем беспорядке</strong> — иначе не начнете никогда. И заметьте: сама передача и наводит порядок. Чтобы отдать задачу, ее приходится описать — обычно это первый раз, когда она вообще становится описанной.</p>
+    </div>
+
+    <h3>Разгружают с периферии, а не с ядра</h3>
+    <ol>
+      <li><strong>Сначала повторяемое и понятное:</strong> счета, отчеты, переписка, сбор данных. Ошибка дешева, времени высвобождает много</li>
+      <li><strong>Потом то, что требует контекста:</strong> работа с клиентами по вашим правилам, подготовка материалов</li>
+      <li><strong>Ядро не трогаем:</strong> решения, отношения, стратегия. Это не то, от чего избавляются, — это то, ради чего вы освобождаете время</li>
+    </ol>
+    <div class="step-now">
+      <div class="sn-h">Что сделать сегодня</div>
+      <p>Разделите день на «только я» (стратегия, решения, отношения) и «справится другой» (почта, согласования, отчеты). Разгружать начинайте со второй половины — ядро не трогаем.</p>
+    </div>
+
+    <div class="d24">
+      <div class="d24-h">А это можно не делать самому</div>
+      <p>Начинаем не с ядра, а с периферии: снимаем рутину, которая не требует лично вас, и освобождаем вас для того, где вы действительно незаменимы — стратегия, ключевые решения, отношения.</p>
+      <a class="d24-go" href="https://t.me/Delegator24_bot?start=material" target="_blank" rel="noopener">Обсудить свою задачу</a>
+    </div>
+    <a class="next" href="#plan">
+      <span class="next-cap">Следующий шаг</span>
+      <span class="next-t">Соберите план на руки</span>
+      <span class="next-w">Карта готова. Итоговый план соберет все, что вы заполнили, и покажет, чего не хватает до передачи первой задачи.</span>
+    </a>
+  </section>
+
+  <section class="part" id="how" data-num="5" style="--c:#a4d65e">
+    <div class="part-head">
+      <div class="part-num">5</div>
+      <h2>Непонятно, как и с чего начать</h2>
+    </div>
+    <p class="recog">Дело не в задачах и не в людях: у передачи просто нет очевидной механики. Ее нигде не показывают.</p>
+
+    <div class="flip">
+      <h3>Переворот</h3>
+      <p><strong>Механика есть — она в начале этой тетради, четыре шага.</strong> Не хватает только первого прогона: одного раза, после которого вы будете передавать задачи не задумываясь.</p>
+      <p>Весь вопрос — <strong>с какой задачи начать</strong>. Инстинкт тянет к самой тяжелой: «раз уж делегировать, то то, что больше всего мучает». Это ошибка — она провалится, и вы решите, что делегирование не работает.</p>
+    </div>
+
+    <div class="tool">
+      <div class="tool-h"><span class="badge">Инструмент</span><h3>Что вообще передают</h3></div>
+      <p class="hint">Самый частый затык — не «как», а «что». Собственник смотрит на свой день и не видит, что из этого можно отдать. Пройдите список и отметьте то, что делаете сами.</p>
+
+      <div class="zg">
+        <div class="zg-h">Деньги и документы</div>
+        <ul class="check z">
+          <li><label><input type="checkbox" id="z1"><span class="bx"></span><span>Выставление счетов и актов</span></label></li>
+          <li><label><input type="checkbox" id="z2"><span class="bx"></span><span>Сверки, напоминания об оплате</span></label></li>
+          <li><label><input type="checkbox" id="z3"><span class="bx"></span><span>Договоры по шаблону, отправка на подпись</span></label></li>
+          <li><label><input type="checkbox" id="z4"><span class="bx"></span><span>Сбор цифр для отчета</span></label></li>
+        </ul>
+      </div>
+
+      <div class="zg">
+        <div class="zg-h">Клиенты</div>
+        <ul class="check z">
+          <li><label><input type="checkbox" id="z5"><span class="bx"></span><span>Обработка входящих заявок</span></label></li>
+          <li><label><input type="checkbox" id="z6"><span class="bx"></span><span>Ответы на типовые вопросы</span></label></li>
+          <li><label><input type="checkbox" id="z7"><span class="bx"></span><span>Напоминания, подтверждения встреч</span></label></li>
+          <li><label><input type="checkbox" id="z8"><span class="bx"></span><span>Сбор отзывов после сделки</span></label></li>
+        </ul>
+      </div>
+
+      <div class="zg">
+        <div class="zg-h">Ваш день</div>
+        <ul class="check z">
+          <li><label><input type="checkbox" id="z9"><span class="bx"></span><span>Разбор почты, фильтрация важного</span></label></li>
+          <li><label><input type="checkbox" id="z10"><span class="bx"></span><span>Согласование календаря, перенос встреч</span></label></li>
+          <li><label><input type="checkbox" id="z11"><span class="bx"></span><span>Поиск информации, подготовка справок</span></label></li>
+          <li><label><input type="checkbox" id="z12"><span class="bx"></span><span>Travel: билеты, гостиницы, маршруты</span></label></li>
+        </ul>
+      </div>
+
+      <div class="zg">
+        <div class="zg-h">Подрядчики и найм</div>
+        <ul class="check z">
+          <li><label><input type="checkbox" id="z13"><span class="bx"></span><span>Поиск подрядчиков, сбор коммерческих</span></label></li>
+          <li><label><input type="checkbox" id="z14"><span class="bx"></span><span>Отсмотр откликов, отсев явно не тех</span></label></li>
+          <li><label><input type="checkbox" id="z15"><span class="bx"></span><span>Контроль сроков по подрядчикам</span></label></li>
+        </ul>
+      </div>
+
+      <div class="zg">
+        <div class="zg-h">Маркетинг и контент</div>
+        <ul class="check z">
+          <li><label><input type="checkbox" id="z16"><span class="bx"></span><span>Оформление и публикация постов</span></label></li>
+          <li><label><input type="checkbox" id="z17"><span class="bx"></span><span>Сбор статистики по рекламе</span></label></li>
+          <li><label><input type="checkbox" id="z18"><span class="bx"></span><span>Простой дизайн по шаблону</span></label></li>
+        </ul>
+      </div>
+
+      <div class="zg">
+        <div class="zg-h">Свои задачи — которых нет в списке</div>
+        <div class="zadd">
+          <input class="zadd-in" id="zAdd" placeholder="Впишите задачу и нажмите Enter">
+          <button class="btn ghost" id="zAddBtn" type="button">Добавить</button>
+        </div>
+        <ul class="zc-list" id="zCustom"></ul>
+      </div>
+
+      <div class="res" id="z_out"></div>
+    </div>
+    <div class="tool">
+      <div class="tool-h"><span class="badge">Инструмент</span><h3>С какой задачи начать</h3></div>
+      <p class="hint">Считаю, сколько времени высвободит каждая и чем рискуете, — и объясняю выбор.</p>
+
+      <!-- Отмеченное выше подставляется сюда одним нажатием: не надо помнить
+           и перепечатывать — список и выбор связаны. -->
+      <div class="pick" id="hPick"></div>
+      <div class="pick-note" id="hPickNote"></div>
+
+      <div class="cand">
+        <div class="f"><label for="h_n1">Задача 1</label><input id="h_n1" placeholder="Обработка входящих заявок"></div>
+        <div class="row3">
+          <div class="f"><label for="h_r1">Раз в месяц</label><input id="h_r1" type="number" min="0" placeholder="20"></div>
+          <div class="f"><label for="h_m1">Минут за раз</label><input id="h_m1" type="number" min="0" placeholder="15"></div>
+          <div class="f flags">
+            <label class="mini"><input type="checkbox" id="h_risk1"><span class="bx"></span><span>Ошибка дорогая</span></label>
+            <label class="mini"><input type="checkbox" id="h_clear1"><span class="bx"></span><span>Знаю, как проверю результат</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="cand">
+        <div class="f"><label for="h_n2">Задача 2</label><input id="h_n2" placeholder="Выставление счетов"></div>
+        <div class="row3">
+          <div class="f"><label for="h_r2">Раз в месяц</label><input id="h_r2" type="number" min="0" placeholder="8"></div>
+          <div class="f"><label for="h_m2">Минут за раз</label><input id="h_m2" type="number" min="0" placeholder="20"></div>
+          <div class="f flags">
+            <label class="mini"><input type="checkbox" id="h_risk2"><span class="bx"></span><span>Ошибка дорогая</span></label>
+            <label class="mini"><input type="checkbox" id="h_clear2"><span class="bx"></span><span>Знаю, как проверю результат</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="cand">
+        <div class="f"><label for="h_n3">Задача 3</label><input id="h_n3" placeholder="Сбор цифр для отчета"></div>
+        <div class="row3">
+          <div class="f"><label for="h_r3">Раз в месяц</label><input id="h_r3" type="number" min="0" placeholder="4"></div>
+          <div class="f"><label for="h_m3">Минут за раз</label><input id="h_m3" type="number" min="0" placeholder="60"></div>
+          <div class="f flags">
+            <label class="mini"><input type="checkbox" id="h_risk3"><span class="bx"></span><span>Ошибка дорогая</span></label>
+            <label class="mini"><input type="checkbox" id="h_clear3"><span class="bx"></span><span>Знаю, как проверю результат</span></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="res" id="h_out"></div>
+    </div>
+
+    <div class="warn">
+      <h3>Главное правило первого прогона</h3>
+      <p><strong>Не делайте выводов о делегировании по первой задаче.</strong> Первый прогон — это не проверка человека, а отладка вашего описания. Сделают не то — значит критерии подразумевались, а не были записаны. Спросят «очевидное» — значит оно не очевидно, и это дырка в задании.</p>
+      <p>Выводы делают на третьей задаче, а не на первой.</p>
+    </div>
+
+    <div class="case">
+      <div class="case-h">Как это выглядит вживую: одна задача за месяц</div>
+      <p class="case-sub">Выставление счетов, передано ассистенту. Хронология типовая — почти любая первая передача проходит так.</p>
+      <div class="case-t">
+        <div class="case-i"><b>День 1 · 3 минуты</b><span>Голосовое по структуре из раздела 3: что должно получиться, как я это делаю, где обычно ошибаются, что прикладываю.</span></div>
+        <div class="case-i"><b>День 2 · 15 минут</b><span>Исполнитель расшифровал запись в инструкцию и прислал на сверку. Всплыли два расхождения — про номер счета и шаблон. Поправили до работы, а не после.</span></div>
+        <div class="case-i"><b>Неделя 1</b><span>Первый счет: черновик показан на середине, одна правка — реквизиты не из того шаблона. Это не провал, это отладка описания.</span></div>
+        <div class="case-i"><b>Неделя 2</b><span>Второй прогон без правок. Приемка по трем критериям из задания — галочками, за пять минут.</span></div>
+        <div class="case-i ok"><b>Неделя 4</b><span>Задача больше не ваша. Инструкцию ведет исполнитель и сам ее дописывает. Вы видите строку в отчете: «выставлено 8, оплачено 6, по одному нужна ваша скидка».</span></div>
+      </div>
+    </div>
+
+    <h3>Задача передана насовсем, если</h3>
+    <ul class="check">
+      <li><label><input type="checkbox" id="ch_h1"><span class="bx"></span><span>Я не помню, когда последний раз делал ее сам</span></label></li>
+      <li><label><input type="checkbox" id="ch_h2"><span class="bx"></span><span>Вопросы по ней приходят реже раза в неделю</span></label></li>
+      <li><label><input type="checkbox" id="ch_h3"><span class="bx"></span><span>Есть инструкция, которую ведет исполнитель — и правит без меня</span></label></li>
+      <li><label><input type="checkbox" id="ch_h4"><span class="bx"></span><span>Следующему человеку я дам ссылку, а не буду объяснять заново</span></label></li>
+      <li><label><input type="checkbox" id="ch_h5"><span class="bx"></span><span>Я проверяю результат, а не процесс</span></label></li>
+    </ul>
+    <div class="step-now">
+      <div class="sn-h">Что сделать сегодня</div>
+      <p>Выберите одну задачу и пройдите передачу по шагам: опишите как умеете, превращаем в ТЗ, ставим контроль. Один прогон научит механике на будущее.</p>
+    </div>
+
+    <div class="d24">
+      <div class="d24-h">А это можно не делать самому</div>
+      <p>Механика у нас готова: вы описываете задачу как умеете, куратор оформляет ТЗ, подбирает специалиста и ставит контроль. Вам не нужно становиться экспертом по делегированию.</p>
+      <a class="d24-go" href="https://t.me/Delegator24_bot?start=material" target="_blank" rel="noopener">Обсудить свою задачу</a>
+    </div>
+    <a class="next" href="#faster">
+      <span class="next-cap">Следующий шаг</span>
+      <span class="next-t">Посчитайте цену этой задачи</span>
+      <span class="next-w">Задача выбрана. Теперь посчитайте, сколько она забирает у вас за год, — эта цифра и есть ответ на «проще сделать самому».</span>
+    </a>
+  </section>
+  <section class="part plan" id="plan" data-num="6" style="--c:#4a94f0">
+    <div class="part-head">
+      <div class="part-num">✓</div>
+      <h2>Ваш план передачи</h2>
+    </div>
+    <p class="recog">Все, что вы заполнили выше, собрано здесь. Скопируйте и отправьте помощнику — или распечатайте и держите под рукой.</p>
+
+    <div class="tool">
+      <div class="tool-h"><span class="badge">Итог</span><h3>Что у вас получилось</h3></div>
+      <p class="hint">Обновляется само. Пустые места подсказывают, куда вернуться.</p>
+
+      <div class="plan-grid" id="planGrid"></div>
+
+      <div class="btn-row">
+        <button class="btn" onclick="копировать('plan_out',this)">Скопировать план</button>
+        <button class="btn ghost" onclick="window.print()">Распечатать</button>
+      </div>
+      <div class="out" id="plan_out"></div>
+    </div>
+
+    <div class="d24">
+      <div class="d24-h">Разберем ваш план вместе</div>
+      <p>Пришлите его нам — посмотрим, что вы выбрали первой задачей, поправим критерии и подскажем, где обычно спотыкаются. Это бесплатно и ни к чему не обязывает.</p>
+      <a class="d24-go" href="https://t.me/Delegator24_bot?start=material" target="_blank" rel="noopener">Отправить план в Telegram</a>
+    </div>
+  </section>
+</div>
+
+<footer><div class="wrap">
+  © Delegator24 — аутсорс операционных задач для собственников бизнеса ·
+  <a href="https://delegator24.ru" target="_blank" rel="noopener">delegator24.ru</a>
+</div></footer>
+
+<div class="saved" id="toast">Сохранено</div>
+
+<script src="tools.js"></script>

@@ -1,0 +1,516 @@
+/* Механика делегирования — рабочая тетрадь.
+   Тёмная инверсия лендинга «Почему сам»: те же токены, вывернутые.
+   Светлый: --paper #f7faff / --card #fff / --ink #101820
+   Тёмный:  --paper #101820 / --card #182231 / текст #fff
+   Акцент и зелёный — фирменные, без изменений. */
+
+:root{
+ --paper:#0e151d;            /* фон страницы: темнее карточек */
+ --card:#182231;             /* поверхность карточки */
+ --card2:#1e2a3a;            /* вложенная поверхность */
+ --ink:#ffffff;
+ --ink2:#c2cbd7;             /* основной текст абзацев */
+ --muted:#8b96a5;
+ --faint:#6c7686;
+ --line:rgba(255,255,255,.09);
+ --line2:rgba(255,255,255,.16);
+ --accent:#4a94f0;           /* на темном фирменный синий поднят по яркости */
+ --accent-d:#307fe2;
+ --accent-soft:rgba(74,148,240,.14);
+ --green:#a4d65e;
+ --green-soft:rgba(164,214,94,.12);
+ --warn:#f0a56a;
+ --warn-soft:rgba(240,165,106,.10);
+ --disp:'Golos Text',system-ui,-apple-system,sans-serif;
+ --r:16px;
+ --r-lg:22px;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--disp);background:var(--paper);color:var(--ink);
+ font-size:16.5px;line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:820px;margin:0 auto;padding:0 24px}
+
+/* ── шапка ─────────────────────────────────────────────────────────────── */
+/* Фон плотный: при полупрозрачном сквозь шапку просвечивал текст страницы
+   и это читалось как обрезанный кусок сверху. */
+header{position:sticky;top:0;z-index:30;background:#0e151d;
+ backdrop-filter:saturate(180%) blur(14px);border-bottom:1px solid var(--line);
+ box-shadow:0 8px 24px -20px rgba(0,0,0,.9)}
+.hbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 0}
+.mark{font-size:16px;font-weight:700;color:#fff;text-decoration:none;letter-spacing:-.02em;
+ transition:opacity .2s}
+.mark span{color:var(--accent)}
+.mark:hover{opacity:.8}
+.hbar .step{font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums;min-height:19px}
+
+/* Горизонтальная прокрутка режет все, что выходит за края по вертикали.
+   Трех пикселей сверху не хватало: при масштабе больше 100% рамку срезало.
+   Даем запас с избытком — 10px сверху и 14px снизу. */
+.tabs{display:flex;gap:4px;overflow-x:auto;overflow-y:hidden;padding:10px 0 14px;
+ scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:none;display:flex;align-items:center;gap:6px;padding:7px 10px;border-radius:99px;
+ border:1px solid var(--line);background:rgba(255,255,255,.03);color:var(--muted);
+ font-size:13px;font-weight:500;text-decoration:none;white-space:nowrap;
+ transition:color .2s,border-color .2s,background .2s}
+.tab i{width:7px;height:7px;border-radius:99px;background:var(--c);flex:none;opacity:.5;
+ transition:opacity .2s,transform .2s}
+.tab:hover{color:#fff;border-color:var(--c);background:rgba(255,255,255,.07)}
+.tab:hover i{opacity:1;transform:scale(1.25)}
+.tab.on{color:#fff;border-color:var(--c);background:color-mix(in srgb,var(--c) 16%,transparent);
+ font-weight:600}
+.tab.on i{opacity:1}
+.tab.mine::after{content:"ваш";font-size:10.5px;font-weight:700;color:var(--c);opacity:.85}
+
+.progress{height:2px;background:transparent}
+.progress i{display:block;height:100%;width:0;background:var(--accent);transition:width .12s linear}
+
+/* ── обложка ───────────────────────────────────────────────────────────── */
+.hero{padding:70px 0 44px;max-width:660px}
+.kicker{display:inline-block;font-size:12.5px;font-weight:600;color:var(--accent);
+ background:var(--accent-soft);padding:6px 13px;border-radius:99px;margin-bottom:20px}
+h1{font-size:clamp(33px,5.2vw,47px);font-weight:800;letter-spacing:-.035em;line-height:1.07;
+ margin-bottom:18px}
+.lead{font-size:18.5px;color:var(--ink2);line-height:1.55}
+.lead b{color:var(--ink);font-weight:600}
+
+.mine-note{display:none;align-items:center;gap:14px;background:var(--card);
+ border:1px solid var(--line);border-left:3px solid var(--accent);border-radius:var(--r);
+ padding:16px 20px;margin-top:28px}
+.mine-note.on{display:flex}
+.mine-note .ic{display:none}
+.mine-note b{display:block;font-size:12.5px;color:var(--muted);font-weight:500;margin-bottom:2px}
+.mine-note span{font-size:16.5px;color:var(--ink);font-weight:600}
+
+/* ── механика: светлая карточка на темном — инверсия «cta» с лендинга ──── */
+.core{background:var(--card);border:1px solid var(--line);border-radius:var(--r-lg);
+ padding:36px 34px;margin:20px 0 80px}
+.core h2{font-size:23px;font-weight:700;letter-spacing:-.02em;margin-bottom:8px;color:#fff}
+.core .sub{color:var(--muted);font-size:15.5px;margin-bottom:28px;max-width:540px}
+.steps{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+.step-c{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:var(--r);
+ padding:18px 16px}
+.step-c .n{font-size:11.5px;font-weight:700;color:var(--accent);margin-bottom:8px;letter-spacing:.04em}
+.step-c h3{font-size:15.5px;font-weight:700;color:#fff;margin:0 0 6px}
+.step-c p{font-size:13.5px;color:var(--muted);margin:0;line-height:1.5}
+.core .tail{margin-top:26px;padding-top:22px;border-top:1px solid var(--line);
+ font-size:15px;color:var(--ink2);max-width:620px}
+.core .tail b{color:#fff;font-weight:600}
+
+/* ── режим вкладок: на экране один раздел, а не портянка ───────────────── */
+.tabbed .part{display:none}
+.tabbed .part.active{display:block}
+.tabbed .part+.part{border-top:none}   /* граница между разделами не нужна: виден один */
+
+/* ── раздел: у каждого свой цвет — он и отделяет их друг от друга ───────── */
+.part{scroll-margin-top:112px;padding:56px 0 76px;position:relative;isolation:isolate}
+.part+.part{border-top:1px solid var(--line)}
+/* мягкое свечение цвета раздела вверху — граница видна боковым зрением.
+   z-index -1: свечение под текстом, иначе перекрывает первые строки. */
+.part::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
+ width:min(820px,96%);height:220px;pointer-events:none;z-index:-1;
+ background:radial-gradient(ellipse 65% 100% at 50% 0%,
+   color-mix(in srgb,var(--c) 11%,transparent),transparent 72%)}
+
+.part-head{display:flex;align-items:center;gap:18px;margin-bottom:24px;position:relative}
+.part-num{flex:none;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
+ justify-content:center;font-size:18px;font-weight:800;color:var(--c);
+ background:color-mix(in srgb,var(--c) 14%,transparent);
+ border:1px solid color-mix(in srgb,var(--c) 32%,transparent);
+ box-shadow:0 0 24px -6px color-mix(in srgb,var(--c) 45%,transparent)}
+.part-head h2{font-size:clamp(24px,3.6vw,32px);font-weight:800;letter-spacing:-.03em;line-height:1.14}
+.recog{font-size:17.5px;color:var(--ink2);margin-bottom:28px;max-width:620px;position:relative}
+
+h3{font-size:17.5px;font-weight:700;margin:30px 0 11px;letter-spacing:-.01em;color:#fff}
+p{margin-bottom:14px;color:var(--ink2);max-width:680px}
+p strong,li strong{color:#fff;font-weight:600}
+ul,ol{margin:0 0 16px 22px;max-width:660px}
+li{margin-bottom:9px;color:var(--ink2)}
+
+/* переворот: карточка с полосой цвета раздела */
+.flip{background:var(--card);border:1px solid var(--line);border-top:2px solid var(--c);
+ border-radius:var(--r);padding:24px 26px;margin:24px 0;
+ transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s,border-color .25s}
+.flip:hover{transform:translateY(-2px);border-color:var(--line2);
+ box-shadow:0 18px 40px -24px color-mix(in srgb,var(--c) 60%,transparent)}
+.flip h3{margin:0 0 12px;font-size:14px;font-weight:700;color:var(--c);
+ letter-spacing:.04em;text-transform:uppercase}
+.flip p:last-child{margin-bottom:0}
+
+.warn{background:var(--warn-soft);border:1px solid rgba(240,165,106,.22);border-radius:var(--r);
+ padding:22px 24px;margin:24px 0}
+.warn h3{margin:0 0 9px;font-size:16px;color:var(--warn)}
+.warn p:last-child{margin-bottom:0}
+
+table{width:100%;border-collapse:collapse;margin:22px 0;font-size:15px}
+th{text-align:left;padding:11px 16px 11px 0;font-weight:600;color:var(--muted);font-size:13px;
+ border-bottom:1px solid var(--line2)}
+td{padding:14px 16px 14px 0;color:var(--ink2);border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:none}
+td b,td strong{color:#fff}
+
+/* ── инструмент: главный блок раздела ──────────────────────────────────── */
+.tool{background:var(--card);border:1px solid var(--line2);border-radius:var(--r-lg);padding:30px;
+ margin:34px 0;box-shadow:0 20px 50px -30px rgba(0,0,0,.7);position:relative;overflow:hidden;
+ transition:border-color .3s,box-shadow .3s}
+/* цветная нить сверху — сразу видно, к какому разделу инструмент */
+.tool::before{content:"";position:absolute;top:0;left:0;right:0;height:2px;
+ background:linear-gradient(90deg,var(--c),color-mix(in srgb,var(--c) 20%,transparent))}
+.tool:hover{border-color:color-mix(in srgb,var(--c) 40%,transparent);
+ box-shadow:0 26px 60px -34px color-mix(in srgb,var(--c) 70%,transparent)}
+.tool-h{margin-bottom:7px}
+.tool-h .badge{display:inline-block;font-size:11.5px;font-weight:700;color:var(--c);
+ background:color-mix(in srgb,var(--c) 14%,transparent);padding:4px 10px;border-radius:7px;
+ margin-bottom:10px;letter-spacing:.03em;text-transform:uppercase}
+.tool-h h3{margin:0;font-size:21px;font-weight:700;letter-spacing:-.02em;color:#fff}
+.tool>p.hint{color:var(--muted);font-size:15px;margin-bottom:24px;max-width:580px}
+
+.f{margin-bottom:17px}
+.f label{display:block;font-size:14px;font-weight:600;color:#fff;margin-bottom:7px}
+.f .tip{font-weight:400;color:var(--muted);font-size:13px}
+.f input,.f textarea,.f select,.map-row input,.map-row select{
+ width:100%;padding:12px 14px;border:1px solid var(--line2);border-radius:11px;
+ font:inherit;font-size:15px;color:#fff;background:rgba(255,255,255,.04);
+ transition:border-color .15s,box-shadow .15s,background .15s}
+.f input:focus,.f textarea:focus,.f select:focus,
+.map-row input:focus,.map-row select:focus{
+ outline:none;border-color:var(--c);background:rgba(255,255,255,.07);
+ box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 22%,transparent)}
+.f textarea{min-height:80px;resize:vertical;line-height:1.55}
+.f input::placeholder,.f textarea::placeholder,.map-row input::placeholder{color:var(--faint)}
+
+select,.map-row select{cursor:pointer;appearance:none;padding-right:36px;
+ background-image:url("data:image/svg+xml;charset=utf-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' fill='none'%3E%3Cpath d='M1 1l4 4 4-4' stroke='%238b96a5' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+ background-repeat:no-repeat;background-position:right 14px center}
+select option{background:#182231;color:#fff}
+
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:end}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px;align-items:end}
+/* подписи разной длины перестают ронять поля: ряд выравнивается по низу */
+.row2 .f,.row3 .f{margin-bottom:0}
+.row3 .f label,.row2 .f label{min-height:21px}
+
+.tool-grid{display:grid;grid-template-columns:1fr 1fr;gap:26px;align-items:start}
+.tool-res{position:sticky;top:112px}
+.res-cap{font-size:12.5px;font-weight:600;color:var(--muted);margin-bottom:10px}
+
+/* готовый текст: самый темный блок — контраст к карточке */
+.out{background:#0a1017;border:1px solid var(--line);color:#d5dce6;border-radius:12px;
+ padding:20px 22px;font-size:14px;line-height:1.7;white-space:pre-wrap;overflow-x:auto;
+ display:none;min-height:130px}
+.out.on{display:block}
+
+.miss{font-size:14px;color:var(--warn);margin-top:12px;display:none}
+.miss.on{display:block}
+.miss.ok{color:var(--green)}
+
+.warn-inline{display:none;font-size:14.5px;line-height:1.55;color:var(--ink2);
+ background:var(--warn-soft);border:1px solid rgba(240,165,106,.22);border-radius:11px;
+ padding:14px 16px;margin:0 0 17px}
+.warn-inline.on{display:block}
+.warn-inline b{color:var(--warn);font-weight:600}
+.warn-inline i{font-style:italic;color:var(--muted)}
+
+/* результат расчета */
+.res{display:none;margin-top:24px;padding-top:24px;border-top:1px solid var(--line)}
+.res.on{display:block}
+.res-h{font-size:19px;font-weight:700;color:#fff;margin-bottom:5px;letter-spacing:-.01em}
+.res-sub{font-size:15.5px;color:var(--ink2);margin-bottom:20px}
+.res-h2{font-size:12px;font-weight:700;color:var(--c);margin:24px 0 10px;
+ letter-spacing:.04em;text-transform:uppercase}
+.res-t{margin:0;font-size:15px}
+.res-t tr.win td{color:#fff}
+.res-l{margin:0 0 0 20px}
+.res-l li{margin-bottom:8px;font-size:15px}
+.res-note{font-size:15px;color:var(--ink2);line-height:1.6;margin-top:16px;padding:16px 18px;
+ background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:11px}
+.res-note b{color:#fff}
+.res-note.ok-note{background:var(--green-soft);border-color:rgba(164,214,94,.22)}
+.res-note.warn-note{background:var(--warn-soft);border-color:rgba(240,165,106,.22)}
+
+/* счетчик */
+.calc-out{display:none;margin-top:24px;padding-top:24px;border-top:1px solid var(--line)}
+.calc-out.on{display:block}
+.calc-out .big{font-size:clamp(38px,6vw,52px);font-weight:800;letter-spacing:-.04em;line-height:1;
+ color:#fff;font-variant-numeric:tabular-nums}
+.calc-out .small{font-size:15px;color:var(--muted);margin-top:9px}
+.calc-out .money{font-size:clamp(26px,4vw,34px);font-weight:700;letter-spacing:-.03em;
+ color:var(--green);margin-top:20px;font-variant-numeric:tabular-nums}
+.calc-out .verdict{font-size:15px;color:var(--ink2);line-height:1.6;margin-top:20px;padding:16px 18px;
+ background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:11px}
+.calc-out .verdict b{color:#fff}
+.calc-out .hint-in{font-size:14px;color:var(--muted);margin-top:13px}
+
+/* карта незаменимости */
+.map-head{display:grid;grid-template-columns:1fr 1fr 160px 34px;gap:10px;margin-bottom:10px;
+ font-size:12.5px;font-weight:600;color:var(--muted)}
+.map-row{display:grid;grid-template-columns:1fr 1fr 160px 34px;gap:10px;margin-bottom:10px;
+ align-items:center}
+.map-del{background:none;border:none;color:var(--faint);cursor:pointer;font-size:19px;line-height:1;
+ padding:8px;border-radius:8px;transition:all .15s}
+.map-del:hover{color:var(--warn);background:var(--warn-soft)}
+
+.types{margin:20px 0 0;font-size:14.5px}
+.types td{padding:8px 14px 8px 0;border:none;color:var(--muted)}
+.types td:first-child{width:120px}
+.types td b{color:#fff}
+
+.plan-i{padding:15px 0;border-bottom:1px solid var(--line)}
+.plan-i:last-child{border-bottom:none}
+.plan-h{display:flex;justify-content:space-between;align-items:baseline;gap:12px;margin-bottom:5px}
+.plan-h b{font-size:16px;font-weight:600;color:#fff}
+.plan-h span{font-size:13.5px;color:var(--muted);white-space:nowrap}
+.plan-what{font-size:14.5px;color:var(--c);margin-bottom:5px}
+.plan-i.plan-keep .plan-what{color:var(--muted)}
+.plan-how{font-size:14.5px;color:var(--ink2);line-height:1.55}
+
+/* кандидаты */
+.cand{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--r);
+ padding:20px;margin-bottom:12px}
+.cand .f{margin-bottom:14px}
+.cand .f:last-child{margin-bottom:0}
+.f.flags{display:flex;flex-direction:column;gap:10px;justify-content:flex-end;padding-bottom:4px}
+
+/* галочки */
+.check{list-style:none;margin:18px 0 0;max-width:660px}
+.check li{margin-bottom:12px}
+.check label,label.mini{display:flex;align-items:flex-start;gap:12px;cursor:pointer;
+ font-size:15.5px;color:var(--ink2);font-weight:400}
+label.mini{font-size:14px;align-items:center}
+.check input,.f.flags input{display:none}
+.bx{flex:none;width:20px;height:20px;border:1.5px solid var(--line2);border-radius:6px;margin-top:1px;
+ display:flex;align-items:center;justify-content:center;transition:all .15s;
+ background:rgba(255,255,255,.04)}
+label.mini .bx{width:18px;height:18px;margin-top:0}
+input:checked+.bx{background:var(--c);border-color:var(--c)}
+input:checked+.bx::after{content:"";width:5px;height:9px;border:solid #fff;border-width:0 2px 2px 0;
+ transform:rotate(45deg) translate(-1px,-1px)}
+.check input:checked~span{color:var(--faint)}
+.f.flags input:checked~span{color:#fff}
+
+/* кнопки — как на лендинге */
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:none;cursor:pointer;
+ background:var(--accent-d);color:#fff;font:inherit;font-weight:600;font-size:15px;
+ padding:12px 22px;border-radius:11px;transition:background .15s,transform .08s}
+.btn:hover{background:var(--accent)}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:rgba(255,255,255,.05);color:var(--ink2);border:1px solid var(--line2)}
+.btn.ghost:hover{background:rgba(255,255,255,.09);color:#fff}
+
+/* ── что сделать сегодня: практический выход из раздела ────────────────── */
+.step-now{border-left:2px solid var(--c);padding:2px 0 2px 22px;margin:34px 0 26px}
+.sn-h{font-size:13px;font-weight:700;color:var(--c);letter-spacing:.04em;text-transform:uppercase;
+ margin-bottom:8px}
+.step-now p{margin:0;font-size:16.5px;color:var(--ink2)}
+
+/* ── мягкая подача: то же самое можно не делать самому ─────────────────── */
+.d24{background:rgba(255,255,255,.035);border:1px solid var(--line);border-radius:var(--r);
+ padding:22px 24px;margin:26px 0 0;transition:border-color .25s,background .25s}
+.d24:hover{border-color:var(--line2);background:rgba(255,255,255,.055)}
+.d24-h{font-size:13.5px;font-weight:600;color:var(--muted);margin-bottom:9px}
+.d24 p{margin:0 0 16px;font-size:15.5px;color:var(--ink2);max-width:640px}
+.d24-go{display:inline-flex;align-items:center;gap:7px;font-size:14.5px;font-weight:600;
+ color:var(--c);text-decoration:none;transition:gap .2s}
+.d24-go::after{content:"→";transition:transform .2s}
+.d24-go:hover{gap:10px}
+.d24-go:hover::after{transform:translateX(2px)}
+
+/* ── переход к следующему шагу: маршрут, а не тупик ────────────────────── */
+.next{display:block;background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+ padding:20px 24px;margin:30px 0 0;text-decoration:none;position:relative;
+ transition:border-color .25s,transform .25s cubic-bezier(.16,1,.3,1),background .25s}
+.next:hover{border-color:color-mix(in srgb,var(--c) 45%,transparent);transform:translateY(-2px);
+ background:rgba(255,255,255,.05)}
+.next-cap{display:block;font-size:12px;font-weight:700;color:var(--c);letter-spacing:.05em;
+ text-transform:uppercase;margin-bottom:6px}
+.next-t{display:block;font-size:19px;font-weight:700;color:#fff;margin-bottom:5px;
+ letter-spacing:-.02em}
+.next-t::after{content:" →";color:var(--c);display:inline-block;transition:transform .22s}
+.next:hover .next-t::after{transform:translateX(4px)}
+.next-w{display:block;font-size:15px;color:var(--ink2);line-height:1.5;max-width:600px}
+
+/* ── библиотека критериев: клик добавляет в конструктор ────────────────── */
+.lib{margin:26px 0}
+.lib-h{font-size:15.5px;font-weight:700;color:#fff;margin-bottom:5px}
+.lib-p{font-size:14.5px;color:var(--muted);margin-bottom:16px}
+.lib-g{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.lib-c{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--r);
+ padding:16px}
+.lib-t{font-size:12.5px;font-weight:700;color:var(--c);margin-bottom:11px;letter-spacing:.03em;
+ text-transform:uppercase}
+.chip{display:block;width:100%;text-align:left;background:rgba(255,255,255,.05);
+ border:1px solid var(--line2);border-radius:9px;color:var(--ink2);font:inherit;font-size:13.5px;
+ padding:8px 11px;margin-bottom:7px;cursor:pointer;
+ transition:all .18s cubic-bezier(.16,1,.3,1)}
+.chip::before{content:"+ ";color:var(--c);font-weight:700}
+.chip:hover{border-color:var(--c);color:#fff;background:color-mix(in srgb,var(--c) 12%,transparent)}
+.chip.added{background:color-mix(in srgb,var(--c) 30%,transparent);color:#fff;
+ border-color:var(--c);transform:scale(.97)}
+.chip.added::before{content:"✓ "}
+
+/* ── что вообще передают ──────────────────────────────────────────────── */
+.zg{margin-bottom:20px}
+.zg:last-of-type{margin-bottom:0}
+.zg-h{font-size:12.5px;font-weight:700;color:var(--c);margin-bottom:10px;letter-spacing:.03em;
+ text-transform:uppercase}
+.check.z{margin:0}
+.check.z li{margin-bottom:8px}
+.check.z label{font-size:15px}
+
+/* ── основа задания: выбранная задача подставляется, а не переписывается ── */
+.q-from{display:none;align-items:center;gap:12px;flex-wrap:wrap;
+ background:color-mix(in srgb,var(--c) 9%,transparent);
+ border:1px solid color-mix(in srgb,var(--c) 26%,transparent);
+ border-radius:11px;padding:12px 15px;margin-bottom:16px;font-size:14.5px;color:var(--ink2)}
+.q-from.on{display:flex}
+.q-from b{color:#fff}
+.q-from .chip{width:auto;margin:0}
+
+/* ── свои задачи: список всего не предусмотрит ─────────────────────────── */
+.zadd{display:flex;gap:10px;margin-bottom:12px}
+.zadd-in{flex:1;padding:11px 14px;border:1px solid var(--line2);border-radius:11px;font:inherit;
+ font-size:14.5px;color:#fff;background:rgba(255,255,255,.04);transition:border-color .15s}
+.zadd-in:focus{outline:none;border-color:var(--c);
+ box-shadow:0 0 0 3px color-mix(in srgb,var(--c) 22%,transparent)}
+.zadd-in::placeholder{color:var(--faint)}
+.zc-list{list-style:none;margin:0}
+.zc{display:flex;align-items:center;gap:10px;padding:8px 0;font-size:15px;color:var(--ink2)}
+.zc-dot{flex:none;width:8px;height:8px;border-radius:99px;background:var(--c)}
+.zc-n{flex:1}
+
+/* ── кнопки-задачи в инструменте выбора: связка списка и выбора ────────── */
+.pick{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+.pick:empty{margin-bottom:0}
+.pick-h{width:100%;font-size:13.5px;color:var(--muted);margin-bottom:2px}
+.pick .chip{display:inline-block;width:auto;margin-bottom:0}
+.pick-note{display:none;font-size:13.5px;color:var(--warn);margin:-6px 0 12px}
+.pick-note.on{display:block}
+
+/* ── живой пример: хронология одной передачи ───────────────────────────── */
+.case{background:var(--card);border:1px solid var(--line);border-radius:var(--r);
+ padding:24px 26px;margin:26px 0}
+.case-h{font-size:16.5px;font-weight:700;color:#fff;margin-bottom:5px}
+.case-sub{font-size:14.5px;color:var(--muted);margin-bottom:18px}
+.case-t{position:relative;padding-left:22px}
+.case-t::before{content:"";position:absolute;left:5px;top:8px;bottom:8px;width:2px;
+ background:color-mix(in srgb,var(--c) 28%,transparent)}
+.case-i{position:relative;padding-bottom:16px}
+.case-i:last-child{padding-bottom:0}
+.case-i::before{content:"";position:absolute;left:-21px;top:7px;width:12px;height:12px;
+ border-radius:99px;background:var(--paper);border:2px solid var(--c)}
+.case-i.ok::before{background:var(--c)}
+.case-i b{display:block;font-size:13.5px;font-weight:700;color:var(--c);margin-bottom:3px}
+.case-i span{display:block;font-size:14.5px;color:var(--ink2);line-height:1.55;max-width:600px}
+.case-i.ok span{color:var(--ink2)}
+.case-i.ok b{color:var(--green)}
+
+/* ── итоговый план ─────────────────────────────────────────────────────── */
+.plan .part-num{font-size:20px}
+.plan-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:6px}
+.pl-i{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;
+ padding:14px 16px;transition:border-color .25s,background .25s}
+.pl-i.ok{border-color:color-mix(in srgb,var(--green) 34%,transparent);
+ background:var(--green-soft)}
+.pl-k{font-size:12.5px;color:var(--muted);margin-bottom:5px}
+.pl-i.ok .pl-k{color:var(--green)}
+.pl-v{font-size:15.5px;font-weight:600;color:#fff}
+.pl-go{font-size:14px;color:var(--accent);text-decoration:none;border-bottom:1px dashed
+ rgba(74,148,240,.4);transition:color .18s}
+.pl-go:hover{color:#fff;border-color:#fff}
+
+/* ── финал: светлая карточка, единственная инверсия — как якорь ────────── */
+.final{background:linear-gradient(180deg,#1c2838,#182231);border:1px solid var(--line2);
+ border-radius:var(--r-lg);padding:48px 40px;margin:80px 0 60px;text-align:center}
+.final h2{color:#fff;font-size:27px;font-weight:700;letter-spacing:-.025em;margin-bottom:12px}
+.final p{color:var(--muted);max-width:510px;margin:0 auto 26px;font-size:16px}
+.final .btn{padding:14px 30px;font-size:16px}
+
+footer{border-top:1px solid var(--line);padding:28px 0;color:var(--faint);font-size:13.5px;
+ text-align:center}
+footer a{color:var(--muted)}
+
+.saved{position:fixed;left:50%;bottom:26px;transform:translate(-50%,90px);background:var(--card);
+ border:1px solid var(--line2);color:#fff;padding:10px 20px;border-radius:99px;font-size:14px;
+ z-index:50;transition:transform .28s cubic-bezier(.16,1,.3,1);
+ box-shadow:0 12px 34px rgba(0,0,0,.5)}
+.saved.on{transform:translate(-50%,0)}
+
+/* ── движение ──────────────────────────────────────────────────────────── */
+@media (prefers-reduced-motion:no-preference){
+ /* Каждый блок всплывает, когда до него доскроллили — как на лендинге.
+    Не вся секция разом: иначе нижние блоки «появляются» заранее, вслепую. */
+ .rv{opacity:0;transform:translateY(16px);
+  transition:opacity .65s cubic-bezier(.16,1,.3,1),transform .65s cubic-bezier(.16,1,.3,1)}
+ .rv.in{opacity:1;transform:none}
+
+ /* карточки механики оживают под курсором */
+ .step-c{transition:transform .25s cubic-bezier(.16,1,.3,1),background .25s,border-color .25s}
+ .step-c:hover{transform:translateY(-3px);background:rgba(255,255,255,.07);
+  border-color:var(--line2)}
+
+ /* кандидаты в разделе 5 */
+ .cand{transition:transform .22s cubic-bezier(.16,1,.3,1),border-color .22s,background .22s}
+ .cand:hover{transform:translateY(-2px);border-color:color-mix(in srgb,var(--c) 32%,transparent);
+  background:rgba(255,255,255,.05)}
+
+ /* пункты плана разгрузки */
+ .plan-i{transition:padding-left .22s cubic-bezier(.16,1,.3,1),background .22s}
+ .plan-i:hover{padding-left:10px;background:rgba(255,255,255,.03)}
+
+ /* галочка отзывается на нажатие */
+ .check label,label.mini{transition:color .18s}
+ .check label:hover,label.mini:hover{color:#fff}
+ .bx{transition:all .18s cubic-bezier(.16,1,.3,1)}
+ .check label:hover .bx,label.mini:hover .bx{border-color:var(--c);
+  background:color-mix(in srgb,var(--c) 12%,transparent)}
+ input:checked+.bx{animation:чек .28s cubic-bezier(.16,1,.3,1)}
+ @keyframes чек{0%{transform:scale(.82)}55%{transform:scale(1.12)}100%{transform:scale(1)}}
+
+ /* кнопки: подъем и мягкое свечение цветом раздела */
+ .btn{transition:background .18s,transform .14s cubic-bezier(.16,1,.3,1),box-shadow .22s}
+ .btn:hover{transform:translateY(-2px);
+  box-shadow:0 12px 26px -12px color-mix(in srgb,var(--accent) 70%,transparent)}
+ .btn:active{transform:translateY(0)}
+
+ /* строка таблицы подсвечивается при наведении */
+ tbody tr,table tr{transition:background .18s}
+ table tr:hover td{background:rgba(255,255,255,.03)}
+
+ /* цифра в счетчике появляется, а не возникает */
+ .calc-out.on .big,.calc-out.on .money{animation:цифра .5s cubic-bezier(.16,1,.3,1)}
+ @keyframes цифра{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+ /* готовый текст задания проявляется */
+ .out.on,.res.on{animation:вход .4s cubic-bezier(.16,1,.3,1)}
+ @keyframes вход{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+}
+
+@media print{
+ .tabbed .part{display:block}          /* на бумаге тетрадь собирается целиком */
+ header,.final,.mine-note,.btn,.btn-row,footer,.saved{display:none}
+ body{background:#fff;color:#000;font-size:12pt}
+ .tool,.core,.flip,.cand{background:#fff;border:1px solid #ccc;box-shadow:none}
+ h1,h2,h3,p strong,td b{color:#000}
+ p,li,td{color:#333}
+ .out{background:#f4f4f4;color:#000}
+ .part{page-break-inside:avoid}
+}
+
+@media(max-width:760px){
+ body{font-size:16px}
+ .hero{padding:46px 0 34px}
+ .core{padding:26px 20px;margin-bottom:56px}
+ .steps{grid-template-columns:1fr 1fr;gap:12px}
+ .part{padding-bottom:56px}
+ .part-num{width:38px;height:38px;font-size:16px}
+ .tool{padding:22px 20px}
+ .tool-grid,.row2,.row3{grid-template-columns:1fr;gap:16px}
+ .tool-res{position:static}
+ .map-head{display:none}
+ .map-row{grid-template-columns:1fr 130px 34px;gap:8px}
+ .map-row .m-why{display:none}
+ .final{padding:36px 24px;margin:56px 0 40px}
+}
