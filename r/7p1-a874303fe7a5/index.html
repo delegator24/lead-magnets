@@ -29,7 +29,12 @@ header{position:sticky;top:0;z-index:30;background:#0e151d;border-bottom:1px sol
 .hbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 0}
 .mark{font-size:16px;font-weight:700;color:#fff;text-decoration:none;letter-spacing:-.02em}
 .mark span{color:var(--accent)}
-.hbar .step{font-size:13px;color:var(--muted)}
+/* Автор методологии — рядом с ее названием. На узком экране перенос допустим
+   только между блоками: «автор Михаил / Попов» посреди имени — неряшливо. */
+.hbar .step{font-size:13px;color:var(--muted);text-align:right;display:flex;
+ flex-wrap:wrap;justify-content:flex-end;gap:0 6px}
+.hbar .step b{font-weight:400;white-space:nowrap}
+.hbar .step i{font-style:normal;color:var(--faint)}
 
 .hero{padding:60px 0 34px;max-width:680px}
 .kicker{display:inline-block;font-size:12.5px;font-weight:600;color:var(--accent);
@@ -37,11 +42,6 @@ header{position:sticky;top:0;z-index:30;background:#0e151d;border-bottom:1px sol
 h1{font-size:clamp(31px,4.6vw,42px);font-weight:800;letter-spacing:-.035em;line-height:1.08;
  margin-bottom:16px}
 .lead{font-size:18px;color:var(--ink2);line-height:1.55}
-.авторы{display:flex;flex-wrap:wrap;gap:6px 18px;margin:-6px 0 18px;font-size:13.5px;
- color:var(--faint)}
-.авторы b{color:var(--ink2);font-weight:600}
-.авторы a{color:var(--accent);text-decoration:none}
-.авторы a:hover{text-decoration:underline}
 .lead b{color:#fff;font-weight:600}
 
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0 26px}
@@ -207,6 +207,7 @@ textarea::placeholder{color:transparent}
 
 footer{border-top:1px solid var(--line);padding:26px 0;color:var(--faint);font-size:13.5px;
  text-align:center}
+footer div+div{margin-top:5px}
 footer a{color:var(--muted)}
 
 @media print{
@@ -236,18 +237,13 @@ footer a{color:var(--muted)}
 
 <header><div class="wrap"><div class="hbar">
   <a class="mark" href="https://delegator24.ru" target="_blank" rel="noopener">Delegator<span>24</span></a>
-  <span class="step">Методология 7П+1</span>
+  <span class="step"><b>Методология 7П+1</b><i>·</i><b>автор Михаил Попов</b></span>
 </div></div></header>
 
 <div class="wrap">
   <section class="hero">
     <span class="kicker">Анализ хронометража</span>
     <h1>Куда уходит ваша рабочая неделя</h1>
-    <div class="авторы">
-      <span><b>Методология 7П+1</b> — автор Михаил Попов</span>
-      <span>Поддержка <a href="https://delegator24.ru" target="_blank" rel="noopener">Delegator24</a>
-        — «Высвободите время на стратегию»</span>
-    </div>
     <p class="lead">Вставьте данные из таблицы хронометража — получите разбор: где фокус,
       в какой роли вы работаете, <b>какие часы можно снять с себя</b> и что это дает в год.</p>
   </section>
@@ -313,8 +309,10 @@ footer a{color:var(--muted)}
 <script>var МЕНЕДЖЕР = "https://t.me/D24_Manager";</script>
 
 <footer><div class="wrap">
-  Методология 7П+1 · инструмент подготовлен
-  <a href="https://delegator24.ru" target="_blank" rel="noopener">Delegator24</a>
+  <div>Методология 7П+1 — автор Михаил Попов</div>
+  <div>Инструмент разработан при поддержке
+    <a href="https://delegator24.ru" target="_blank" rel="noopener">Delegator24</a>
+    — «Высвободите время на стратегию»</div>
 </div></footer>
 
 <script src="xlsx.js"></script>
