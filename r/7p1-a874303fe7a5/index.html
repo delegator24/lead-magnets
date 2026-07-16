@@ -1,0 +1,314 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow">
+<!-- Ссылка непубличная: без этого адрес страницы уехал бы в Referer вместе
+     с запросом шрифтов, то есть стал бы известен снаружи. -->
+<meta name="referrer" content="no-referrer">
+<title>Анализ рабочей недели · 7П+1</title>
+<link rel="icon" href="favicon-d24.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{
+ --paper:#0e151d; --card:#182231; --card2:#1e2a3a;
+ --ink:#fff; --ink2:#c2cbd7; --muted:#8b96a5; --faint:#6c7686;
+ --line:rgba(255,255,255,.09); --line2:rgba(255,255,255,.16);
+ --accent:#4a94f0; --accent-d:#307fe2; --accent-soft:rgba(74,148,240,.14);
+ --green:#a4d65e; --green-soft:rgba(164,214,94,.12);
+ --red:#f0704d; --red-soft:rgba(240,112,77,.12);
+ --warn:#f0a56a; --warn-soft:rgba(240,165,106,.10);
+ --disp:'Golos Text',system-ui,-apple-system,sans-serif;
+ --r:16px; --r-lg:22px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:var(--disp);background:var(--paper);color:var(--ink);font-size:16.5px;
+ line-height:1.62;-webkit-font-smoothing:antialiased}
+.wrap{max-width:880px;margin:0 auto;padding:0 24px}
+
+header{position:sticky;top:0;z-index:30;background:#0e151d;border-bottom:1px solid var(--line);
+ backdrop-filter:saturate(180%) blur(14px)}
+.hbar{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:15px 0}
+.mark{font-size:16px;font-weight:700;color:#fff;text-decoration:none;letter-spacing:-.02em}
+.mark span{color:var(--accent)}
+.hbar .step{font-size:13px;color:var(--muted)}
+
+.hero{padding:60px 0 34px;max-width:680px}
+.kicker{display:inline-block;font-size:12.5px;font-weight:600;color:var(--accent);
+ background:var(--accent-soft);padding:6px 13px;border-radius:99px;margin-bottom:18px}
+h1{font-size:clamp(31px,4.6vw,42px);font-weight:800;letter-spacing:-.035em;line-height:1.08;
+ margin-bottom:16px}
+.lead{font-size:18px;color:var(--ink2);line-height:1.55}
+.lead b{color:#fff;font-weight:600}
+
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0 26px}
+.st{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:18px 18px}
+.st b{display:block;font-size:11.5px;font-weight:700;color:var(--accent);margin-bottom:7px;
+ letter-spacing:.04em}
+.st span{font-size:14.5px;color:var(--ink2);line-height:1.45}
+.st a{color:var(--accent);text-decoration:none;border-bottom:1px solid rgba(74,148,240,.4)}
+.st a:hover{color:#fff;border-color:#fff}
+
+.tool{background:var(--card);border:1px solid var(--line2);border-radius:var(--r-lg);padding:28px;
+ margin-bottom:28px;box-shadow:0 20px 50px -30px rgba(0,0,0,.7)}
+.t-h{font-size:19px;font-weight:700;margin-bottom:5px}
+.t-p{font-size:14.5px;color:var(--muted);margin-bottom:18px}
+/* Зона ввода: принимает вставку, перетаскивание и выбор файла.
+   Подсказка лежит поверх пустого поля и уходит, как только появились данные. */
+.drop{position:relative;border-radius:12px}
+textarea{width:100%;min-height:180px;padding:14px 16px;border:1px solid var(--line2);border-radius:12px;
+ font:inherit;font-size:13.5px;line-height:1.55;color:#fff;background:rgba(255,255,255,.04);
+ resize:vertical;font-variant-numeric:tabular-nums;position:relative;z-index:2}
+textarea:focus{outline:none;border-color:var(--accent);background:rgba(255,255,255,.07);
+ box-shadow:0 0 0 3px var(--accent-soft)}
+textarea::placeholder{color:transparent}
+
+.d-hint{position:absolute;inset:0;z-index:3;display:flex;flex-direction:column;align-items:center;
+ justify-content:center;gap:14px;pointer-events:none;text-align:center;padding:20px;
+ transition:opacity .2s}
+.drop.has .d-hint{opacity:0}
+.d-i{width:52px;height:52px;border-radius:14px;background:var(--accent-soft);
+ border:1px solid rgba(74,148,240,.25);display:flex;align-items:center;justify-content:center}
+.d-i svg{width:26px;height:26px;stroke:var(--accent);stroke-width:1.8;fill:none;
+ stroke-linecap:round;stroke-linejoin:round}
+.d-t b{display:block;font-size:16px;color:#fff;font-weight:600;margin-bottom:4px}
+.d-t span{font-size:13.5px;color:var(--muted)}
+.d-t button{pointer-events:auto;background:none;border:none;color:var(--accent);font:inherit;
+ font-size:13.5px;cursor:pointer;border-bottom:1px dashed rgba(74,148,240,.45);padding:0}
+.d-t button:hover{color:#fff;border-color:#fff}
+
+.d-over{position:absolute;inset:0;z-index:4;display:none;align-items:center;justify-content:center;
+ border-radius:12px;border:2px dashed var(--accent);background:rgba(74,148,240,.12);
+ backdrop-filter:blur(2px)}
+.drop.over .d-over{display:flex}
+.d-over span{font-size:17px;font-weight:700;color:#fff}
+
+.loaded{font-size:13.5px;color:var(--green);display:none;align-items:center;gap:7px}
+.loaded.on{display:inline-flex}
+.btn-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
+.btn{display:inline-flex;align-items:center;justify-content:center;border:none;cursor:pointer;
+ background:var(--accent-d);color:#fff;font:inherit;font-weight:600;font-size:15px;
+ padding:13px 26px;border-radius:11px;transition:background .15s,transform .08s}
+.btn:hover{background:var(--accent)}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:rgba(255,255,255,.05);color:var(--ink2);border:1px solid var(--line2)}
+.btn.ghost:hover{background:rgba(255,255,255,.09);color:#fff}
+.err{display:none;font-size:14.5px;color:var(--warn);margin-top:12px}
+.err.on{display:block}
+
+/* ── результат ────────────────────────────────────────────────────────── */
+.out{display:none}
+.out.on{display:block;animation:вход .45s cubic-bezier(.16,1,.3,1)}
+@keyframes вход{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+.big-row{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:22px}
+.big{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px}
+.b-n{font-size:40px;font-weight:900;letter-spacing:-.04em;line-height:1;color:#fff;
+ font-variant-numeric:tabular-nums}
+.b-n.red{color:var(--red)}
+.b-n.green{color:var(--green)}
+.b-t{font-size:14.5px;color:var(--ink2);margin-top:9px;font-weight:600}
+.b-t span{display:block;font-size:13px;color:var(--muted);font-weight:400;margin-top:3px}
+
+.norm{background:var(--card);border:1px solid var(--line);border-left:3px solid var(--accent);
+ border-radius:var(--r);padding:22px 24px;margin-bottom:22px}
+.norm.ok{border-left-color:var(--green)}
+.n-h{font-size:17px;font-weight:700;margin-bottom:14px}
+.n-bar{display:flex;height:16px;border-radius:99px;overflow:hidden;background:rgba(255,255,255,.07);
+ margin-bottom:12px}
+.n-bar i{background:var(--green);display:block}
+.n-bar b{background:var(--accent);display:block}
+.n-legend{display:flex;flex-wrap:wrap;gap:6px 20px;font-size:13px;color:var(--muted);margin-bottom:12px}
+.n-legend span{display:inline-flex;align-items:center;gap:7px}
+.n-legend i{width:9px;height:9px;border-radius:99px;flex:none}
+.n-legend .d1{background:var(--green)} .n-legend .d2{background:var(--accent)}
+.n-legend .d3{background:rgba(255,255,255,.2)}
+.n-p{font-size:15px;color:var(--ink2);line-height:1.55}
+
+.charts{display:grid;grid-template-columns:1.35fr 1fr;gap:16px;margin-bottom:22px}
+.chart{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:22px 24px}
+.c-h{font-size:13px;font-weight:700;color:var(--muted);margin-bottom:16px;letter-spacing:.03em;
+ text-transform:uppercase}
+.bars{display:flex;flex-direction:column;gap:10px}
+.bar{display:grid;grid-template-columns:132px 1fr 52px;align-items:center;gap:12px;font-size:14px}
+.bar.zero{opacity:.42}
+.b-l{color:var(--ink2)}
+.b-track{height:9px;border-radius:99px;background:rgba(255,255,255,.06);overflow:hidden}
+.b-track i{display:block;height:100%;border-radius:99px;transition:width .5s cubic-bezier(.16,1,.3,1)}
+.b-v{text-align:right;color:#fff;font-weight:600;font-variant-numeric:tabular-nums}
+
+.ring-box{position:relative;width:190px;margin:0 auto 14px}
+.ring{width:190px;height:190px;display:block}
+.ring-c{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;
+ justify-content:center;pointer-events:none}
+.ring-c b{font-size:32px;font-weight:900;letter-spacing:-.03em;line-height:1}
+.ring-c span{font-size:12.5px;color:var(--muted);margin-top:2px}
+.ring-l{display:flex;flex-direction:column;gap:9px}
+.ring-l div{display:flex;align-items:center;gap:9px;font-size:14px;color:var(--ink2)}
+.ring-l i{width:10px;height:10px;border-radius:3px;flex:none}
+.ring-l b{margin-left:auto;color:#fff;font-variant-numeric:tabular-nums}
+.ring-l span{color:var(--muted);width:38px;text-align:right;font-variant-numeric:tabular-nums}
+
+.block{background:var(--card);border:1px solid var(--line);border-radius:var(--r);padding:24px;
+ margin-bottom:22px}
+.bl-h{font-size:18px;font-weight:700;margin-bottom:5px}
+.bl-p{font-size:14.5px;color:var(--muted);margin-bottom:16px}
+
+.find{border-left:2px solid var(--line2);padding:2px 0 2px 18px;margin-bottom:18px}
+.find:last-child{margin-bottom:0}
+.find.плохо{border-left-color:var(--red)}
+.find.деньги{border-left-color:var(--green)}
+.find.слепое{border-left-color:var(--warn)}
+.find.внимание{border-left-color:var(--accent)}
+.find.хорошо{border-left-color:var(--green)}
+.f-t{font-size:17px;font-weight:700;color:#fff;margin-bottom:5px;letter-spacing:-.01em}
+.f-p{font-size:15px;color:var(--ink2);line-height:1.55}
+
+.plan{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:12px;
+ padding:16px 18px;margin-bottom:10px}
+.plan:last-child{margin-bottom:0}
+.p-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:9px}
+.p-top b{font-size:16px;font-weight:700;color:#fff}
+.p-top span{font-size:13.5px;color:var(--green);font-weight:600;white-space:nowrap;
+ font-variant-numeric:tabular-nums}
+.p-tasks{display:flex;flex-wrap:wrap;gap:7px}
+.p-tasks span{font-size:13px;color:var(--ink2);background:rgba(255,255,255,.05);
+ border:1px solid var(--line);border-radius:8px;padding:5px 11px}
+
+/* спорные пометки — тон вопроса: желтая метка, не красная тревога */
+.doubt{background:rgba(255,169,77,.05);border:1px solid rgba(255,169,77,.22);
+ border-left:3px solid #ffa94d;border-radius:12px;padding:14px 17px;margin-bottom:9px}
+.doubt:last-child{margin-bottom:0}
+.dt-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:6px}
+.dt-top b{font-size:15px;font-weight:700;color:#fff}
+.dt-top span{font-size:13px;color:#ffa94d;font-weight:600;white-space:nowrap;
+ font-variant-numeric:tabular-nums}
+.dt-p{font-size:13.5px;color:var(--ink2);line-height:1.55}
+
+.d24{display:none;background:linear-gradient(180deg,#1c2838,#182231);border:1px solid var(--line2);
+ border-radius:var(--r-lg);padding:32px;margin-bottom:40px}
+.d24.on{display:block}
+.d24-h{font-size:20px;font-weight:700;margin-bottom:9px}
+.d24-t{font-size:15.5px;color:var(--ink2);line-height:1.6;margin-bottom:20px;max-width:660px}
+.d24-go{display:inline-flex;align-items:center;gap:9px;background:#22b14c;color:#fff;
+ font-size:16px;font-weight:700;padding:15px 30px;border-radius:12px;text-decoration:none;
+ transition:filter .15s}
+.d24-go:hover{filter:brightness(1.08)}
+.d24-sub{display:block;margin-top:12px;font-size:13.5px;color:var(--faint);line-height:1.5;
+ max-width:520px}
+.d24-sub i{display:block;font-style:normal;color:#7fcf95;margin-top:5px}
+
+.save{display:none;gap:10px;flex-wrap:wrap;margin:-16px 0 34px}
+.save.on{display:flex}
+.pt{display:none}
+
+footer{border-top:1px solid var(--line);padding:26px 0;color:var(--faint);font-size:13.5px;
+ text-align:center}
+footer a{color:var(--muted)}
+
+@media print{
+ /* Печатаем ДОКУМЕНТ ДЛЯ МЕНЕДЖЕРА, а не страницу. Все, что обращено к самому
+    человеку — заголовок, инструкция, шаги, кнопки, — в PDF мусор.
+    .on выставляет display у части блоков, поэтому перебиваем принудительно. */
+ header,.tool,footer,.btn-row,.hero,.steps,.step,
+ .d24,.d24.on,.save,.save.on{display:none!important}
+ body{background:#fff;color:#000}
+ .pt{display:block;font-size:19px;font-weight:700;color:#000;margin:0 0 4px}
+ .pt s{display:block;font-size:12.5px;font-weight:400;color:#555;text-decoration:none;margin-top:5px}
+ .big,.chart,.block,.norm,.plan{background:#fff;border:1px solid #ccc}
+ .b-n,.f-t,.bl-h,.n-h,.p-top b,.ring-c b,.dt-top b{color:#000}
+ .b-t,.f-p,.n-p,.b-l,.ring-l div,.dt-p,.bl-p,.p-tasks span{color:#333}
+ /* спорные пометки: на бумаге держим рамкой, а не заливкой */
+ .doubt{background:#fff;border:1px solid #ccc;border-left:3px solid #d98324}
+ .dt-top span{color:#8a5a12}
+ .p-tasks span{background:#fff;border:1px solid #ccc}
+ /* блоки не должны разрываться между листами */
+ .big,.chart,.norm,.plan,.doubt,.find{break-inside:avoid;page-break-inside:avoid}
+}
+@media(max-width:820px){
+ .steps,.big-row,.charts{grid-template-columns:1fr}
+ .bar{grid-template-columns:110px 1fr 46px;font-size:13px}
+}
+</style>
+
+<header><div class="wrap"><div class="hbar">
+  <a class="mark" href="https://delegator24.ru" target="_blank" rel="noopener">Delegator<span>24</span></a>
+  <span class="step">Методология 7П+1</span>
+</div></div></header>
+
+<div class="wrap">
+  <section class="hero">
+    <span class="kicker">Анализ хронометража</span>
+    <h1>Куда уходит ваша рабочая неделя</h1>
+    <p class="lead">Вставьте данные из таблицы хронометража — получите разбор: где фокус,
+      в какой роли вы работаете, <b>какие часы можно снять с себя</b> и что это дает в год.</p>
+  </section>
+
+  <div class="steps">
+    <div class="st"><b>ШАГ 1</b><span>Заполните
+      <a href="https://docs.google.com/spreadsheets/d/1vP1Oybg0B51Ion1-QBSy_kZiOm5dLAmiHc_v6w0jH9U/copy"
+         target="_blank" rel="noopener">шаблон хронометража</a> — неделю, по ходу дня</span></div>
+    <div class="st"><b>ШАГ 2</b><span>Выделите строки, скопируйте (Ctrl+C) и вставьте ниже</span></div>
+    <div class="st"><b>ШАГ 3</b><span>Разбор появится сразу — с диаграммами и планом</span></div>
+  </div>
+
+  <!-- Одна зона на все способы: вставить, перетащить файл или выбрать.
+       Вставка — самый короткий путь (3 действия), но заставлять не надо. -->
+  <div class="tool">
+    <div class="t-h">Ваши данные</div>
+    <p class="t-p">Порядок столбцов не важен, шапку убирать не нужно — разберусь сам.</p>
+
+    <div class="drop" id="drop">
+      <textarea id="input" placeholder="Вставьте строки из таблицы: Ctrl+V"></textarea>
+      <div class="d-hint" id="hint">
+        <div class="d-i">
+          <svg viewBox="0 0 24 24"><path d="M9 3h6M12 3v11M8 10l4 4 4-4M4 17v3a1 1 0 001 1h14a1 1 0 001-1v-3"/></svg>
+        </div>
+        <div class="d-t"><b>Вставьте строки из таблицы</b>
+          <span>Ctrl+V · или перетащите файл сюда · или <button type="button" id="pick">выберите файл</button></span>
+        </div>
+      </div>
+      <div class="d-over"><span>Отпустите файл</span></div>
+      <input type="file" id="file" accept=".xlsx,.csv,.tsv,.txt" hidden>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn" onclick="посчитать()">Разобрать неделю</button>
+      <button class="btn ghost" onclick="пример()">Показать на примере</button>
+      <button class="btn ghost" onclick="очистить()">Очистить</button>
+      <span class="loaded" id="loaded"></span>
+    </div>
+    <div class="err" id="err"></div>
+  </div>
+
+  <div class="pt" id="pt"></div>
+  <div class="out" id="out"></div>
+
+  <div class="save" id="save">
+    <button class="btn ghost" onclick="скачать()">Скачать разбор (PDF)</button>
+    <button class="btn ghost" id="copy" onclick="скопировать()">Скопировать список задач</button>
+  </div>
+
+  <div class="d24" id="d24">
+    <div class="d24-h">Это можно не делать самому</div>
+    <p class="d24-t" id="d24t"></p>
+    <a class="d24-go" id="d24go" href="#" target="_blank" rel="noopener">
+      Разобрать мою карту с менеджером</a>
+    <span class="d24-sub">Бесплатно, 20 минут. Разберем именно вашу карту:
+      что снять первым, кто это закроет и сколько это стоит.
+      <i id="d24hint"></i></span>
+  </div>
+</div>
+
+<!-- Прямой диалог с менеджером. Личный аккаунт — значит готовый текст
+     подставится прямо в поле ввода Telegram (см. ссылкаМенеджеру в analyze.js). -->
+<script>var МЕНЕДЖЕР = "https://t.me/D24_Manager";</script>
+
+<footer><div class="wrap">
+  Методология 7П+1 · инструмент подготовлен
+  <a href="https://delegator24.ru" target="_blank" rel="noopener">Delegator24</a>
+</div></footer>
+
+<script src="xlsx.js"></script>
+<script src="analyze.js"></script>
