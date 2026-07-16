@@ -1,9 +1,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow">
-<!-- Ссылка непубличная: без этого адрес страницы уехал бы в Referer вместе
-     с запросом шрифтов, то есть стал бы известен снаружи. -->
-<meta name="referrer" content="no-referrer">
 <title>Анализ рабочей недели · 7П+1</title>
 <link rel="icon" href="favicon-d24.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -40,6 +37,11 @@ header{position:sticky;top:0;z-index:30;background:#0e151d;border-bottom:1px sol
 h1{font-size:clamp(31px,4.6vw,42px);font-weight:800;letter-spacing:-.035em;line-height:1.08;
  margin-bottom:16px}
 .lead{font-size:18px;color:var(--ink2);line-height:1.55}
+.авторы{display:flex;flex-wrap:wrap;gap:6px 18px;margin:-6px 0 18px;font-size:13.5px;
+ color:var(--faint)}
+.авторы b{color:var(--ink2);font-weight:600}
+.авторы a{color:var(--accent);text-decoration:none}
+.авторы a:hover{text-decoration:underline}
 .lead b{color:#fff;font-weight:600}
 
 .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:30px 0 26px}
@@ -241,6 +243,11 @@ footer a{color:var(--muted)}
   <section class="hero">
     <span class="kicker">Анализ хронометража</span>
     <h1>Куда уходит ваша рабочая неделя</h1>
+    <div class="авторы">
+      <span><b>Методология 7П+1</b> — автор Михаил Попов</span>
+      <span>Поддержка <a href="https://delegator24.ru" target="_blank" rel="noopener">Delegator24</a>
+        — «Высвободите время на стратегию»</span>
+    </div>
     <p class="lead">Вставьте данные из таблицы хронометража — получите разбор: где фокус,
       в какой роли вы работаете, <b>какие часы можно снять с себя</b> и что это дает в год.</p>
   </section>
