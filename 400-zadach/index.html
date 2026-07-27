@@ -363,8 +363,8 @@ footer b{color:var(--ink2);font-weight:600}
 .lf-in:focus{outline:none;border-color:var(--accent);background:rgba(255,255,255,.09)}
 .lf-in::placeholder{color:#8a8d8f}
 textarea.lf-in{min-height:90px;resize:vertical}
-/* Телефон: код страны живёт ВНУТРИ поля — иначе автоподстановка браузера
-   пишет номер в одно поле, а код остаётся от другой страны, и выходит каша. */
+/* Телефон: код страны живет ВНУТРИ поля — иначе автоподстановка браузера
+   пишет номер в одно поле, а код остается от другой страны, и выходит каша. */
 .lf-tel{position:relative}
 .lf-tel .lf-in{padding-left:64px}
 .lf-flag{position:absolute;left:1px;top:1px;bottom:1px;width:58px;display:flex;align-items:center;
@@ -401,7 +401,12 @@ textarea.lf-in{min-height:90px;resize:vertical}
 @media(max-width:640px){.lf-q{font-size:17px}.lf-chip{padding:10px 13px;font-size:13.5px}}
 
 
-/* форма в светлой модалке: перекраска тёмной темы pochemu-sam */
+/* прикрепленный список в шаге задач */
+.lf-attach{background:#eef7ef;border:1.5px solid #cde7d2;border-radius:10px;padding:10px 14px;margin-bottom:12px}
+.lf-attach summary{cursor:pointer;font-size:13.5px;color:#2c7a3f;list-style:none}
+.lf-attach summary::-webkit-details-marker{display:none}
+.lf-attach-list{margin-top:9px;max-height:150px;overflow-y:auto;font-size:13px;color:#3f4a55;line-height:1.55}
+/* форма в светлой модалке: перекраска темной темы pochemu-sam */
 .modal .lf-q{color:var(--ink)}
 .modal .lf-cnt,.modal .lf-hint,.modal .lf-in::placeholder,.modal .lf-list b{color:#7a8492}
 .modal .lf-bar{background:#e6ebf2}
@@ -1452,8 +1457,8 @@ textarea.lf-in{min-height:90px;resize:vertical}
 <div class="ov" id="ov" onclick="if(event.target===this)closeModal()"><div class="modal">
   <button class="mx" onclick="closeModal()">×</button>
   <div id="mMain">
-    <h3>Ваша подборка для делегирования</h3>
-    <div class="lead">Отправьте список нам — соберем под него команду и вернемся с расчетом.</div>
+    <h3>Получите расчет команды под ваш список</h3>
+    <div class="lead">Состав специалистов под ваши задачи, стоимость подписки против ваших ₽/мес и план передачи первых задач — вернемся с расчетом в тот же день.</div>
     <div class="mstat">
       <div><b id="mCount">0</b><span>выбрано задач</span></div>
       <div><b id="mHours">0</b><span>≈ часов в месяц</span></div>
@@ -1464,7 +1469,7 @@ textarea.lf-in{min-height:90px;resize:vertical}
       <input type="range" id="rate" class="rate-slider" min="500" max="500000" step="500" value="2000" oninput="onRate()">
       <div class="rate-note">Грубая прикидка: задачи × ~4 ч/мес × ваша ставка часа. Точный расчет под ваши задачи вернем в диалоге.</div></div>
     <!-- КВИЗ. Вопросы и варианты — один в один с формой Тильды: в amoCRM поля
-     настроены под них. Лид уходит в amoCRM сразу, даже если человек не дойдёт до бота. -->
+     настроены под них. Лид уходит в amoCRM сразу, даже если человек не дойдет до бота. -->
 <div class="lf" id="leadForm" data-code="mat_tasks" data-doc="список задач и расчет команды">
   <div class="lf-bar"><i id="lfBar"></i></div>
   <div class="lf-cnt" id="lfCnt">Вопрос 1 из 7</div>
@@ -1529,9 +1534,13 @@ textarea.lf-in{min-height:90px;resize:vertical}
   </div>
 
   <div class="lf-step" data-step="5">
-    <div class="lf-q">Опишите задачи, которые хотите снять с себя</div>
-    <div class="lf-hint">Ваш список из каталога уже прикреплен к заявке — здесь можно дополнить своими словами. Можно пропустить.</div>
-    <textarea class="lf-in" id="lfTasks" placeholder="Например: обработка заявок, отчёты, переписка с клиентами"></textarea>
+    <div class="lf-q">Ваши задачи</div>
+    <details class="lf-attach" id="lfAttach">
+      <summary>✓ <b id="lfAttachN">0</b> задач из каталога прикреплены к заявке — посмотреть</summary>
+      <div class="lf-attach-list" id="lfAttachList"></div>
+    </details>
+    <div class="lf-hint">Хотите что-то дополнить своими словами — впишите ниже. Можно пропустить.</div>
+    <textarea class="lf-in" id="lfTasks" placeholder="Например: обработка заявок, отчеты, переписка с клиентами"></textarea>
     <div class="lf-nav">
       <button class="lf-back" data-back>Назад</button>
       <button class="btn btn-accent lf-next" data-next>Далее</button>
@@ -1807,6 +1816,9 @@ function openModal(){
   document.getElementById('mCount').textContent=n;
   document.getElementById('rate').value=RATE; onRate();
   document.getElementById('mMain').style.display='';
+  var всеЗ=Array.from(sel).concat(custom);
+  document.getElementById('lfAttachN').textContent=всеЗ.length;
+  document.getElementById('lfAttachList').innerHTML=всеЗ.map(function(т,и){return (и+1)+'. '+esc(т);}).join('<br>');
   document.getElementById('ov').classList.add('show'); document.body.style.overflow='hidden'; track('open_modal');
 }
 function onRate(){
@@ -1911,8 +1923,8 @@ function списокДляЗаявки(){
 (function(){
  var f=document.getElementById('leadForm'); if(!f) return;
 
- // ── телефон: страна определяется сама, но её можно сменить ─────────────────
- // Страну берём из часового пояса браузера: он отражает, где человек сейчас,
+ // ── телефон: страна определяется сама, но ее можно сменить ─────────────────
+ // Страну берем из часового пояса браузера: он отражает, где человек сейчас,
  // и не требует ни сети (внешние запросы режет CSP), ни разрешений.
  var СТРАНЫ=[
   {к:'RU',код:'7',  имя:'Россия',      цифр:10, м:'(###) ###-##-##'},
@@ -1959,9 +1971,9 @@ function списокДляЗаявки(){
             US:'🇺🇸',XX:'🌍'};
  var найтиСтрану=function(к){return СТРАНЫ.filter(function(с){return с.к===к;})[0];};
 
- // Номер живёт в ОДНОМ поле вместе с кодом. Так автоподстановка браузера
+ // Номер живет в ОДНОМ поле вместе с кодом. Так автоподстановка браузера
  // («+7 999 …») попадает целиком в него — а не в поле без кода, где превращалась в кашу.
- // Страну узнаём из самого номера: по самому длинному совпадению кода.
+ // Страну узнаем из самого номера: по самому длинному совпадению кода.
  function поКоду(номер){
   var ц=(номер||'').replace(/\D/g,'');
   if(!ц) return null;
@@ -2020,7 +2032,7 @@ function списокДляЗаявки(){
   }
 
   // В режиме ника (Telegram) поле — обычный текст: ни маски, ни кода страны.
-  // Раньше код всё равно подставлялся по фокусу, и в нике появлялось «+7».
+  // Раньше код все равно подставлялся по фокусу, и в нике появлялось «+7».
   function ник(){ return корень.classList.contains('lf-plain'); }
 
   поле.addEventListener('input',function(){
@@ -2053,7 +2065,7 @@ function списокДляЗаявки(){
  var тел=ТЕЛ.поле;
  var КОНТ=null;   // второе поле-телефон (WhatsApp / MAX) — создадим при выборе способа
 
- // Часовой пояс не видит VPN: он остаётся московским, даже если человек сидит
+ // Часовой пояс не видит VPN: он остается московским, даже если человек сидит
  // через другую страну. Спрашиваем наш сервер — он смотрит на адрес. Если не
  // ответит, останется страна по часовому поясу.
  fetch('https://chat.delegator24.ru/geo').then(function(r){return r.json();}).then(function(o){
@@ -2063,12 +2075,12 @@ function списокДляЗаявки(){
 
  // ── шаги ───────────────────────────────────────────────────────────────────
  var шаги=[].slice.call(f.querySelectorAll('.lf-step')), ВСЕГО=шаги.length, тек=0;
- var бар=document.getElementById('lfBar'), счёт=document.getElementById('lfCnt');
+ var бар=document.getElementById('lfBar'), счет=document.getElementById('lfCnt');
  function показать(i,скролл){
   тек=Math.max(0,Math.min(i,ВСЕГО-1));
   шаги.forEach(function(s,n){s.classList.toggle('on',n===тек);});
   бар.style.width=Math.round((тек+1)/ВСЕГО*100)+'%';
-  счёт.textContent='Вопрос '+(тек+1)+' из '+ВСЕГО;
+  счет.textContent='Вопрос '+(тек+1)+' из '+ВСЕГО;
   if(скролл!==false) f.scrollIntoView({behavior:'smooth',block:'nearest'});
  }
  показать(0,false);   // без первого шага виден только прогресс, а вопроса нет
@@ -2099,41 +2111,41 @@ function списокДляЗаявки(){
   }
 
   // «Свой вариант» → показать поле; для множественного смотрим, отмечен ли он сейчас
-  var своё=f.querySelector('.lf-own[data-own="'+i.name+'"]');
-  if(своё){
+  var свое=f.querySelector('.lf-own[data-own="'+i.name+'"]');
+  if(свое){
    var надо=(i.type==='radio')?(i.value==='Свой вариант')
                               :(мульти(i.name).indexOf('Свой вариант')>=0);
-   своё.classList.toggle('show',надо);
-   if(надо&&i.checked!==false) своё.querySelector('input').focus();
+   свое.classList.toggle('show',надо);
+   if(надо&&i.checked!==false) свое.querySelector('input').focus();
   }
 
   if(i.name==='way'){       // способ связи — не отдельный шаг, а поле внутри последнего
    var w=document.getElementById('lfContactWrap'),
        l=document.getElementById('lfContactLbl'),
-       обёртка=document.getElementById('lfContactTel'),
+       обертка=document.getElementById('lfContactTel'),
        c=document.getElementById('lfContact');
 
-   if(!КОНТ) КОНТ=Телефон(обёртка,начК);   // то же поле с флагом и маской, что и для телефона
+   if(!КОНТ) КОНТ=Телефон(обертка,начК);   // то же поле с флагом и маской, что и для телефона
    w.style.display='';
    КОНТ.сброс();            // иначе в поле ника оставался номер от прошлого выбора
 
    if(i.value==='Telegram'){
     l.textContent='Ник в Telegram';
-    обёртка.classList.add('lf-plain');     // без флага и маски: тут не номер, а ник
+    обертка.classList.add('lf-plain');     // без флага и маски: тут не номер, а ник
     c.type='text'; c.placeholder='@username';
    }else if(i.value==='Телефон'){
-    w.style.display='none';                // номер уже введён выше, второй раз не спрашиваем
+    w.style.display='none';                // номер уже введен выше, второй раз не спрашиваем
    }else{                                  // WhatsApp / MAX — там тот же номер телефона
     l.textContent='Номер в '+i.value;
-    обёртка.classList.remove('lf-plain');
+    обертка.classList.remove('lf-plain');
     c.type='tel';
     КОНТ.страна(ТЕЛ.страна());             // та же страна, что и в телефоне
-    КОНТ.вложить(ТЕЛ.взять());             // подставляем уже введённый номер, можно исправить
+    КОНТ.вложить(ТЕЛ.взять());             // подставляем уже введенный номер, можно исправить
    }
    return;
   }
 
-  // одиночный выбор шагает сам; множественный ждёт кнопки «Далее»
+  // одиночный выбор шагает сам; множественный ждет кнопки «Далее»
   var шаг=i.closest('.lf-step');
   if(i.type==='radio'&&шаг&&!шаг.querySelector('[data-next]'))
    setTimeout(function(){показать(тек+1);},220);
@@ -2168,7 +2180,7 @@ function списокДляЗаявки(){
   function собрать(имя,поле){
    var сп=(ОТВЕТЫ[имя]||[]).slice();
    var i=сп.indexOf('Свой вариант');
-   if(i>=0){var своё=(document.getElementById(поле).value||'').trim(); сп[i]=своё||'Свой вариант';}
+   if(i>=0){var свое=(document.getElementById(поле).value||'').trim(); сп[i]=свое||'Свой вариант';}
    return сп.join('; ');
   }
   var сфера=собрать('sphere','lfOwnSphere');
@@ -2204,7 +2216,7 @@ function списокДляЗаявки(){
    готово(o.go);
   }).catch(function(err){
    кн.disabled=false; кн.textContent='Получить расчет';
-   беда('Не удалось отправить: '+err.message+'. Напишите нам в бота — пришлём вручную.');
+   беда('Не удалось отправить: '+err.message+'. Напишите нам в бота — пришлем вручную.');
   });
  });
 
@@ -2223,7 +2235,7 @@ function списокДляЗаявки(){
    return '<a class="btn btn-accent lf-go" href="'+база+'?ch='+канал+
           (код?'&c='+encodeURIComponent(код):'')+'"'+
           ' onclick="try{if(window.ym)ym(39533920,\'reachGoal\',\'to_bot\')}catch(e){}"'+
-          ' target="_blank" rel="noopener">'+подпись+'</a>';   // новое окно: лендинг остаётся открытым
+          ' target="_blank" rel="noopener">'+подпись+'</a>';   // новое окно: лендинг остается открытым
   };
   d.innerHTML=
    '<div class="lf-hint" style="margin-bottom:14px">Выберите, где забрать материал:</div>'+
