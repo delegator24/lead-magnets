@@ -1603,7 +1603,7 @@ textarea.lf-in{min-height:90px;resize:vertical}
 
     <div class="lf-nav">
       <button class="lf-back" data-back>Назад</button>
-      <button class="btn btn-accent lf-next" id="lfSend">Получить разбор</button>
+      <button class="btn btn-accent lf-next" id="lfSend">Получить расчет</button>
     </div>
     <div class="lf-err" id="lfErr"></div>
   </div>
@@ -2174,7 +2174,7 @@ function списокДляЗаявки(){
   if(способ!=='Телефон'&&!конт) return беда('Оставьте контакт для связи в '+способ+'.');
   if((способ==='WhatsApp'||способ==='Max')&&КОНТ&&!КОНТ.ок())
    return беда('Проверьте номер в '+способ+'.');
-  if(!document.getElementById('lfCs1').checked) return беда('Без согласия на обработку данных мы не сможем прислать разбор.');
+  if(!document.getElementById('lfCs1').checked) return беда('Без согласия на обработку данных мы не сможем прислать расчет.');
 
   // множественный выбор → «А; Б; В». «Свой вариант» подменяем на то, что человек написал.
   function собрать(имя,поле){
@@ -2238,8 +2238,8 @@ function списокДляЗаявки(){
           ' target="_blank" rel="noopener">'+подпись+'</a>';   // новое окно: лендинг остается открытым
   };
   d.innerHTML=
-   '<div class="lf-hint" style="margin-bottom:14px">Выберите, где забрать материал:</div>'+
-   '<div class="lf-go-row">'+кнопка('tg','Забрать в Telegram')+кнопка('max','Забрать в MAX')+'</div>';
+   '<div class="lf-hint" style="margin-bottom:14px">Где вам удобнее получить расчет:</div>'+
+   '<div class="lf-go-row">'+кнопка('tg','Получить расчет в Telegram')+кнопка('max','Получить расчет в MAX')+'</div>';
  }
 })();
 
