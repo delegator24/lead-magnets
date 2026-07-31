@@ -52,15 +52,13 @@
   return new Uint8Array(await new Response(поток).arrayBuffer());
  }
 
- // ── xlsx: лист + общие строки ────────────────────────────────────────────
+ // ── xlsx: листы + общие строки ───────────────────────────────────────────
  // Текст в xlsx хранится отдельно (sharedStrings), в самом листе — только номера.
+ // Читаем ВСЕ листы с данными, а не только первый: живой прогон показал, что
+ // люди ведут недели на отдельных листах — и они молча пропадали из разбора.
  async function изXlsx(буфер) {
-  var файлы = await изZip(буфер, [/^xl\/worksheets\/sheet1\.xml$/, /^xl\/sharedStrings\.xml$/]);
-  var лист = файлы["xl/worksheets/sheet1.xml"];
-  if (!лист) throw new Error("лист не найден");
-
-  var текст = new TextDecoder().decode(лист);
-  var док = new DOMParser().parseFromString(текст, "application/xml");
+  var файлы = await изZip(буфер, [/^xl\/worksheets\/sheet\d+\.xml$/, /^xl\/sharedStrings\.xml$/,
+    /^xl\/workbook\.xml$/, /^xl\/_rels\/workbook\.xml\.rels$/]);
 
   var общие = [];
   if (файлы["xl/sharedStrings.xml"]) {
@@ -74,7 +72,46 @@
    });
   }
 
+  // Порядок и имена листов — из workbook.xml. Листы-инструкции пропускаем:
+  // иначе примеры с листа «Как заполнять» посчитаются как реальные задачи.
+  var СЛУЖЕБНЫЙ = /как заполн|инструкц|пример|справоч|словар/i;
+  var пути = [];
+  if (файлы["xl/workbook.xml"] && файлы["xl/_rels/workbook.xml.rels"]) {
+   var вб = new DOMParser().parseFromString(
+     new TextDecoder().decode(файлы["xl/workbook.xml"]), "application/xml");
+   var релс = new DOMParser().parseFromString(
+     new TextDecoder().decode(файлы["xl/_rels/workbook.xml.rels"]), "application/xml");
+   var цели = {};
+   [].forEach.call(релс.getElementsByTagName("Relationship"), function (р) {
+    цели[р.getAttribute("Id")] = р.getAttribute("Target") || "";
+   });
+   [].forEach.call(вб.getElementsByTagName("sheet"), function (л) {
+    var имя = л.getAttribute("name") || "";
+    var цель = цели[л.getAttribute("r:id")] || "";
+    цель = цель.replace(/^\//, "");
+    if (!/^xl\//.test(цель)) цель = "xl/" + цель;
+    if (СЛУЖЕБНЫЙ.test(имя)) return;
+    if (файлы[цель]) пути.push(цель);
+   });
+  }
+  if (!пути.length) {
+   // workbook.xml не прочитался — берем все sheetN по номерам
+   пути = Object.keys(файлы).filter(function (и) { return /^xl\/worksheets\//.test(и); })
+     .sort(function (a, b) {
+      return parseInt(a.replace(/\D/g, ""), 10) - parseInt(b.replace(/\D/g, ""), 10);
+     });
+  }
+  if (!пути.length) throw new Error("лист не найден");
+
   var строки = [];
+  пути.forEach(function (путь) {
+   изЛиста(файлы[путь], общие, строки);
+  });
+  return строки;
+ }
+
+ function изЛиста(байты, общие, строки) {
+  var док = new DOMParser().parseFromString(new TextDecoder().decode(байты), "application/xml");
   [].forEach.call(док.getElementsByTagName("row"), function (row) {
    var ячейки = [];
    [].forEach.call(row.getElementsByTagName("c"), function (c) {
@@ -100,7 +137,6 @@
    for (var i = 0; i < ячейки.length; i++) if (ячейки[i] === undefined) ячейки[i] = "";
    строки.push(ячейки);
   });
-  return строки;
  }
 
  function буква_в_номер(б) {
