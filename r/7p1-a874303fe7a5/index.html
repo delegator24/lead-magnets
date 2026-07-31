@@ -211,6 +211,8 @@ textarea::placeholder{color:transparent}
  font-variant-numeric:tabular-nums;transition:border-color .15s,color .15s}
 .wk:hover{color:#fff;border-color:var(--accent)}
 .wk.on{background:var(--accent-d);border-color:transparent;color:#fff;font-weight:600}
+.wk.wk-it{border-style:dashed}
+.wk.wk-it.on{border-style:solid}
 
 /* таблица недель не должна распирать страницу на телефоне — скролл внутри себя */
 .wk-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
@@ -295,6 +297,8 @@ textarea::placeholder{color:transparent}
  padding-left:16px;margin-bottom:18px}
 .ai-keep{font-size:13.5px;color:var(--muted);line-height:1.6}
 .ai-keep b{color:var(--ink2);font-weight:600}
+.ai-steps{margin:0 0 0 20px;display:flex;flex-direction:column;gap:8px}
+.ai-steps li{font-size:15px;color:var(--ink2);line-height:1.5;padding-left:4px}
 .pt{display:none}
 
 footer{border-top:1px solid var(--line);padding:26px 0;color:var(--faint);font-size:13.5px;
@@ -330,6 +334,7 @@ footer a{color:var(--muted)}
  .ai-com{color:#333;border-left-color:#307fe2}
  .ai-keep{color:#555}
  .ai-keep b{color:#222}
+ .ai-steps li{color:#333}
  /* спорные пометки: на бумаге держим рамкой, а не заливкой */
  .doubt{background:#fff;border:1px solid #ccc;border-left:3px solid #d98324}
  .dt-top span{color:#8a5a12}
