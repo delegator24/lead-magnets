@@ -1214,12 +1214,20 @@
   кн.textContent = "ИИ разбирает — около минуты…";
   заметка.textContent = "";
   try {
-   var о = await (await fetch(ИИ_АДРЕС, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(тело)
-   })).json();
+   // все слоты заняты — не ошибка, а очередь: ждем и пробуем снова сами
+   var о = null;
+   for (var поп = 0; поп < 5; поп++) {
+    о = await (await fetch(ИИ_АДРЕС, {
+     method: "POST",
+     headers: { "Content-Type": "application/json" },
+     body: JSON.stringify(тело)
+    })).json();
+    if (о.ok || !/занят/.test(о.error || "")) break;
+    кн.textContent = "ИИ занят — жду очередь…";
+    await new Promise(function (р) { setTimeout(р, 15000); });
+   }
    if (!о.ok) throw new Error(о.error || "сервер отказал");
+   кн.textContent = "ИИ разбирает — около минуты…";
 
    var старт = Date.now();
    while (Date.now() - старт < 300000) {
