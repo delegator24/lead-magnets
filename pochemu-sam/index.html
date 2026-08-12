@@ -575,10 +575,18 @@ function setA(i,v,btn){
  document.getElementById('hint').textContent=done?'Готово — можно смотреть результат':'Ответьте на все утверждения';
 }
 function compute(restore){
- var sc={};ORDER.forEach(function(k){sc[k]=0;});
- Q.forEach(function(q,i){sc[q.b]+=(ans[i]||0);});
- var win=ORDER[0];ORDER.forEach(function(k){if(sc[k]>sc[win])win=k;});
+ var sc={},yes={};ORDER.forEach(function(k){sc[k]=0;yes[k]=0;});
+ Q.forEach(function(q,i){sc[q.b]+=(ans[i]||0);if(ans[i]===2)yes[q.b]++;});
+ // ничья решается числом «Да»: одно «Да» — более сильный сигнал, чем два «Иногда»
+ var win=ORDER[0];ORDER.forEach(function(k){if(sc[k]>sc[win]||(sc[k]===sc[win]&&yes[k]>yes[win]))win=k;});
+ // ни один барьер не набрал 2 баллов (нет ни одного «Да» и ни пары «Иногда») —
+ // человек делегирует спокойно. Раньше сюда молча падал первый барьер списка
+ // (quality) и «все нет» получало диагноз про страх.
+ if(sc[win]<2){renderNone(sc,restore);return;}
  var b=B[win];
+ document.querySelector('#result .r-lead').textContent='Ваш главный стоп-фактор';
+ document.querySelector('#result .r-blocks').style.display='';
+ document.querySelector('#result .r-step').style.display='';
  document.getElementById('rTitle').textContent=b.title;
  window.__barrier=b.title;
  document.getElementById('rRecog').textContent=b.recog;
@@ -612,6 +620,33 @@ function compute(restore){
  if(lf){lf.style.display='';lf.dataset.doc=c.doc||'';lf.dataset.code=c.code||'';}
  try{localStorage.setItem('d24barrier',JSON.stringify({barrier:win,scores:sc,ts:Date.now()}));}catch(e){}
  if(!restore){try{if(window.ym){ym(39533920,'reachGoal','test_done');ym(39533920,'reachGoal','barrier_'+win);}}catch(e){}}
+ var r=document.getElementById('result');r.classList.add('show');
+ if(!restore)r.scrollIntoView({behavior:'smooth',block:'start'});
+}
+// «все хорошо»: барьеров не видно — человек делегирует спокойно. Форму не
+// показываем (чинить нечего), ведем в каталог «500+ задач»: его воронка живая
+// (mat_tasks, расчет команды + задача менеджеру) — лид не теряется.
+function renderNone(sc,restore){
+ document.querySelector('#result .r-lead').textContent='Ваш результат';
+ document.getElementById('rTitle').textContent='Барьеров не видно — вы делегируете спокойно';
+ window.__barrier='без барьера';
+ document.getElementById('rRecog').textContent='Вы не боитесь передавать задачи и понимаете, как контролировать результат. Обычно у таких руководителей вопрос другой: что еще можно снять с себя.';
+ document.querySelector('#result .r-blocks').style.display='none';
+ document.querySelector('#result .r-step').style.display='none';
+ document.getElementById('rSec').textContent='';
+ document.getElementById('ctaH').textContent='Посмотрите, что еще можно передать';
+ document.getElementById('ctaP').textContent='Мы собрали каталог из 500+ задач, которые бизнесы передают нам. Отметьте свои — увидите, сколько часов в месяц можно освободить, и получите расчет команды под ваш список.';
+ document.getElementById('msgBox').style.display='none';
+ document.getElementById('consentBox').style.display='none';
+ document.getElementById('ctaNote').style.display='none';
+ var lf=document.getElementById('leadForm');if(lf)lf.style.display='none';
+ var acts=document.getElementById('ctaActions');acts.innerHTML='';
+ var a=document.createElement('a');a.className='btn btn-accent';a.textContent='Открыть каталог 500+ задач';
+ a.href='https://start.delegator24.ru/400-zadach/';
+ a.onclick=function(){try{if(window.ym)ym(39533920,'reachGoal','to_catalog');}catch(e){}};
+ acts.appendChild(a);
+ try{localStorage.setItem('d24barrier',JSON.stringify({barrier:'none',scores:sc,ts:Date.now()}));}catch(e){}
+ if(!restore){try{if(window.ym){ym(39533920,'reachGoal','test_done');ym(39533920,'reachGoal','barrier_none');}}catch(e){}}
  var r=document.getElementById('result');r.classList.add('show');
  if(!restore)r.scrollIntoView({behavior:'smooth',block:'start'});
 }
