@@ -437,6 +437,9 @@ textarea.lf-in{min-height:90px;resize:vertical}
 .mstat div{flex:1;background:var(--card);border:1px solid var(--line2);border-radius:10px;padding:13px 15px}
 .mstat b{display:block;font-family:var(--mono);font-size:24px;font-weight:600;color:var(--ink);letter-spacing:-.03em}
 .mstat span{font-size:12px;color:var(--muted)}
+/* на узком экране сумма в моноширинном рвется на две строки — уменьшаем кегль */
+@media(max-width:430px){.mstat{gap:8px}.mstat div{padding:12px 10px}
+ .mstat b{font-size:19px;letter-spacing:-.04em}.mstat span{font-size:11.5px}}
 .mframe{background:var(--card);border:1px solid var(--line2);border-radius:10px;padding:15px 16px;margin-bottom:16px;font-size:14px;color:var(--ink2)}
 .rate-row{display:flex;align-items:center;gap:9px;margin:10px 0;font-size:13.5px;color:var(--muted)}
 .rate-row input[type=number]{width:100px;padding:8px 10px;border:1.5px solid var(--line2);border-radius:8px;font-family:var(--mono);font-size:14px;font-weight:600;color:var(--ink);background:var(--paper);outline:none;text-align:right}
@@ -474,6 +477,21 @@ textarea.lf-in{min-height:90px;resize:vertical}
 .mhint{font-size:12.5px;color:var(--faint);text-align:center;margin-top:12px}
 .mx{position:absolute;top:16px;right:18px;background:none;border:none;font-size:26px;color:var(--faint);cursor:pointer;line-height:1;padding:0}
 .mx:hover{color:var(--ink)}
+/* Заявка — отдельный лист, а не плашка поверх каталога: любой промах мимо окна
+   закрывал модалку и уносил с собой ссылки на бота. Разметка та же, меняется режим. */
+body.zayavka>.wrap,body.zayavka>footer,body.zayavka .bar,body.zayavka #toast{display:none}
+body.zayavka .ov{position:static;display:block;background:none;backdrop-filter:none;
+ -webkit-backdrop-filter:none;z-index:auto;padding:34px 16px 70px}
+body.zayavka .modal{max-width:600px;margin:0 auto;max-height:none;border:1px solid var(--line);
+ border-radius:14px;box-shadow:0 10px 40px rgba(16,24,32,.06)}
+body.zayavka .mx{display:none}
+@media(max-width:639px){body.zayavka .ov{padding:0 0 60px}
+ body.zayavka .modal{border:0;border-radius:0;box-shadow:none;padding:22px 18px 34px}}
+.z-back{display:none;align-items:center;gap:7px;background:none;border:none;padding:0;margin:0 0 18px;
+ font-family:var(--disp);font-size:14.5px;color:var(--ink2);cursor:pointer;line-height:1}
+.z-back:hover{color:var(--accent)}
+body.zayavka .z-back{display:inline-flex}
+body.zayavka.z-done .z-back{display:none}
 .msuccess{text-align:center;padding:16px 4px}
 .msuccess h3{font-family:var(--disp);font-size:23px;margin:12px 0 8px;color:var(--ink);font-weight:800;letter-spacing:-.03em}
 .msuccess p{color:var(--muted);font-size:15px;max-width:400px;margin:0 auto 18px;line-height:1.5}
@@ -1454,7 +1472,8 @@ textarea.lf-in{min-height:90px;resize:vertical}
   <button onclick="openModal()">Собрать команду →</button>
 </div></div>
 
-<div class="ov" id="ov" onclick="if(event.target===this&&!window.__выдача)closeModal()"><div class="modal">
+<div class="ov" id="ov"><div class="modal">
+  <button class="z-back" onclick="closeModal()">← К списку задач</button>
   <button class="mx" onclick="closeModal()">×</button>
   <div id="mMain">
     <h3>Получите расчет команды под ваш список</h3>
@@ -1819,8 +1838,29 @@ function openModal(){
   var всеЗ=Array.from(sel).concat(custom);
   document.getElementById('lfAttachN').textContent=всеЗ.length;
   document.getElementById('lfAttachList').innerHTML=всеЗ.map(function(т,и){return (и+1)+'. '+esc(т);}).join('<br>');
-  document.getElementById('ov').classList.add('show'); document.body.style.overflow='hidden'; track('open_modal');
+  открытьЛист(true); track('open_modal');
 }
+// Заявка живет как отдельный лист со своим адресом (#zayavka): назад в браузере
+// работает, закрыть промахом мимо — нельзя. До 13.08 это была модалка, и люди
+// теряли экран выдачи вместе со ссылками на бота случайным кликом.
+var ТИТУЛ=document.title;
+function открытьЛист(push){
+  document.getElementById('ov').classList.add('show');
+  document.body.classList.add('zayavka');
+  document.body.style.overflow='';
+  window.scrollTo(0,0);
+  document.title='Расчет команды под ваши задачи — Delegator24';
+  if(push && location.hash!=='#zayavka') history.pushState({зая:1},'','#zayavka');
+}
+function закрытьЛист(){
+  document.getElementById('ov').classList.remove('show');
+  document.body.classList.remove('zayavka');
+  document.title=ТИТУЛ;
+}
+window.addEventListener('popstate',function(){
+  if(location.hash==='#zayavka'){ if(sel.size+custom.length) открытьЛист(false); }
+  else закрытьЛист();
+});
 function onRate(){
   var r=parseInt(document.getElementById('rate').value,10); if(isNaN(r)||r<0)r=0; RATE=r;
   try{localStorage.setItem('d24rate',String(r));}catch(e){}
@@ -1830,11 +1870,12 @@ function onRate(){
   document.getElementById('mMoney').textContent=fmtRub(hours*r);
 }
 function closeModal(force){
-  // на экране выдачи материала закрываем только по явному действию:
-  // случайный клик мимо окна уносил ссылки на бота вместе с окном
+  // после выдачи материала уходим с листа только по явному действию:
+  // ссылки на бота — единственное, за чем человек сюда шел
   if (window.__выдача && force !== true) return;
-  document.getElementById('ov').classList.remove('show');
-  document.body.style.overflow='';
+  // адрес поставили мы — уходим через историю, чтобы #zayavka не остался висеть
+  if (location.hash==='#zayavka'){ history.back(); return; }
+  закрытьЛист();
 }
 function listAsText(){
   var g=buildGroups(), s='Здравствуйте! Выбрал '+(sel.size+custom.length)+' задач к передаче:\n';
@@ -2230,7 +2271,8 @@ function списокДляЗаявки(){
   f.querySelectorAll('.lf-step,.lf-bar,.lf-cnt').forEach(function(э){э.style.display='none';});
   var d=document.getElementById('lfDone');
   d.style.display='';
-  window.__выдача = true;              // дальше окно закрывается только осознанно
+  window.__выдача = true;              // дальше лист закрывается только осознанно
+  document.body.classList.add('z-done');   // и возврат в каталог с него убран
 
   // Материал забирают там, где человеку удобно: и Telegram, и MAX.
   // Ссылка одна, канал дописываем — сервер по нему решает, куда вести.
@@ -2249,16 +2291,22 @@ function списокДляЗаявки(){
    '<div class="lf-go-row">'+кнопка('tg','Получить расчет в Telegram')+кнопка('max','Получить расчет в MAX')+
    '</div>'+
    '<div class="lf-hint" style="margin-top:18px">Ссылка открывается в новой вкладке — эта страница останется здесь.</div>'+
-   '<button type="button" class="lf-back" style="margin-top:10px" onclick="closeModal(true)">Закрыть</button>';
+   '<button type="button" class="lf-back" style="margin-top:10px" onclick="closeModal(true)">← Вернуться к списку задач</button>';
  }
+})();
+
+// Перезагрузка или прямой заход на #zayavka: задачи лежат в localStorage,
+// поэтому лист можно открыть сразу. Если задач нет — адрес чистим, чтобы
+// человек не смотрел на пустой расчет.
+(function(){
+  if(location.hash!=='#zayavka') return;
+  if(sel.size+custom.length){ openModal(); }
+  else history.replaceState(null,'',location.pathname+location.search);
 })();
 
 </script>
 
 <!-- UIS виджет связи (звонок/мессенджеры) -->
 <script type="text/javascript" async src="https://app.uiscom.ru/static/cs.min.js?k=BkIwF_xi28YQGfhpr1ZcIecg_wn6lgxP"></script>
-</body>
-
-</script>
 </body>
 </html>
