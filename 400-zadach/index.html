@@ -1454,7 +1454,7 @@ textarea.lf-in{min-height:90px;resize:vertical}
   <button onclick="openModal()">Собрать команду →</button>
 </div></div>
 
-<div class="ov" id="ov" onclick="if(event.target===this)closeModal()"><div class="modal">
+<div class="ov" id="ov" onclick="if(event.target===this&&!window.__выдача)closeModal()"><div class="modal">
   <button class="mx" onclick="closeModal()">×</button>
   <div id="mMain">
     <h3>Получите расчет команды под ваш список</h3>
@@ -1829,7 +1829,13 @@ function onRate(){
   document.getElementById('mHours').textContent=hours;
   document.getElementById('mMoney').textContent=fmtRub(hours*r);
 }
-function closeModal(){ document.getElementById('ov').classList.remove('show'); document.body.style.overflow=''; }
+function closeModal(force){
+  // на экране выдачи материала закрываем только по явному действию:
+  // случайный клик мимо окна уносил ссылки на бота вместе с окном
+  if (window.__выдача && force !== true) return;
+  document.getElementById('ov').classList.remove('show');
+  document.body.style.overflow='';
+}
 function listAsText(){
   var g=buildGroups(), s='Здравствуйте! Выбрал '+(sel.size+custom.length)+' задач к передаче:\n';
   g.forEach(function(x){ s+='\n'+x.name+':\n'; x.items.forEach(function(it){ s+='• '+it+'\n'; }); });
@@ -2224,6 +2230,7 @@ function списокДляЗаявки(){
   f.querySelectorAll('.lf-step,.lf-bar,.lf-cnt').forEach(function(э){э.style.display='none';});
   var d=document.getElementById('lfDone');
   d.style.display='';
+  window.__выдача = true;              // дальше окно закрывается только осознанно
 
   // Материал забирают там, где человеку удобно: и Telegram, и MAX.
   // Ссылка одна, канал дописываем — сервер по нему решает, куда вести.
@@ -2239,7 +2246,10 @@ function списокДляЗаявки(){
   };
   d.innerHTML=
    '<div class="lf-hint" style="margin-bottom:14px">Где вам удобнее получить расчет:</div>'+
-   '<div class="lf-go-row">'+кнопка('tg','Получить расчет в Telegram')+кнопка('max','Получить расчет в MAX')+'</div>';
+   '<div class="lf-go-row">'+кнопка('tg','Получить расчет в Telegram')+кнопка('max','Получить расчет в MAX')+
+   '</div>'+
+   '<div class="lf-hint" style="margin-top:18px">Ссылка открывается в новой вкладке — эта страница останется здесь.</div>'+
+   '<button type="button" class="lf-back" style="margin-top:10px" onclick="closeModal(true)">Закрыть</button>+'</div>';
  }
 })();
 
