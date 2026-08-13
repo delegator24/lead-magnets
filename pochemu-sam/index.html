@@ -187,7 +187,7 @@ footer{padding:38px 0 44px;color:var(--muted);font-size:13px;border-top:1px soli
 .toast{position:fixed;bottom:28px;left:50%;transform:translateX(-50%);background:var(--ink);color:var(--paper);padding:12px 22px;border-radius:9px;font-size:14px;font-weight:500;z-index:70;opacity:0;transition:opacity .2s;pointer-events:none}
 .toast.show{opacity:1}
 
-/* КВИЗ. Живёт внутри .cta — фон там тёмный (var(--ink)).
+/* КВИЗ. Живет внутри .cta — фон там темный (var(--ink)).
    Светлые переменные (--card / --ink) тут использовать НЕЛЬЗЯ: белое на белом. */
 .lf{max-width:560px;margin:0 auto;text-align:left}
 .lf-bar{height:3px;border-radius:2px;background:rgba(255,255,255,.12);margin-bottom:18px;overflow:hidden}
@@ -210,8 +210,8 @@ footer{padding:38px 0 44px;color:var(--muted);font-size:13px;border-top:1px soli
 .lf-in:focus{outline:none;border-color:var(--accent);background:rgba(255,255,255,.09)}
 .lf-in::placeholder{color:#8a8d8f}
 textarea.lf-in{min-height:90px;resize:vertical}
-/* Телефон: код страны живёт ВНУТРИ поля — иначе автоподстановка браузера
-   пишет номер в одно поле, а код остаётся от другой страны, и выходит каша. */
+/* Телефон: код страны живет ВНУТРИ поля — иначе автоподстановка браузера
+   пишет номер в одно поле, а код остается от другой страны, и выходит каша. */
 .lf-tel{position:relative}
 .lf-tel .lf-in{padding-left:64px}
 .lf-flag{position:absolute;left:1px;top:1px;bottom:1px;width:58px;display:flex;align-items:center;
@@ -315,7 +315,7 @@ textarea.lf-in{min-height:90px;resize:vertical}
       <div id="ctaActions"></div>
       <div class="cta-note" id="ctaNote">Бесплатно, без обязательств.</div>
 <!-- КВИЗ. Вопросы и варианты — один в один с формой Тильды: в amoCRM поля
-     настроены под них. Лид уходит в amoCRM сразу, даже если человек не дойдёт до бота. -->
+     настроены под них. Лид уходит в amoCRM сразу, даже если человек не дойдет до бота. -->
 <div class="lf" id="leadForm" style="display:none">
   <div class="lf-bar"><i id="lfBar"></i></div>
   <div class="lf-cnt" id="lfCnt">Вопрос 1 из 7</div>
@@ -382,7 +382,7 @@ textarea.lf-in{min-height:90px;resize:vertical}
   <div class="lf-step" data-step="5">
     <div class="lf-q">Опишите задачи, которые хотите снять с себя</div>
     <div class="lf-hint">Пара строк — подготовим разбор точнее. Можно пропустить.</div>
-    <textarea class="lf-in" id="lfTasks" placeholder="Например: обработка заявок, отчёты, переписка с клиентами"></textarea>
+    <textarea class="lf-in" id="lfTasks" placeholder="Например: обработка заявок, отчеты, переписка с клиентами"></textarea>
     <div class="lf-nav">
       <button class="lf-back" data-back>Назад</button>
       <button class="btn btn-accent lf-next" data-next>Далее</button>
@@ -438,6 +438,7 @@ textarea.lf-in{min-height:90px;resize:vertical}
       </div>
     </div>
 
+    <input class="lf-in" id="lfHp" name="site" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px;top:-9999px;width:1px;height:1px;opacity:0">
     <div class="lf-cs">
       <label class="cs-row"><input type="checkbox" id="lfCs1" checked><span>Я предоставляю Сервису <a href="https://delegator24.ru/consent-to-the-processing-of-personaldata" target="_blank" rel="noopener">согласие</a> на обработку моих персональных данных, <a href="https://delegator24.ru/consent-to-the-transfer-of-personal-data" target="_blank" rel="noopener">согласие</a> на передачу моих персональных данных третьим лицам, я ознакомлен с <a href="https://delegator24.ru/privacy-policy" target="_blank" rel="noopener">Политикой обработки персональных данных</a>.</span></label>
       <label class="cs-row"><input type="checkbox" id="lfCs2" checked><span>Я предоставляю Сервису <a href="https://delegator24.ru/consent-to-receive-marketing-information" target="_blank" rel="noopener">согласие</a> на получение рассылок.</span></label>
@@ -459,7 +460,7 @@ textarea.lf-in{min-height:90px;resize:vertical}
 <footer><div class="wrap">
   <a class="foot-logo" href="https://delegator24.ru" target="_blank" rel="noopener" aria-label="На сайт Delegator24"><img src="logo-d24.png" alt="Delegator24" height="24"></a>
   <div class="foot-legal"><a href="https://delegator24.ru/page71975481.html" target="_blank" rel="noopener">Юридическая информация</a></div>
-  <div class="foot-copy">© Delegator24 — аутсорс операционных задач для собственников бизнеса · delegator24.ru</div>
+  <div class="foot-copy">ООО «Делегатор 24» · ИНН 2634102694 · © Delegator24 — аутсорс операционных задач для собственников бизнеса · delegator24.ru</div>
 </div></footer>
 <div class="toast" id="toast"></div>
 
@@ -609,14 +610,14 @@ function compute(restore){
  // уводили на 400-zadach.html / snimok-dnya.html — страниц нет в проде, человек
  // уезжал в 404, и мы теряли и заявку, и материал. Разделы под них в тетради есть.
  _msg='Здравствуйте! Прошел тест «Почему делаю сам». Моя сложность — '+b.title.toLowerCase()+'. Хочу забрать '+c.doc+'.\nЗадача, которую хочу передать первой: ';
- // Форма-first: лид уходит в amoCRM сразу, даже если человек не дойдёт до бота.
- // Раньше здесь были кнопки в бота — не дошёл, потеряли и контакт, и данные.
+ // Форма-first: лид уходит в amoCRM сразу, даже если человек не дойдет до бота.
+ // Раньше здесь были кнопки в бота — не дошел, потеряли и контакт, и данные.
  mb.style.display='none';
  cb.style.display='none';
  note.style.display='none';
  var lf=document.getElementById('leadForm');
- // code — метка барьера (mat_quality и т.п.). По ней бот поймёт, с чем пришёл
- // человек, и выдаст нужный материал. Без неё он видит всех одинаково.
+ // code — метка барьера (mat_quality и т.п.). По ней бот поймет, с чем пришел
+ // человек, и выдаст нужный материал. Без нее он видит всех одинаково.
  if(lf){lf.style.display='';lf.dataset.doc=c.doc||'';lf.dataset.code=c.code||'';}
  try{localStorage.setItem('d24barrier',JSON.stringify({barrier:win,scores:sc,ts:Date.now()}));}catch(e){}
  if(!restore){try{if(window.ym){ym(39533920,'reachGoal','test_done');ym(39533920,'reachGoal','barrier_'+win);}}catch(e){}}
@@ -710,16 +711,22 @@ if(Object.keys(ans).length>=Q.length)compute(true);
 
 <!-- UIS виджет связи (звонок/мессенджеры).
      Ключ sk= — персональный для сайта start.delegator24.ru. Общий код аккаунта (k=)
-     тут не работает: поддомен заведён отдельным сайтом, и UIS отвечает «сайт не совпадает». -->
-<script type="text/javascript" async src="https://app.uiscom.ru/static/cs.min.js?sk=Gn710qh2xB6xbepS2kLbwHgbqI_xkaBw"></script>
+     тут не работает: поддомен заведен отдельным сайтом, и UIS отвечает «сайт не совпадает». -->
+<script>
+// UIS: их сервер отдает cs.min.js до 25+ секунд, и даже async держит событие
+// load — вкладка «вечно грузится» (аудит 13.08). Вставляем тег после load.
+window.addEventListener('load',function(){setTimeout(function(){
+  var s=document.createElement('script');s.async=true;
+  s.src='https://app.uiscom.ru/static/cs.min.js?sk=Gn710qh2xB6xbepS2kLbwHgbqI_xkaBw';document.body.appendChild(s);},600);});
+</script>
 <script>
 // ── КВИЗ: шаги, телефонная маска по стране, отправка лида ────────────────────
-// Лид уходит в amoCRM сразу после отправки — не дожидаясь, дойдёт ли человек до бота.
+// Лид уходит в amoCRM сразу после отправки — не дожидаясь, дойдет ли человек до бота.
 (function(){
  var f=document.getElementById('leadForm'); if(!f) return;
 
- // ── телефон: страна определяется сама, но её можно сменить ─────────────────
- // Страну берём из часового пояса браузера: он отражает, где человек сейчас,
+ // ── телефон: страна определяется сама, но ее можно сменить ─────────────────
+ // Страну берем из часового пояса браузера: он отражает, где человек сейчас,
  // и не требует ни сети (внешние запросы режет CSP), ни разрешений.
  var СТРАНЫ=[
   {к:'RU',код:'7',  имя:'Россия',      цифр:10, м:'(###) ###-##-##'},
@@ -766,9 +773,9 @@ if(Object.keys(ans).length>=Q.length)compute(true);
             US:'🇺🇸',XX:'🌍'};
  var найтиСтрану=function(к){return СТРАНЫ.filter(function(с){return с.к===к;})[0];};
 
- // Номер живёт в ОДНОМ поле вместе с кодом. Так автоподстановка браузера
+ // Номер живет в ОДНОМ поле вместе с кодом. Так автоподстановка браузера
  // («+7 999 …») попадает целиком в него — а не в поле без кода, где превращалась в кашу.
- // Страну узнаём из самого номера: по самому длинному совпадению кода.
+ // Страну узнаем из самого номера: по самому длинному совпадению кода.
  function поКоду(номер){
   var ц=(номер||'').replace(/\D/g,'');
   if(!ц) return null;
@@ -827,7 +834,7 @@ if(Object.keys(ans).length>=Q.length)compute(true);
   }
 
   // В режиме ника (Telegram) поле — обычный текст: ни маски, ни кода страны.
-  // Раньше код всё равно подставлялся по фокусу, и в нике появлялось «+7».
+  // Раньше код все равно подставлялся по фокусу, и в нике появлялось «+7».
   function ник(){ return корень.classList.contains('lf-plain'); }
 
   поле.addEventListener('input',function(){
@@ -860,7 +867,7 @@ if(Object.keys(ans).length>=Q.length)compute(true);
  var тел=ТЕЛ.поле;
  var КОНТ=null;   // второе поле-телефон (WhatsApp / MAX) — создадим при выборе способа
 
- // Часовой пояс не видит VPN: он остаётся московским, даже если человек сидит
+ // Часовой пояс не видит VPN: он остается московским, даже если человек сидит
  // через другую страну. Спрашиваем наш сервер — он смотрит на адрес. Если не
  // ответит, останется страна по часовому поясу.
  fetch('https://chat.delegator24.ru/geo').then(function(r){return r.json();}).then(function(o){
@@ -870,12 +877,12 @@ if(Object.keys(ans).length>=Q.length)compute(true);
 
  // ── шаги ───────────────────────────────────────────────────────────────────
  var шаги=[].slice.call(f.querySelectorAll('.lf-step')), ВСЕГО=шаги.length, тек=0;
- var бар=document.getElementById('lfBar'), счёт=document.getElementById('lfCnt');
+ var бар=document.getElementById('lfBar'), счет=document.getElementById('lfCnt');
  function показать(i,скролл){
   тек=Math.max(0,Math.min(i,ВСЕГО-1));
   шаги.forEach(function(s,n){s.classList.toggle('on',n===тек);});
   бар.style.width=Math.round((тек+1)/ВСЕГО*100)+'%';
-  счёт.textContent='Вопрос '+(тек+1)+' из '+ВСЕГО;
+  счет.textContent='Вопрос '+(тек+1)+' из '+ВСЕГО;
   if(скролл!==false) f.scrollIntoView({behavior:'smooth',block:'nearest'});
  }
  показать(0,false);   // без первого шага виден только прогресс, а вопроса нет
@@ -906,41 +913,41 @@ if(Object.keys(ans).length>=Q.length)compute(true);
   }
 
   // «Свой вариант» → показать поле; для множественного смотрим, отмечен ли он сейчас
-  var своё=f.querySelector('.lf-own[data-own="'+i.name+'"]');
-  if(своё){
+  var свое=f.querySelector('.lf-own[data-own="'+i.name+'"]');
+  if(свое){
    var надо=(i.type==='radio')?(i.value==='Свой вариант')
                               :(мульти(i.name).indexOf('Свой вариант')>=0);
-   своё.classList.toggle('show',надо);
-   if(надо&&i.checked!==false) своё.querySelector('input').focus();
+   свое.classList.toggle('show',надо);
+   if(надо&&i.checked!==false) свое.querySelector('input').focus();
   }
 
   if(i.name==='way'){       // способ связи — не отдельный шаг, а поле внутри последнего
    var w=document.getElementById('lfContactWrap'),
        l=document.getElementById('lfContactLbl'),
-       обёртка=document.getElementById('lfContactTel'),
+       обертка=document.getElementById('lfContactTel'),
        c=document.getElementById('lfContact');
 
-   if(!КОНТ) КОНТ=Телефон(обёртка,начК);   // то же поле с флагом и маской, что и для телефона
+   if(!КОНТ) КОНТ=Телефон(обертка,начК);   // то же поле с флагом и маской, что и для телефона
    w.style.display='';
    КОНТ.сброс();            // иначе в поле ника оставался номер от прошлого выбора
 
    if(i.value==='Telegram'){
     l.textContent='Ник в Telegram';
-    обёртка.classList.add('lf-plain');     // без флага и маски: тут не номер, а ник
+    обертка.classList.add('lf-plain');     // без флага и маски: тут не номер, а ник
     c.type='text'; c.placeholder='@username';
    }else if(i.value==='Телефон'){
-    w.style.display='none';                // номер уже введён выше, второй раз не спрашиваем
+    w.style.display='none';                // номер уже введен выше, второй раз не спрашиваем
    }else{                                  // WhatsApp / MAX — там тот же номер телефона
     l.textContent='Номер в '+i.value;
-    обёртка.classList.remove('lf-plain');
+    обертка.classList.remove('lf-plain');
     c.type='tel';
     КОНТ.страна(ТЕЛ.страна());             // та же страна, что и в телефоне
-    КОНТ.вложить(ТЕЛ.взять());             // подставляем уже введённый номер, можно исправить
+    КОНТ.вложить(ТЕЛ.взять());             // подставляем уже введенный номер, можно исправить
    }
    return;
   }
 
-  // одиночный выбор шагает сам; множественный ждёт кнопки «Далее»
+  // одиночный выбор шагает сам; множественный ждет кнопки «Далее»
   var шаг=i.closest('.lf-step');
   if(i.type==='radio'&&шаг&&!шаг.querySelector('[data-next]'))
    setTimeout(function(){показать(тек+1);},220);
@@ -975,7 +982,7 @@ if(Object.keys(ans).length>=Q.length)compute(true);
   function собрать(имя,поле){
    var сп=(ОТВЕТЫ[имя]||[]).slice();
    var i=сп.indexOf('Свой вариант');
-   if(i>=0){var своё=(document.getElementById(поле).value||'').trim(); сп[i]=своё||'Свой вариант';}
+   if(i>=0){var свое=(document.getElementById(поле).value||'').trim(); сп[i]=свое||'Свой вариант';}
    return сп.join('; ');
   }
   var сфера=собрать('sphere','lfOwnSphere');
@@ -999,6 +1006,7 @@ if(Object.keys(ans).length>=Q.length)compute(true);
     contact_way:способ,
     contact:способ==='Телефон'?ТЕЛ.норм()
            :((способ==='WhatsApp'||способ==='Max')&&КОНТ?КОНТ.норм():конт),
+    site:(document.getElementById('lfHp')||{}).value||'',
     pd:document.getElementById('lfCs1').checked?'yes':'no',
     ads:document.getElementById('lfCs2').checked?'yes':'no',
     doc:f.dataset.doc||'',referer:location.href
@@ -1010,7 +1018,7 @@ if(Object.keys(ans).length>=Q.length)compute(true);
    готово(o.go);
   }).catch(function(err){
    кн.disabled=false; кн.textContent='Получить разбор';
-   беда('Не удалось отправить: '+err.message+'. Напишите нам в бота — пришлём вручную.');
+   беда('Не удалось отправить: '+err.message+'. Напишите нам в бота — пришлем вручную.');
   });
  });
 
@@ -1029,7 +1037,7 @@ if(Object.keys(ans).length>=Q.length)compute(true);
    return '<a class="btn btn-accent lf-go" href="'+база+'?ch='+канал+
           (код?'&c='+encodeURIComponent(код):'')+'"'+
           ' onclick="try{if(window.ym)ym(39533920,\'reachGoal\',\'to_bot\')}catch(e){}"'+
-          ' target="_blank" rel="noopener">'+подпись+'</a>';   // новое окно: лендинг остаётся открытым
+          ' target="_blank" rel="noopener">'+подпись+'</a>';   // новое окно: лендинг остается открытым
   };
   d.innerHTML=
    '<div class="lf-hint" style="margin-bottom:14px">Выберите, где забрать материал:</div>'+
@@ -1037,5 +1045,19 @@ if(Object.keys(ans).length>=Q.length)compute(true);
  }
 })();
 </script>
+
+<div id="ckbar" style="display:none;position:fixed;left:14px;right:14px;bottom:14px;z-index:95;
+ max-width:560px;margin:0 auto;background:#101820;color:#e8edf4;border-radius:12px;
+ padding:14px 18px;font-size:13.5px;line-height:1.45;box-shadow:0 12px 34px rgba(10,16,26,.35);
+ align-items:center;gap:14px;flex-wrap:wrap">
+ <span style="flex:1;min-width:200px">Мы используем cookie и Яндекс.Метрику, чтобы понимать,
+ как работает страница. <a href="https://delegator24.ru/privacy-policy" target="_blank"
+ rel="noopener" style="color:#9ec3f2">Политика обработки данных</a></span>
+ <button onclick="try{localStorage.setItem('d24ck','1')}catch(e){};document.getElementById('ckbar').remove()"
+ style="background:#307fe2;color:#fff;border:none;border-radius:8px;padding:9px 20px;
+ font:inherit;font-weight:600;cursor:pointer">Понятно</button>
+</div>
+<script>try{if(!localStorage.getItem('d24ck'))document.getElementById('ckbar').style.display='flex';}catch(e){}</script>
+
 </body>
 </html>
