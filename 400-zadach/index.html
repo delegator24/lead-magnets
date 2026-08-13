@@ -382,7 +382,7 @@ textarea.lf-in{min-height:90px;resize:vertical}
 .lf-plain .lf-flag,.lf-plain .lf-list{display:none}
 .lf-plain .lf-in{padding-left:15px}
 .lf-go-row{display:flex;gap:10px;flex-wrap:wrap}
-.lf-go-row .lf-go{flex:1;min-width:180px;justify-content:center}
+.lf-go-row .lf-go{flex:1;min-width:180px;justify-content:center;font-size:15px;padding:14px 16px}
 .lf-f{margin-bottom:13px}
 .lf-lbl{display:block;font-size:13.5px;font-weight:600;color:#dbe2ec;margin-bottom:6px}
 .lf-own{margin-top:9px;display:none}
@@ -390,7 +390,7 @@ textarea.lf-in{min-height:90px;resize:vertical}
 .lf-nav{display:flex;gap:10px;margin-top:20px;align-items:center}
 .lf-next{flex:1;justify-content:center}
 .lf-back{background:none;border:none;color:#8a8d8f;font:inherit;font-size:14px;cursor:pointer;padding:10px 4px}
-.lf-back:hover{color:#dbe2ec}
+.lf-back:hover{color:var(--accent)}
 .lf-next[disabled]{opacity:.4;pointer-events:none}
 .lf-cs{margin:16px 0 4px}
 .lf-cs .cs-row{display:flex;gap:9px;align-items:flex-start;margin-bottom:9px;font-size:12px;color:#8a8d8f;line-height:1.45}
@@ -477,6 +477,23 @@ textarea.lf-in{min-height:90px;resize:vertical}
 .mhint{font-size:12.5px;color:var(--faint);text-align:center;margin-top:12px}
 .mx{position:absolute;top:16px;right:18px;background:none;border:none;font-size:26px;color:var(--faint);cursor:pointer;line-height:1;padding:0}
 .mx:hover{color:var(--ink)}
+/* Кнопки квиза. Разметка приехала с «Почему сам» вместе с классами .btn/.btn-accent,
+   а сами правила — нет: браузер рисовал системную серую кнопку, в том числе на экране
+   выдачи со ссылками на бота. Правила те же, что у донора, чтобы магниты не разъезжались. */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:9px;font-family:var(--disp);
+ font-weight:600;font-size:15.5px;line-height:1.2;border:none;border-radius:10px;cursor:pointer;
+ padding:14px 28px;text-align:center;text-decoration:none;transition:transform .12s,background .15s}
+.btn-accent{background:var(--accent);color:#fff}
+.btn-accent:hover{background:var(--accent-d);transform:translateY(-1px)}
+.btn-accent:active{transform:translateY(0)}
+.btn-ink{background:var(--ink);color:var(--paper)}
+.btn-ink:hover{background:#000;transform:translateY(-1px)}
+.btn-ghost{background:var(--card);color:var(--ink);border:1px solid var(--line2)}
+.btn-ghost:hover{background:var(--card2)}
+/* остатки темной темы донора на белом фоне: ссылки согласий и текст ошибки не читались */
+.lf-cs a{color:var(--accent)}
+.lf-err{color:#c0392b}
+
 /* Заявка — отдельный лист, а не плашка поверх каталога: любой промах мимо окна
    закрывал модалку и уносил с собой ссылки на бота. Разметка та же, меняется режим. */
 body.zayavka>.wrap,body.zayavka>footer,body.zayavka .bar,body.zayavka #toast{display:none}
