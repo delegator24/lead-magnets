@@ -5,7 +5,7 @@
 <link rel="icon" href="favicon-d24.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Golos+Text:wght@400;500;600;700;800;900&family=JetBrains+Mono:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="style.css">
 <!-- Yandex.Metrika counter: тот же 39533920 — сквозная сессия лендинг→тетрадь -->
 <script type="text/javascript">
@@ -18,11 +18,15 @@ ym(39533920,"init",{clickmap:true,trackLinks:true,accurateTrackBounce:true});
 <noscript><div><img src="https://mc.yandex.ru/watch/39533920" style="position:absolute;left:-9999px;" alt=""></div></noscript>
 <!-- /Yandex.Metrika counter -->
 
+<!-- живой фон: градиент + дрейф пятен + слой контурных иконок, как в разборе 7П+1 -->
+<div class="bg" aria-hidden="true"><i class="b b1"></i><i class="b b2"></i><i class="b b3"></i></div>
+<div class="bg-ico" aria-hidden="true"></div>
+
 <header>
   <div class="wrap">
     <div class="hbar">
-      <!-- логотип текстом: цветной PNG на темном фоне превращался в белое пятно -->
-      <a class="mark" href="https://delegator24.ru" target="_blank" rel="noopener">Delegator<span>24</span></a>
+      <a class="mark" href="https://delegator24.ru" target="_blank" rel="noopener">
+        <img src="logo-d24.png" alt="Delegator24"></a>
       <span class="step" id="hStep"></span>
     </div>
     <nav class="tabs" id="tabs">

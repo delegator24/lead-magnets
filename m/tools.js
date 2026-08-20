@@ -21,7 +21,12 @@
  var сырое=(new URLSearchParams(location.search).get('b')||'').toLowerCase();
  var мой=Object.keys(БАРЬЕРЫ).filter(function(к){return сырое.indexOf(к)>=0;})[0];
  if(мой){
-  $('mineText').textContent=БАРЬЕРЫ[мой]+' — ваш раздел отмечен в меню сверху';
+  // Пришел по ссылке со своим стоп-фактором: полоса из шести вкладок сверху
+  // превращает тетрадь в курс. Прячем ее (body.solo), маршрут показываем внизу
+  // раздела рядом с переходом. Сами вкладки остаются в разметке — по ним
+  // строится маршрут и работает переключение (решение Юли 20.08).
+  document.body.classList.add('solo');
+  $('mineText').textContent=БАРЬЕРЫ[мой]+' — с него и начнем';
   $('mine').classList.add('on');
   var вкл=document.querySelector('.tab[data-code="'+мой+'"]');
   if(вкл) вкл.classList.add('mine');
@@ -338,19 +343,33 @@
   var окупится=Math.max(1,Math.ceil(передачаЧ*60/мин));
   var месяцев=Math.round(окупится/раз*10)/10;
 
-  var h='<div class="big">'+часовВгод+' ч в год</div>'+
-        '<div class="small">это '+дней+' рабочих дней, которые вы каждый год отдаете одной задаче</div>';
+  // Три метрики в ряд — подача разбора 7П+1: цифра моношрифтом, под ней
+  // подпись и пояснение. Считаем ровно то же, что и раньше.
+  var зпт=function(x){ return String(x).replace('.',','); };
+  var h='<div class="big-row">'+
+   '<div class="big-c"><div class="big warn-n">'+часовВгод+'</div>'+
+    '<div class="small">часов в год<i>на одной этой задаче</i></div></div>'+
+   '<div class="big-c"><div class="big">'+зпт(дней)+'</div>'+
+    '<div class="small">рабочих дней<i>вы отдаете ей каждый год</i></div></div>';
 
   if(ставка){
    var деньги=Math.round(часовВгод*ставка);
    var строка=деньги.toLocaleString('ru-RU');
-   h+='<div class="money">'+строка+' ₽ в год</div>'+
-      '<div class="small">столько стоит ваше время на этой задаче — по вашей же оценке</div>';
+   h+='<div class="big-c"><div class="money">'+строка+'</div>'+
+      '<div class="small">рублей в год<i>по вашей же оценке часа</i></div></div>';
+  } else {
+   h+='<div class="big-c"><div class="big" style="color:var(--faint)">&#8381;</div>'+
+      '<div class="small">впишите ставку<i>увидите цену в деньгах</i></div></div>';
   }
+  h+='</div>';
 
-  h+='<div class="verdict">Передача стоит примерно <b>3 часа</b>: объяснить плюс два прогона с правками. '+
-     'Окупится на <b>'+окупится+'-й раз</b>' + (месяцев<=12? ' — это примерно <b>'+месяцев+' мес.</b>' : '') + '. '+
-     'Дальше задача не ваша, а счетчик тикает только в вашу пользу.</div>';
+  // «0.6 мес.» давало на конце «мес..», и дробь была не по-русски — чиним
+  var срок = месяцев<1 ? 'меньше чем за месяц'
+           : (месяцев<=12 ? 'примерно за '+зпт(месяцев)+' мес' : '');
+  h+='<div class="verdict"><span class="vh">Передача окупится на '+окупится+'-й раз</span>'+
+     'Объяснить плюс два прогона с правками — это примерно <b>три часа</b>.'+
+     (срок ? ' При вашей частоте они вернутся '+срок+'.' : '')+
+     ' Дальше задача не ваша, а счетчик тикает только в вашу пользу.</div>';
 
   if(!ставка){
    h+='<div class="hint-in">Впишите, во сколько оцениваете свой час, — покажу цену в деньгах. Обычно это отрезвляет сильнее часов.</div>';
@@ -712,6 +731,73 @@
  };
 
  задачи(); план();
+
+ // ── маршрут тетради: строится ИЗ САМИХ ПЕРЕХОДОВ ────────────────────────
+ // Порядок разделов в маршруте — это порядок работы, а не нумерация: он задан
+ // ссылками .next внутри разделов. Строим цепочку по ним, чтобы строка маршрута
+ // не разъехалась с переходами, если те когда-нибудь поменяются.
+ (function(){
+  var части=[].slice.call(document.querySelectorAll('.part'));
+  if(!части.length) return;
+  var след={}, есть={}, входящие={};
+  части.forEach(function(ч){
+   есть[ч.id]=ч;
+   var n=ч.querySelector('.next');
+   var к=n && (n.getAttribute('href')||'').replace('#','');
+   if(к){ след[ч.id]=к; входящие[к]=true; }
+  });
+  var начало=части.map(function(ч){return ч.id;}).filter(function(id){return !входящие[id];})[0];
+  if(!начало) return;
+  var цепь=[], т=начало, стоп=0;
+  while(т && есть[т] && стоп++<20){ цепь.push(т); т=след[т]; }
+  if(цепь.length<2) return;
+
+  var подпись={};                            // подписи берем с вкладок, не выдумываем
+  [].forEach.call(document.querySelectorAll('.tab'),function(в){
+   if(в.dataset.code) подпись[в.dataset.code]=в.textContent.trim();
+  });
+
+  цепь.forEach(function(id,i){
+   var ч=есть[id], n=ч.querySelector('.next');
+   if(!n) return;                             // у последнего раздела перехода нет
+   var box=document.createElement('nav');
+   box.className='route';
+   var h='<span class="lb">Маршрут тетради</span>';
+   цепь.forEach(function(к,j){
+    if(j) h+='<span class="sep">&rarr;</span>';
+    var под=экр(подпись[к]||к);
+    if(j===i)    h+='<span class="now">'+под+'</span>';
+    else if(j<i) h+='<a class="done" href="#'+к+'">'+под+'</a>';
+    else         h+='<a href="#'+к+'">'+под+'</a>';
+   });
+   box.innerHTML=h;
+   n.parentNode.insertBefore(box,n.nextSibling);
+  });
+ })();
+
+ // ── слой контурных иконок на фоне: те же семь контуров, что в шаблонах ──
+ (function(){
+  var слой=document.querySelector('.bg-ico'); if(!слой) return;
+  var И={
+   chat:'<svg viewBox="0 0 24 24"><path d="M4 4h16a1.5 1.5 0 0 1 1.5 1.5V15A1.5 1.5 0 0 1 20 16.5H9l-4.5 4V16.5H4A1.5 1.5 0 0 1 2.5 15V5.5A1.5 1.5 0 0 1 4 4Z"/></svg>',
+   brief:'<svg viewBox="0 0 24 24"><rect x="2.5" y="7" width="19" height="13" rx="2.5"/><path d="M8 7V5.5A2 2 0 0 1 10 3.5h4a2 2 0 0 1 2 2V7"/><path d="M2.5 12h19"/></svg>',
+   clock:'<svg viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3.5 2"/></svg>',
+   mail:'<svg viewBox="0 0 24 24"><rect x="2.5" y="5" width="19" height="14" rx="2.5"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg>',
+   board:'<svg viewBox="0 0 24 24"><path d="M4 4h16"/><rect x="4.5" y="4" width="15" height="10" rx="1.5"/><path d="M12 14v4M9 20l3-2 3 2"/></svg>',
+   doc:'<svg viewBox="0 0 24 24"><rect x="5" y="3" width="14" height="18" rx="2.5"/><path d="M9 8h6M9 12h6M9 16h4"/></svg>',
+   people:'<svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 19c0-3 2.5-5 5.5-5s5.5 2 5.5 5"/><path d="M16 6.2a3 3 0 0 1 0 5.6M17 14c2.4.3 4 2.3 4 5"/></svg>'
+  };
+  var к=Object.keys(И), cols=9, rows=6, html='', N=cols*rows, gx=96/cols, gy=96/rows;
+  for(var i=0;i<N;i++){
+   var имя=к[(i*3)%к.length], col=i%cols, row=Math.floor(i/cols);
+   var jx=((i*29)%5)-2, jy=((i*53)%5)-2;
+   var size=26+((i*13)%20), rot=((i%2)?1:-1)*(10+((i*3)%9)), del=-((i*5)%4);
+   html+='<i class="fi" style="top:'+(row*gy+1+jy)+'%;left:'+(col*gx+1+jx)+'%;width:'+size+
+    'px;height:'+size+'px;--rot:'+rot+'deg;animation-delay:'+del+'s;transform:rotate('+rot+'deg)">'+
+    И[имя]+'</i>';
+  }
+  слой.innerHTML=html;
+ })();
 
  // ── копирование ─────────────────────────────────────────────────────────
  window.копировать=function(id,кн){
