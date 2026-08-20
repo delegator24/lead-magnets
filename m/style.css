@@ -45,27 +45,22 @@ body{font-family:var(--disp);background:var(--bg0);color:var(--ink);
  background:linear-gradient(180deg,var(--bg1),var(--bg0))}
 .bg .b{position:absolute;border-radius:50%;filter:blur(110px)}
 .b1{width:120vmax;height:120vmax;left:-25vmax;top:-60vmax;
- background:radial-gradient(circle,rgba(77,155,255,.16),transparent 66%);
- animation:d1 9s ease-in-out infinite}
+ background:radial-gradient(circle,rgba(77,155,255,.16),transparent 66%)}
 .b2{width:90vmax;height:90vmax;right:-40vmax;top:6vh;
- background:radial-gradient(circle,rgba(77,155,255,.08),transparent 66%);
- animation:d2 9s ease-in-out infinite}
+ background:radial-gradient(circle,rgba(77,155,255,.08),transparent 66%)}
 .b3{width:110vmax;height:110vmax;left:4vmax;bottom:-62vmax;
- background:radial-gradient(circle,rgba(77,155,255,.13),transparent 66%);
- animation:d3 9s ease-in-out infinite}
-@keyframes d1{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(90px,60px) scale(1.08)}}
-@keyframes d2{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(-80px,70px) scale(1.06)}}
-@keyframes d3{0%,100%{transform:translate(0,0) scale(1)}50%{transform:translate(70px,-70px) scale(1.09)}}
+ background:radial-gradient(circle,rgba(77,155,255,.13),transparent 66%)}
+/* Дрейф пятен убран: три слоя blur(110px) перерисовывались каждый кадр и
+   роняли частоту вдвое (замер: 32 мс против 16,6 мс на кадр). На коротком
+   разборе 7П+1 это незаметно, а в тетради прокрутка длинная — тряслось. */
 .bg-ico{position:fixed;inset:0;z-index:0;overflow:hidden;pointer-events:none}
-.bg-ico .fi{position:absolute;display:block;color:#8fb6e8;opacity:.05;
- animation:float 4s ease-in-out infinite}
+.bg-ico .fi{position:absolute;display:block;color:#8fb6e8;opacity:.05}
 .bg-ico .fi svg{width:100%;height:100%;display:block;stroke:currentColor;fill:none;
  stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
-@keyframes float{0%,100%{transform:rotate(var(--rot)) translateY(0)}
- 50%{transform:rotate(var(--rot)) translateY(-12px)}}
-@media (prefers-reduced-motion:reduce){
- .bg .b,.bg-ico .fi{animation:none}
-}
+/* Иконки тоже стоят: они лежат ПОВЕРХ трех слоев blur(110px), и любое их
+   движение заставляло эти слои перерисовываться. Замер: с их анимацией
+   32 мс на кадр, без нее 16,9 мс. Фон остался живым за счет градиента,
+   пятен и самих иконок — просто он больше не шевелится. */
 
 /* ── шапка ─────────────────────────────────────────────────────────────── */
 header{position:sticky;top:0;z-index:30;background:rgba(11,16,22,.72);

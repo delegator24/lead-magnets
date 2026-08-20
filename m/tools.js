@@ -96,38 +96,13 @@
   (мой&&$(мой))?мой:(location.hash&&$(location.hash.slice(1))?location.hash.slice(1):'quality'),
   false);
 
- // ── плавная прокрутка: код взят с лендинга «Почему сам» один в один ──────
- // Важное место — deltaMode: часть мышей сообщает прокрутку в СТРОКАХ, а не
- // в пикселях. Без умножения на 16 страница еле ползет.
- (function(){
-  if(!matchMedia('(prefers-reduced-motion: no-preference)').matches) return;
-  if(matchMedia('(pointer:coarse)').matches) return;     // тач — родная физика
+ // ── прокрутка колесом: РОДНАЯ ───────────────────────────────────────────
+ // Инерционный перехват колеса (как на лендингах) отсюда убран сознательно:
+ // тетрадь — рабочий инструмент с семью десятками полей, в ней надо
+ // остановиться ровно на нужном блоке и заполнить его. Инерция проезжала
+ // мимо (Юля 20.08). Плавность осталась там, где по ней кликают: якоря
+ // разделов, маршрут, «следующий шаг», вкладки — их ведет scroll-behavior.
 
-  var target=window.scrollY, current=window.scrollY, running=false;
-  function maxY(){ return Math.max(0,document.documentElement.scrollHeight-window.innerHeight); }
-  function loop(){
-   current+=(target-current)*0.12;
-   if(Math.abs(target-current)<0.4){
-    current=target; window.scrollTo({top:current,behavior:'instant'}); running=false; return;
-   }
-   window.scrollTo({top:current,behavior:'instant'});
-   requestAnimationFrame(loop);
-  }
-  addEventListener('wheel',function(e){
-   if(e.ctrlKey) return;                                 // масштабирование не трогаем
-   var поле=e.target.closest('.out, textarea');          // прокрутка внутри блока — своя
-   if(поле && поле.scrollHeight>поле.clientHeight) return;
-   e.preventDefault();
-   var d=e.deltaY;
-   if(e.deltaMode===1) d*=16;                            // строки → пиксели
-   else if(e.deltaMode===2) d*=window.innerHeight;       // страницы → пиксели
-   target=Math.max(0,Math.min(maxY(),target+d));
-   if(!running){ running=true; current=window.scrollY; requestAnimationFrame(loop); }
-  },{passive:false});
-  addEventListener('scroll',function(){
-   if(!running){ target=window.scrollY; current=window.scrollY; }
-  });
- })();
 
  // Проявляем КАЖДЫЙ блок по мере въезда в экран — как на лендинге.
  // Раньше всплывала вся секция разом: нижние блоки «появлялись» задолго до того,
