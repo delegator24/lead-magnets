@@ -150,12 +150,10 @@ h1 em{font-style:normal;color:var(--accent)}
 /* ── раздел: у каждого свой цвет — он и отделяет их друг от друга ───────── */
 .part{scroll-margin-top:112px;padding:56px 0 76px;position:relative;isolation:isolate}
 .part+.part{border-top:1px solid var(--line)}
-/* мягкое свечение цвета раздела вверху — граница видна боковым зрением.
-   z-index -1: свечение под текстом, иначе перекрывает первые строки. */
-.part::before{content:"";position:absolute;top:0;left:50%;transform:translateX(-50%);
- width:min(820px,96%);height:220px;pointer-events:none;z-index:-1;
- background:radial-gradient(ellipse 65% 100% at 50% 0%,
-   color-mix(in srgb,var(--c) 11%,transparent),transparent 72%)}
+/* Свечения цвета раздела здесь больше нет. На прежнем плоском фоне оно
+   сливалось и мягко отбивало границу, а на живом читается как оранжевая
+   клякса (Юля 20.08). Границу и так держат номер раздела с подсветкой,
+   заголовок капсом и цветные грани карточек. */
 
 .part-head{display:flex;align-items:center;gap:18px;margin-bottom:24px;position:relative}
 .part-num{flex:none;width:46px;height:46px;border-radius:14px;display:flex;align-items:center;
@@ -179,8 +177,13 @@ li{margin-bottom:9px;color:var(--ink2)}
  transition:transform .25s cubic-bezier(.16,1,.3,1),box-shadow .25s,border-color .25s}
 .flip:hover{transform:translateY(-2px);border-color:var(--line2);border-left-color:var(--c);
  box-shadow:0 18px 40px -24px color-mix(in srgb,var(--c) 60%,transparent)}
-.flip h3{margin:0 0 12px;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--c);
- letter-spacing:.12em;text-transform:uppercase}
+.flip h3{margin:0 0 12px;font-family:var(--mono);font-size:13px;font-weight:700;color:var(--c);
+ letter-spacing:.08em;text-transform:uppercase}
+/* «Три минуты голосом: структура» — это НАСТОЯЩИЙ заголовок блока, а не ярлык:
+   класс .flip носят и карточка «Переворот» (там ярлык уместен), и содержательные
+   блоки. Для них — обычный заголовок. */
+.flip.flip-h3 h3{font-family:var(--disp);font-size:17.5px;font-weight:700;color:#fff;
+ letter-spacing:-.01em;text-transform:none}
 .flip p:last-child{margin-bottom:0}
 
 .warn{background:var(--warn-soft);border:1px solid rgba(240,165,106,.22);border-radius:var(--r);
@@ -206,9 +209,9 @@ td b,td strong{color:#fff}
 .tool:hover{border-color:color-mix(in srgb,var(--c) 40%,transparent);
  box-shadow:0 26px 60px -34px color-mix(in srgb,var(--c) 70%,transparent)}
 .tool-h{margin-bottom:7px}
-.tool-h .badge{display:inline-block;font-family:var(--mono);font-size:10.5px;font-weight:700;
- color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);padding:5px 10px;
- border-radius:7px;margin-bottom:10px;letter-spacing:.12em;text-transform:uppercase}
+.tool-h .badge{display:inline-block;font-family:var(--mono);font-size:12px;font-weight:700;
+ color:var(--c);background:color-mix(in srgb,var(--c) 14%,transparent);padding:5px 11px;
+ border-radius:7px;margin-bottom:10px;letter-spacing:.09em;text-transform:uppercase}
 .tool-h h3{margin:0;font-size:21px;font-weight:700;letter-spacing:-.02em;color:#fff}
 .tool>p.hint{color:var(--muted);font-size:15px;margin-bottom:24px;max-width:580px}
 
@@ -270,8 +273,8 @@ select option{background:#151f2c;color:#fff}
 .res.on{display:block}
 .res-h{font-size:19px;font-weight:700;color:#fff;margin-bottom:5px;letter-spacing:-.01em}
 .res-sub{font-size:15.5px;color:var(--ink2);margin-bottom:20px}
-.res-h2{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--c);margin:24px 0 10px;
- letter-spacing:.12em;text-transform:uppercase}
+.res-h2{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--c);margin:24px 0 10px;
+ letter-spacing:.09em;text-transform:uppercase}
 .res-t{margin:0;font-size:15px}
 .res-t tr.win td{color:#fff}
 .res-l{margin:0 0 0 20px}
@@ -368,7 +371,7 @@ input:checked+.bx::after{content:"";width:5px;height:9px;border:solid #0b1016;bo
 
 /* ── что сделать сегодня: практический выход из раздела ────────────────── */
 .step-now{border-left:2px solid var(--c);padding:2px 0 2px 22px;margin:34px 0 26px}
-.sn-h{font-family:var(--mono);font-size:11px;font-weight:700;color:var(--c);letter-spacing:.12em;
+.sn-h{font-family:var(--mono);font-size:12.5px;font-weight:700;color:var(--c);letter-spacing:.09em;
  text-transform:uppercase;margin-bottom:8px}
 .step-now p{margin:0;font-size:16.5px;color:var(--ink2)}
 
@@ -377,8 +380,9 @@ input:checked+.bx::after{content:"";width:5px;height:9px;border:solid #0b1016;bo
  border-radius:var(--r);padding:26px 28px;margin:26px 0 0;
  transition:border-color .25s,background .25s}
 .d24:hover{border-color:var(--line2)}
-.d24-h{font-family:var(--mono);font-size:10.5px;font-weight:700;letter-spacing:.12em;
- text-transform:uppercase;color:var(--muted);margin-bottom:11px}
+/* Это подводка, а не ярлык блока: капс моношрифтом делал из нее еще одну
+   микроподпись, и она терялась. Возвращаем как было — обычной строкой. */
+.d24-h{font-size:14px;font-weight:600;color:var(--muted);margin-bottom:11px}
 .d24 p{margin:0 0 20px;font-size:15.5px;color:var(--ink2);max-width:640px}
 /* зеленая кнопка действия — единственная в разделе, ее и видно */
 .d24-go{display:inline-flex;align-items:center;gap:9px;background:var(--cta);color:#fff;
@@ -395,8 +399,8 @@ input:checked+.bx::after{content:"";width:5px;height:9px;border:solid #0b1016;bo
  transition:border-color .25s,transform .25s cubic-bezier(.16,1,.3,1),background .25s}
 .next:hover{border-color:color-mix(in srgb,var(--c) 45%,transparent);transform:translateY(-2px);
  background:rgba(255,255,255,.05)}
-.next-cap{display:block;font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--c);
- letter-spacing:.12em;text-transform:uppercase;margin-bottom:9px}
+.next-cap{display:block;font-family:var(--mono);font-size:12px;font-weight:700;color:var(--c);
+ letter-spacing:.09em;text-transform:uppercase;margin-bottom:9px}
 .next-t{display:block;font-size:21px;font-weight:700;color:#fff;margin-bottom:7px;
  letter-spacing:-.02em}
 .next-t::after{content:"→";margin-left:.35em;color:var(--c);display:inline-block;
@@ -423,8 +427,8 @@ input:checked+.bx::after{content:"";width:5px;height:9px;border:solid #0b1016;bo
 .lib-g{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .lib-c{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:var(--r);
  padding:16px}
-.lib-t{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--c);margin-bottom:11px;
- letter-spacing:.12em;text-transform:uppercase}
+.lib-t{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--c);margin-bottom:11px;
+ letter-spacing:.09em;text-transform:uppercase}
 .chip{display:block;width:100%;text-align:left;background:rgba(255,255,255,.05);
  border:1px solid var(--line2);border-radius:9px;color:var(--ink2);font:inherit;font-size:13.5px;
  padding:8px 11px;margin-bottom:7px;cursor:pointer;
@@ -438,8 +442,8 @@ input:checked+.bx::after{content:"";width:5px;height:9px;border:solid #0b1016;bo
 /* ── что вообще передают ──────────────────────────────────────────────── */
 .zg{margin-bottom:20px}
 .zg:last-of-type{margin-bottom:0}
-.zg-h{font-family:var(--mono);font-size:10.5px;font-weight:700;color:var(--c);margin-bottom:10px;
- letter-spacing:.12em;text-transform:uppercase}
+.zg-h{font-family:var(--mono);font-size:12px;font-weight:700;color:var(--c);margin-bottom:10px;
+ letter-spacing:.09em;text-transform:uppercase}
 .check.z{margin:0}
 .check.z li{margin-bottom:8px}
 .check.z label{font-size:15px}
@@ -486,8 +490,8 @@ input:checked+.bx::after{content:"";width:5px;height:9px;border:solid #0b1016;bo
 .case-i::before{content:"";position:absolute;left:-21px;top:7px;width:12px;height:12px;
  border-radius:99px;background:var(--paper);border:2px solid var(--c)}
 .case-i.ok::before{background:var(--c)}
-.case-i b{display:block;font-family:var(--mono);font-size:11px;font-weight:700;color:var(--c);
- letter-spacing:.08em;margin-bottom:5px}
+.case-i b{display:block;font-family:var(--mono);font-size:12.5px;font-weight:700;color:var(--c);
+ letter-spacing:.06em;margin-bottom:5px}
 .case-i span{display:block;font-size:14.5px;color:var(--ink2);line-height:1.55;max-width:600px}
 .case-i.ok span{color:var(--ink2)}
 .case-i.ok b{color:var(--green)}
