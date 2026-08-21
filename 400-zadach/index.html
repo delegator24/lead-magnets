@@ -286,7 +286,8 @@ mark{background:var(--accent-soft);color:var(--ink);border-radius:3px;padding:0 
 .custombox h3{font-family:var(--disp);font-size:17px;font-weight:700;margin-bottom:5px;color:var(--ink);letter-spacing:-.02em}
 .custombox p{font-size:14px;color:var(--muted);margin-bottom:14px}
 .custom-in{display:flex;gap:9px}
-.custom-in input{flex:1;padding:12px 14px;border:1.5px solid var(--line2);border-radius:9px;font-size:14.5px;font-family:var(--disp);
+/* min-width:0: иначе input не сжимается под placeholder и раздувает страницу на узких экранах */
+.custom-in input{flex:1;min-width:0;padding:12px 14px;border:1.5px solid var(--line2);border-radius:9px;font-size:14.5px;font-family:var(--disp);
  background:var(--paper);color:var(--ink);outline:none}
 .custom-in input::placeholder{color:var(--faint)}
 .custom-in input:focus{border-color:var(--accent);box-shadow:rgba(48,127,226,.16) 0 0 0 3px}
@@ -2382,6 +2383,10 @@ window.addEventListener('load',function(){setTimeout(function(){
 (function(){
 var tq=document.getElementById('q');
 if(!tq||!window.TASKS)return;
+/* на телефоне длинный плейсхолдер режется и бейдж «умный поиск» скрыт —
+   говорим про умный поиск прямо в плейсхолдере (просьба Юли 21.08) */
+if(matchMedia('(max-width:560px)').matches)
+  tq.placeholder='Умный поиск: опишите задачу своими словами';
 var wrap=tq.parentNode;                      /* .search уже position:relative */
 var drop=document.createElement('div');
 drop.className='qdrop';drop.id='tsdrop';
