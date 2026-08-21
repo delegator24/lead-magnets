@@ -554,6 +554,26 @@ body.zayavka.z-done .z-back{display:none}
 }
 
 </style>
+<style>
+/* умная строка — как на новом сайте: выпадашка под полем поиска */
+.qdrop{position:absolute;left:0;right:0;top:calc(100% + 8px);z-index:60;display:none;
+ background:var(--card);border:1px solid var(--line2);border-radius:14px;
+ box-shadow:0 22px 50px -18px rgba(16,24,32,.28);overflow:hidden;max-height:60vh;
+ overflow-y:auto}
+.qdrop.on{display:block}
+.qdrop .it{display:flex;align-items:baseline;justify-content:space-between;gap:14px;
+ padding:12px 18px;cursor:pointer;border-bottom:1px solid var(--line)}
+.qdrop .it:last-child{border-bottom:none}
+.qdrop .it:hover{background:var(--card2)}
+.qdrop .it span{flex:1;font-size:14.5px;color:var(--ink);line-height:1.4}
+.qdrop .it i{font-style:normal;font-family:var(--mono);font-size:10.5px;letter-spacing:.08em;
+ text-transform:uppercase;color:var(--faint);white-space:nowrap}
+.qdrop .it.add{background:var(--accent-soft)}
+.qdrop .it.add span{font-weight:600;color:var(--accent-d)}
+.qdrop .semh{padding:8px 18px 4px;font-family:var(--mono);font-size:10.5px;letter-spacing:.14em;
+ text-transform:uppercase;color:var(--faint);border-top:1px dashed var(--line2)}
+@media(max-width:560px){.qdrop .it i{display:none}}
+</style>
 </head>
 <body>
 <div class="bg" aria-hidden="true"><span></span><span></span><span></span></div>
@@ -2352,5 +2372,143 @@ window.addEventListener('load',function(){setTimeout(function(){
 </div>
 <script>try{if(!localStorage.getItem('d24ck'))document.getElementById('ckbar').style.display='flex';}catch(e){}</script>
 
+<script>
+/* ── умная строка: механика поиска перенесена с нового сайта (flow-h) ──
+   Локальный поиск по каталогу + «похоже по смыслу» (сервис /task-search на
+   нашем VPS, вектора Navec) + «добавить свою задачу» всегда при осмысленном
+   вводе. Родной фильтр каталога (onSearch) не тронут — работает под
+   выпадашкой как раньше. Обвязка страницы: TASKS, esc, sel, custom,
+   syncChecks, refresh, renderChips, clearSearchVisual, toast. */
+(function(){
+var tq=document.getElementById('q');
+if(!tq||!window.TASKS)return;
+var wrap=tq.parentNode;                      /* .search уже position:relative */
+var drop=document.createElement('div');
+drop.className='qdrop';drop.id='tsdrop';
+wrap.appendChild(drop);
+
+/* каталог этой страницы: полная формулировка + раздел для подписи в строке */
+var CAT=[],N2R={},seenT={};
+TASKS.forEach(function(t){
+  if(seenT[t.raw])return;seenT[t.raw]=1;
+  var c=t.el.closest('.cat'),n=c&&c.querySelector('.cat-name');
+  var r=n?n.textContent.trim():'';
+  if(r.length>28)r=r.slice(0,27)+'…';
+  CAT.push({n:t.raw,r:r});N2R[t.raw]=r;
+});
+
+function chosen(name){return sel.has(name)||custom.indexOf(name)>-1}
+function hitTok(kw,tok){
+  if(kw.indexOf(tok)>-1)return true;
+  return tok.length>=5&&kw.indexOf(tok.slice(0,-2))>-1;   /* грубый стем: без окончания */
+}
+var ALIAS={'сео':'seo','смм':'smm','эйчар':'hr','пиар':'pr','срм':'crm','крм':'crm',
+  'вб':'wildberries','вайлдберриз':'wildberries','озон':'ozon'};
+function doSmart(){
+  var v=(tq.value||'').trim();
+  /* поиск от 3 символов («seo»), «добавить свою» — от 4: обрывок «на» молчит */
+  if(v.length<3){drop.classList.remove('on');drop.innerHTML='';return}
+  var toks=v.toLowerCase().split(/[\s,./]+/).filter(function(t){return t.length>=3})
+    .map(function(t){return ALIAS[t]||t});
+  var out=[];
+  for(var i=0;i<CAT.length&&out.length<5;i++){
+    if(!toks.length)break;
+    var name=CAT[i].n;
+    if(chosen(name))continue;
+    var kw=name.toLowerCase(),ok=false;
+    for(var j=0;j<toks.length;j++)if(hitTok(kw,toks[j])){ok=true;break}
+    if(ok)out.push(CAT[i]);
+  }
+  var h='';
+  out.forEach(function(t){
+    h+='<div class="it" data-t="'+esc(t.n)+'"><span>'+esc(t.n)+'</span><i>'+esc(t.r)+'</i></div>'});
+  /* «добавить свою» доступно ВСЕГДА при осмысленном вводе — своя формулировка ценнее похожей */
+  var dup=chosen(v)||out.some(function(t){return t.n.toLowerCase()===v.toLowerCase()});
+  if(!dup&&v.length>=4)h+='<div class="it add" data-add="1" data-t="'+esc(v)+'"><span>＋ Добавить «'+esc(v)+'» как свою задачу</span></div>';
+  if(!h){drop.classList.remove('on');drop.innerHTML='';return}
+  drop.innerHTML=h;drop.classList.add('on');
+  semPlan(v,out);
+}
+/* ── поиск ПО СМЫСЛУ: фраза из 2+ слов уходит на /task-search (Navec-вектора
+   на нашем VPS) с дебаунсом; находки дорисовываются под подстрочными ── */
+var semT=null,semLast='';
+/* сервис индексирован каталогом САЙТА (те же задачи, формулировки почищены:
+   выкинуты «ваш..», «вас», обрезаны хвосты) — маппим его имена на наши */
+var SEMMAP={},NORMS=[];
+function semNorm(s){
+  s=s.toLowerCase().replace(/ё/g,'е').replace(/&quot;?/g,' ');
+  s=s.replace(/[^a-zа-я0-9]+/g,' ').replace(/\s+/g,' ').trim();
+  s=s.replace(/(^|\s)(ваш[а-я]*|вас)(?=\s|$)/g,' ');
+  return s.replace(/\s+/g,' ').trim();
+}
+CAT.forEach(function(t){
+  var k=semNorm(t.n);
+  if(!(k in SEMMAP)){SEMMAP[k]=t.n;NORMS.push([k,t.n])}
+});
+function semFind(n){
+  var k=semNorm(n);
+  if(!k)return null;
+  if(SEMMAP[k])return SEMMAP[k];
+  for(var i=0;i<NORMS.length;i++)if(NORMS[i][0].indexOf(k+' ')===0)return NORMS[i][1];
+  return null;
+}
+function semPlan(v,localOut){
+  if(semT){clearTimeout(semT);semT=null}
+  var words=v.toLowerCase().split(/[\s,./]+/).filter(function(t){return t.length>=3});
+  if(words.length<2)return;   /* смысл ясен от двух значимых слов */
+  semT=setTimeout(function(){
+    if((tq.value||'').trim()!==v)return;
+    if(v===semLast)return;
+    semLast=v;
+    fetch('https://chat.delegator24.ru/task-search?q='+encodeURIComponent(v))
+      .then(function(r){return r.json()})
+      .then(function(o){
+        if((tq.value||'').trim()!==v)return;
+        if(!o||!o.items||!o.items.length)return;
+        var have={};localOut.forEach(function(t){have[t.n]=1});
+        var h='';
+        o.items.forEach(function(t){
+          var raw=semFind(t.n);
+          if(!raw||have[raw]||chosen(raw))return;
+          have[raw]=1;
+          h+='<div class="it sem" data-t="'+esc(raw)+'"><span>'+esc(raw)+'</span><i>'+esc(N2R[raw]||'')+'</i></div>';
+        });
+        if(!h)return;
+        var add=drop.querySelector('.it.add');   /* смысловые — над «добавить свою» */
+        var head='<div class="semh">похоже по смыслу</div>';
+        if(add)add.insertAdjacentHTML('beforebegin',head+h);
+        else drop.insertAdjacentHTML('beforeend',head+h);
+        drop.classList.add('on');
+      }).catch(function(){});
+  },350);
+}
+/* клик по строке: задача каталога — отметить чекбокс, своя — в custom */
+function addPick(name,own){
+  if(own){
+    if(custom.indexOf(name)===-1)custom.push(name);
+    renderChips();refresh();
+    toast('Добавили «'+name+'»');
+  }else if(!sel.has(name)){
+    sel.add(name);syncChecks(name,true);refresh();
+    toast('Добавили в подборку');
+  }
+  tq.value='';drop.classList.remove('on');drop.innerHTML='';
+  if(window.clearSearchVisual)clearSearchVisual();   /* снять родной фильтр стертого запроса */
+}
+tq.addEventListener('input',doSmart);
+tq.addEventListener('focus',doSmart);
+tq.addEventListener('blur',function(){setTimeout(function(){drop.classList.remove('on')},200)});
+tq.addEventListener('keydown',function(e){   /* Enter = вписать и добавить свою задачу */
+  if(e.key!=='Enter')return;
+  var v=(tq.value||'').trim();
+  if(v.length>=4&&!chosen(v))addPick(v,true);
+});
+drop.addEventListener('mousedown',function(e){e.preventDefault()});   /* клик по подсказке раньше blur */
+drop.addEventListener('click',function(e){
+  var it=e.target.closest('.it');if(!it)return;
+  addPick(it.getAttribute('data-t'),!!it.getAttribute('data-add'));
+});
+})();
+</script>
 </body>
 </html>
