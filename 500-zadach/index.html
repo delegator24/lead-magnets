@@ -51,8 +51,8 @@ if('IntersectionObserver' in window){
 <meta name="description" content="Опишите задачу своими словами — найдем готовые варианты. Отметьте, что висит на вас лично, и увидите, сколько времени можно вернуть. Команда специалистов Delegator24 без найма и штата.">
 <meta property="og:title" content="500+ задач, которые можно снять с себя">
 <meta property="og:description" content="Отметьте свои задачи — соберем под них команду Delegator24. Без найма, без раздутого штата.">
-<link rel="canonical" href="https://start.delegator24.ru/400-zadach/">
-<meta property="og:image" content="https://start.delegator24.ru/400-zadach/og.png">
+<link rel="canonical" href="https://delegator24.ru/500-zadach/">
+<meta property="og:image" content="https://delegator24.ru/500-zadach/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
@@ -2304,7 +2304,7 @@ function списокДляЗаявки(){
   }).then(function(r){return r.json();}).then(function(o){
    if(!o||!o.ok) throw new Error(o&&o.error||'сервер не принял заявку');
    // главная конверсия страницы — заявка ушла в amoCRM
-   try{if(window.ym)ym(39533920,'reachGoal','lead_form');}catch(e){}
+   try{if(window.ym){ym(39533920,'reachGoal','lead_form');ym(39533920,'reachGoal','form_500zadach');ym(39533920,'reachGoal','newformdelegator');}}catch(e){}
    готово(o.go);
   }).catch(function(err){
    кн.disabled=false; кн.textContent='Получить расчет';

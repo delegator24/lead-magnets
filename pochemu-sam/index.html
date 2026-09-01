@@ -10,8 +10,8 @@
 <meta name="description" content="За минуту найдите ваш главный стоп-фактор в делегировании и узнайте, как передать задачи безопасно.">
 <meta property="og:title" content="Почему вы все еще делаете это сами">
 <meta property="og:description" content="Тест-диагностика: ваш стоп-фактор в делегировании и первый шаг.">
-<link rel="canonical" href="https://start.delegator24.ru/pochemu-sam/">
-<meta property="og:image" content="https://start.delegator24.ru/pochemu-sam/og.png">
+<link rel="canonical" href="https://delegator24.ru/pochemu-sam/">
+<meta property="og:image" content="https://delegator24.ru/pochemu-sam/og.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:type" content="website">
@@ -647,7 +647,7 @@ function renderNone(sc,restore){
  var lf=document.getElementById('leadForm');if(lf)lf.style.display='none';
  var acts=document.getElementById('ctaActions');acts.innerHTML='';
  var a=document.createElement('a');a.className='btn btn-accent';a.textContent='Открыть каталог 500+ задач';
- a.href='https://start.delegator24.ru/400-zadach/';
+ a.href='https://delegator24.ru/500-zadach/';
  a.onclick=function(){try{if(window.ym)ym(39533920,'reachGoal','to_catalog');}catch(e){}};
  acts.appendChild(a);
  try{localStorage.setItem('d24barrier',JSON.stringify({barrier:'none',scores:sc,ts:Date.now()}));}catch(e){}
@@ -714,14 +714,14 @@ if(Object.keys(ans).length>=Q.length)compute(true);
 </script>
 
 <!-- UIS виджет связи (звонок/мессенджеры).
-     Ключ sk= — персональный для сайта start.delegator24.ru. Общий код аккаунта (k=)
-     тут не работает: поддомен заведен отдельным сайтом, и UIS отвечает «сайт не совпадает». -->
+     Общий ключ аккаунта k= — страница живет на основном домене delegator24.ru (переезд 01.09).
+     Персональный sk= поддомена start.* здесь НЕ работает — «сайт не совпадает». -->
 <script>
 // UIS: их сервер отдает cs.min.js до 25+ секунд, и даже async держит событие
 // load — вкладка «вечно грузится» (аудит 13.08). Вставляем тег после load.
 window.addEventListener('load',function(){setTimeout(function(){
   var s=document.createElement('script');s.async=true;
-  s.src='https://app.uiscom.ru/static/cs.min.js?sk=Gn710qh2xB6xbepS2kLbwHgbqI_xkaBw';document.body.appendChild(s);},600);});
+  s.src='https://app.uiscom.ru/static/cs.min.js?k=BkIwF_xi28YQGfhpr1ZcIecg_wn6lgxP';document.body.appendChild(s);},600);});
 </script>
 <script>
 // ── КВИЗ: шаги, телефонная маска по стране, отправка лида ────────────────────
@@ -1018,7 +1018,7 @@ window.addEventListener('load',function(){setTimeout(function(){
   }).then(function(r){return r.json();}).then(function(o){
    if(!o||!o.ok) throw new Error(o&&o.error||'сервер не принял заявку');
    // главная конверсия страницы — заявка ушла в amoCRM
-   try{if(window.ym)ym(39533920,'reachGoal','lead_form');}catch(e){}
+   try{if(window.ym){ym(39533920,'reachGoal','lead_form');ym(39533920,'reachGoal','form_pochemusam');ym(39533920,'reachGoal','newformdelegator');}}catch(e){}
    готово(o.go);
   }).catch(function(err){
    кн.disabled=false; кн.textContent='Получить разбор';
