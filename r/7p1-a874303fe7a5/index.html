@@ -325,6 +325,8 @@ footer a{color:var(--muted)}
  .big,.chart,.block,.norm,.plan{background:#fff;border:1px solid #ccc}
  .b-n,.f-t,.bl-h,.n-h,.p-top b,.ring-c b,.dt-top b{color:#000}
  .b-t,.f-p,.n-p,.b-l,.ring-l div,.dt-p,.bl-p,.p-tasks span{color:#333}
+ .period-charts .b-v,.period-charts .ring-l b,.period-control .b-v{color:#111}
+ .period-charts + .block,.block.period-control{break-inside:avoid;page-break-inside:avoid}
  .b-svg .b-bg{fill:#ececec}
  .b-plan{stroke:#555}
  .c-note{color:#555}
@@ -455,7 +457,7 @@ var ИИ_КЛЮЧ = "5e28d41f58bf9ecba5261f3e60fd7102";
 </div></footer>
 
 <script src="xlsx.js"></script>
-<script src="analyze.js"></script>
+<script src="analyze.js?v=20261028-summary-charts"></script>
 <script>
 // Фоновый слой иконок — те же семь контуров, что в шаблонах контента
 // (card_theme.py), сетка с детерминированным дрожанием, без случайности.
